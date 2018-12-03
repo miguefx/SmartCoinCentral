@@ -1,0 +1,167 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="myform">
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card card-w-title">
+                            <p:messages id="message2" showDetail="true"   closable="true" />
+
+                            <h1>Alarmas Existentes</h1>
+                            <p:dataTable id="alarmatable"  var="alarma" value="#{beanAlarma.listAlarma}" selectionMode="single" selection="#{beanAlarma.alarmaSelected}" rowKey="#{alarma.idAlarma}" filteredValue="#{beanAlarma.listFiltrer}" paginator="true" rows="4"  reflow="true" emptyMessage="Cero registros encontrados" >
+                                <f:facet name="header">
+                                    Alarmas
+                                </f:facet>
+                                <p:column headerText="Id Alarma" filterBy="#{alarma.idAlarma}" filterMatchMode="contains" priority="1" >
+                                    <h:outputText value="#{alarma.idAlarma}" />
+                                </p:column>
+
+                                <p:column headerText="Modulo" filterBy="#{alarma.idModulo.idModulo}" filterMatchMode="contains" priority="2">
+                                    <h:outputText value="#{alarma.idModulo.idModulo}" />
+                                </p:column>
+
+                                <p:column headerText="Descripcion" filterBy="#{alarma.descripcion}" filterMatchMode="contains" priority="3">
+                                    <h:outputText value="#{alarma.descripcion}" />
+                                </p:column>
+
+                                <p:column headerText="Parte" filterBy="#{alarma.parte}" filterMatchMode="contains" priority="4" >
+                                    <h:outputText value="#{alarma.parte}" />
+                                </p:column>
+                                <p:column headerText="Fecha" filterBy="#{alarma.fechaRegistro}" filterMatchMode="contains" priority="5" >
+                                    <p:outputLabel  value="#{alarma.fechaRegistro}"  >
+                                        <f:convertDateTime pattern="MM/dd/yyyy hh:mm a" />
+                                    </p:outputLabel>
+                                </p:column>
+                                <f:facet name="footer">
+                                    <p:commandButton process="alarmatable"  update="myform:alarmaDialog myform:cajeroDialog myform:descripcionDialog" icon="ui-icon-edit" value="Agregar" oncomplete="PF('dlg').show()"  style="width: 100%;"/>
+                                </f:facet>
+                            </p:dataTable>
+                            <p:dialog header="Agregar descripciona a la alarma" widgetVar="dlg" resizable="false" draggable="false" responsive="true" hideEffect="scale">
+                                <div class="ui-g form-group" style="margin-bottom: 16px;">
+                                    <div class="ui-g-4">
+                                        <label>IdAlarma</label>
+                                        <br></br>
+                                        <p:outputLabel id="alarmaDialog"  value="#{beanAlarma.alarmaSelected.idAlarma}" />
+
+
+                                    </div>
+                                    <div class="ui-g-4">
+                                        <label>Modulo</label>
+                                        <br></br>
+                                        <p:outputLabel   id="cajeroDialog"  value="#{beanAlarma.alarmaSelected.idModulo.idModulo}"/>
+
+                                    </div>
+                                    <div class="ui-g-4">
+                                        <label>Descripcion</label>
+                                        <br></br>
+                                        <p:outputLabel id="descripcionDialog"  value="#{beanAlarma.alarmaSelected.descripcion}"/>
+
+                                    </div>
+                                    <div class="ui-g-12">
+                                        <p:inputTextarea rows="3" value="#{beanAlarma.observacion}" placeholder="Agrega los comentarios" autoResize="false"/>
+                                    </div>
+                                </div>
+                                <f:facet name="footer">
+                                    <p:commandButton value="Actualizar" update="message2" actionListener="#{beanAlarma.actualizarAlarma(egt)}" onclick="PF('dlg').hide()" style="width:auto" icon="ui-icon-refresh"/>
+                                </f:facet>  
+                            </p:dialog>
+
+
+
+
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-lg-6">
+                        <!-- Right Side -->
+                        <div class="card card-w-title">
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank lesspad">
+                                <p:messages id="message" showDetail="true" closable="true" />
+
+
+                                <p:dataTable id="tabla" var="alarma" value="#{beanAlarma.listAlarmaHistorico}" reflow="true"  >
+                                    <f:facet name="header">
+                                        Historico de alarmas
+                                    </f:facet>
+                                    <p:column headerText="Id Alarma" >
+                                        <h:outputText value="#{alarma.idAlarma}" />
+                                    </p:column>
+
+                                    <p:column headerText="Modulo">
+                                        <h:outputText value="#{alarma.idModulo.idModulo}" />
+                                    </p:column>
+
+                                    <p:column headerText="Descripcion">
+                                        <h:outputText value="#{alarma.descripcion}" />
+                                    </p:column>
+
+                                    <p:column headerText="Parte" >
+                                        <h:outputText value="#{alarma.parte}" />
+                                    </p:column>
+                                    <p:column headerText="Fecha" >
+                                        <h:outputText value="#{alarma.fechaRegistro}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy hh:mm" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Observacion" >
+                                        <h:outputText value="#{alarma.observacion}" />
+                                    </p:column>
+                                    <p:column headerText="Identificacion" >
+                                        <h:outputText value="#{alarma.usuarioObservacion}" />
+                                    </p:column>
+                                </p:dataTable>
+
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank lesspad">
+                                    <p:calendar  id="multi1"  placeholder="Fecha Inicio" maxdate="#{beanTransacciones.today}"  value="#{beanAlarma.fechaInicial}"  pattern="dd/MM/yyyy HH:mm" showButtonPanel="true"  locale="es"  /> 
+                                    <p:calendar id="multi2"  placeholder="Fecha Fin" maxdate="#{beanTransacciones.today}"   value="#{beanAlarma.fechaFinal}" pattern="dd/MM/yyyy HH:mm"  locale="es" showButtonPanel="true" /> 
+                                </p:panelGrid>
+                            </p:panelGrid>
+                            <h:commandLink>
+                                <p:graphicImage url="resources/ultima-layout/images/pdf.png" />
+                                <p:dataExporter type="pdf" target="tabla" fileName="historicoAalrmaDesde#{beanAlarma.fechaInicial}Hasta#{beanAlarma.fechaFinal}"  />
+                                <p:outputLabel value="PDF" style="color: black;margin: 8px 8px 8px 8px;font-weight: bold;font-size: 12px;" />
+
+                            </h:commandLink>
+                            <h:commandLink>
+                                <p:graphicImage url="resources/ultima-layout/images/excel.png" />
+                                <p:dataExporter type="xls" target="tabla" fileName="historicoAalrmaDesde#{beanAlarma.fechaInicial}Hasta#{beanAlarma.fechaFinal}"  />
+                                <p:outputLabel value="EXCEL" style="color: black;margin: 8px 8px 8px 8px;font-weight: bold;font-size: 12px;"/>
+                            </h:commandLink>
+                            <p:commandButton value="Actualizar"  icon="fa fa-refresh" actionListener="#{beanAlarma.actualizarTabla(egt)}" update="tabla message" />
+
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-lg-6">
+                        <div class="card card-w-title">
+                            <p:dataTable var="alarma" value="#{beanAlarma.listAlarmaHistorico}"  reflow="true" selectionMode="single" emptyMessage="Cero registros encontrados" >
+                                <f:facet name="header">
+                                    Solicitudes
+                                </f:facet>
+                                <p:column headerText="Id Modulo" >
+                                    <h:outputText value="#{alarma.idModulo.idModulo}" />
+                                </p:column>
+
+                                <p:column headerText="Clave">
+                                    <h:outputText value="#{alarma}" />
+                                </p:column>
+
+                                <p:column headerText="Identificacion">
+                                    <h:outputText value="#{alarma.idAlarma}" />
+                                </p:column>
+                            </p:dataTable>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+
+</ui:composition>

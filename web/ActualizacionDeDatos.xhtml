@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <title>Actualizacion Smart</title>
+        <h:form>
+            <p:messages id="message" showDetail="true" autoUpdate="true"  closable="true" />
+
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card card-w-title">
+                            <h1>Actualizar Datos de Usuario</h1>
+                            <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText value="#{beanUser.cargo}" disabled="#{beanUser.banderaDisa}" />
+                                    <label>Cargo: </label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText value="#{beanUser.nombre}" disabled="#{beanUser.banderaDisa}" />
+                                    <label>Nombre: </label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText value="#{beanUser.apellido}" disabled="#{beanUser.banderaDisa}" />
+                                    <label>Apellido: </label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText value="#{beanUser.usuario}"  disabled="#{beanUser.banderaDisa}"/>
+                                    <label>Usuario: </label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:selectOneMenu id="eventos" value="#{beanUser.idEmpresa}" style="margin-bottom:10px;" disabled="#{beanUser.banderaDisa}">
+                                        <f:selectItems value="#{beanUser.listEmpresas}" var="empresas" itemLabel="#{empresas.empresa}" itemValue="#{empresas.idEmpresa}" />
+                                    </p:selectOneMenu>
+                                </h:panelGroup>
+                            </p:panelGrid>
+                        </div>
+
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <p:commandButton  value="Editar" icon="ui-icon-edit"  actionListener="#{beanUser.editarCampos(egt)}" disabled="#{beanUser.editar}" iconPos="left"  ajax="false" />
+                            <p:commandButton  value="Actualizar" disabled="#{beanUser.banderaDisa}" icon="ui-icon-send"  actionListener="#{beanUser.actulizarRegistro(egt)}" iconPos="left"  ajax="false" />
+                        </p:panelGrid>
+
+
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

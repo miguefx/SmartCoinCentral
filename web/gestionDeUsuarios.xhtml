@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <title>Gestion de usuarios Smart</title>
+        <h:form id="form">
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-lg-6">
+                        <!-- Left Side -->
+                        <div class="card card-w-title">
+                            <p:growl id="msgs" showDetail="true" />
+
+                            <h1>Usuarios registrados</h1>
+                            <p:dataTable id="users" var="user" value="#{beanUser.listUsuarios}" filteredValue="#{beanUser.listFiltradaUsuarios}" widgetVar="userVar" selectionMode="single" reflow="true"
+                                         selection="#{beanUser.seleccion}" rowKey="#{user.documento}" paginator="true" rows="10">
+
+                                <p:ajax event="rowSelect" listener="#{beanUser.onRowSelect}" update=":form:msgs :form:sedes :form:modulos :form:pickList :form:pickList2 :form:wizard" />
+                                <p:ajax event="rowUnselect" listener="#{beanUser.onRowUnselect}" update=":form:msgs" />
+                                <f:facet name="header">
+                                    Elige un usuario para actualizar los permisos y haz click derecho para editar el estado.
+                                </f:facet>
+                                <p:column headerText="Documento" filterMatchMode="contains"  filterBy="#{user.documento}">
+                                    <h:outputText value="#{user.documento}"  />
+                                </p:column>
+
+                                <p:column headerText="Nombres"  filterMatchMode="contains"  filterBy="#{user.nombres}"> 
+                                    <h:outputText value="#{user.nombres}" />
+                                </p:column>
+
+                                <p:column headerText="Apellidos" filterMatchMode="contains"  filterBy="#{user.apellidos}"> 
+                                    <h:outputText value="#{user.apellidos}" />
+                                </p:column>
+
+                                <p:column headerText="Empresa" >
+                                    <h:outputText value="#{user.idEmpresa.empresa}" />
+                                </p:column>
+                                <p:column headerText="Estado" >
+                                    <h:outputText value="#{user.estado}" />
+                                </p:column>
+                            </p:dataTable>
+                            <p:contextMenu for="users">
+                                <p:menuitem id="mensajeEstado" value="Cambiar Estado" update="msgs" icon="ui-icon-update" actionListener="#{beanUser.actualizarEstado(egt)}" immediate="true" />
+                            </p:contextMenu>
+                        </div>
+                    </div>
+
+                    <div class="ui-g-6 ui-lg-6">
+                        <div class="card card-w-title">
+                            <p:wizard flowListener="#{beanUser.onFlowProcess}" widgetVar="wiz" backLabel="Regresar" nextLabel="Siguiente"  id="wizard" >
+                                <p:tab id="seleccionModulo" title="Modulo" >
+                                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                        <p:selectOneMenu id="sedes" value="#{beanUser.valorSedeIgual}" style="margin-bottom:10px;" disabled="#{beanUser.render2}"  required="true">
+                                            <p:ajax event="valueChange"    update="modulos"
+                                                    listener="#{beanUser.changeMenu(egt)}" />
+                                            <f:selectItem itemLabel="Seleccione alguno" itemValue=""/>
+                                            <f:selectItems value="#{beanUser.listSedes}" var="sedes" itemLabel="#{sedes.ciudad}" itemValue="#{sedes.idciudad}"/>
+                                        </p:selectOneMenu>
+                                        <p:selectOneMenu id="modulos" value="#{beanUser.valorModulo}" style="margin-bottom:10px;" disabled="#{beanUser.render}"  required="true">
+                                            <f:selectItem itemLabel="Seleccione Alguno" itemValue=""  />
+                                            <p:ajax event="valueChange"    update="pickList pickList2"
+                                                    listener="#{beanUser.changePick(egt)}" />
+                                            <f:selectItems value="#{beanUser.listModulos}" var="modulo" itemLabel="${modulo.idModulo}" itemValue="${modulo.idModulo}"/>
+                                        </p:selectOneMenu>
+                                    </p:panelGrid>
+                                </p:tab>
+                                <p:tab id="seleccionModuloa" title="Permisos"   >
+                                    <p:pickList id="pickList" value="#{beanUser.nombreBoton}" var="nombres" itemLabel="#{nombres}" itemValue="#{nombres}"
+                                                responsive="true" showSourceFilter="true"  showTargetFilter="true" rendered="#{beanUser.renderpickList1}">
+
+                                        <f:facet name="sourceCaption">Permisos disponibles</f:facet>
+                                        <f:facet name="targetCaption">Permisos concedidos</f:facet>
+                                    </p:pickList>
+                                    <div class="ui-wizard-navbar ui-helper-clearfix" style="text-align: left;">
+                                        <p:commandButton  id="btnregistro" value="#{beanUser.nombreBtnRegistro}" icon="ui ui-icon-plus"  iconPos="left" actionListener="#{beanUser.regitrarPermisos(egt)}" update=":form:msgs :form:btnregistro" disabled="#{beanUser.render}" style="margin-bottom: 14px;margin-top: 4px;"  />    
+                                    </div>
+                                </p:tab>
+                                <p:tab id="seleccionPermisosGlobales" title="Permisos Globales">
+
+                                    <p:pickList id="pickList2" rendered="#{beanUser.renderpickList1}" value="#{beanUser.nombreBoton2}" var="nombres2" itemLabel="#{nombres2}" itemValue="#{nombres2}"
+                                                responsive="true" showSourceFilter="true"  showTargetFilter="true">
+
+                                        <f:facet name="sourceCaption">Permisos disponibles</f:facet>
+                                        <f:facet name="targetCaption">Permisos concedidos</f:facet>
+                                    </p:pickList>
+                                    <div class="ui-wizard-navbar ui-helper-clearfix" style="text-align: left;">
+                                        <p:commandButton  id="btnregistro2" value="#{beanUser.nombreBtnRegistro2}" icon="ui ui-icon-plus"  iconPos="left" actionListener="#{beanUser.regitrarPermisos2(egt)}" update=":form:msgs :form:btnregistro2"  disabled="#{beanUser.render3}" style="margin-bottom: 14px;margin-top: 4px;"  />    
+                                    </div>
+                                </p:tab>
+                            </p:wizard>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>Login Smart Coin</title>
+        <h:outputScript name="js/ripple.js" library="ultima-layout" />
+        <h:outputScript name="js/layout.js" library="ultima-layout" />
+        <link rel="shortcut icon" href="resources/ultima-layout/images/g2997.ico"></link>
+
+    </h:head>
+
+    <h:body styleClass="login-body">
+        <h:form>
+                <p:messages id="messages" showDetail="true" closable="true"  autoUpdate="true"/>
+
+            <div class="card login-panel ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <p:graphicImage name="images/user.svg" width="69" height="60" library="ultima-layout" />
+                    </div>
+                    <div class="ui-g-12">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText value="#{beanUser.usuario}" type="text" />
+                            <label>Usuario</label>
+                        </h:panelGroup>
+                    </div>
+                    <div class="ui-g-12">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:password value="#{beanUser.contraseña}"/>
+                            <label>Contraseña</label>
+                        </h:panelGroup>
+                    </div>
+                    <div class="ui-g-12">
+                        <p:commandButton value="Acceder" icon="fa fa-check" actionListener="#{beanUser.ingresarLogin(egt)}" update="messages" />
+                        <p:commandButton onclick="PF('cambiarPass').show()" value="Olvido su contraseña ?" class="amber-btn" icon="ui-icon-help" />
+                    </div>
+                </div>
+            </div>
+
+            <p:dialog header="Cambiar Contraseña" widgetVar="cambiarPass" resizable="false" responsive="true" hideEffect="scale">
+                <p:messages id="messages2" showDetail="true" closable="true"/>
+                <div class="ui-g form-group" style="margin-bottom: 16px;">
+                    <div class="ui-g-6">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText value="#{beanUser.identificacion}" type="text"/>
+                            <label>Identiticacion</label>
+                        </h:panelGroup>
+                    </div>
+                    <div class="ui-g-6">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:password value="#{beanUser.password}" />
+                            <label>Nueva Contraseña</label>
+                        </h:panelGroup>
+                    </div>
+                </div>
+
+                <f:facet name="footer">
+                    <p:commandButton value="Restablecer Contraseña"   style="width:auto" icon="fa fa-modify" update="messages" actionListener="#{beanUser.cambiarContraseña(egt)}" onclick="PF('cambiarPass').hide();"/>
+                </f:facet>  
+            </p:dialog>
+            <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+            <h:outputStylesheet name="css/layout-purple-amber.css" library="ultima-layout" />
+        </h:form>
+    </h:body>
+
+</html>

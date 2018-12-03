@@ -1,0 +1,310 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="myform">
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-lg-12">
+                        <!-- Left Side -->
+                        <div class="card card-w-title">
+
+                            <p:overlayPanel id="tablArq"  for="search" onHide="limpiar()"    hideEffect="clip" showEffect="clip" dismissable="false" dynamic="true"     showCloseIcon="true">
+                                <div class="ui-g-12">
+                                    <p:dataTable id="arqueostabla"   var="arqueo" value="#{beanArqueo.listArqueosFiltrado}" style="font-size: 15px;" emptyMessage="Cero registros encontrados" selectionMode="single" selection="#{beanArqueo.seleccionArqueos}"  rowKey="#{arqueo.id}"  sortBy="#{arqueo.fechaInicio.time}" sortOrder="descending"  filteredValue="#{beanArqueo.listArqueosFiltradoTable}"  reflow="true" paginator="true" rows="5"  >
+                                        <f:facet name="header">
+                                            <p:outputLabel value="Arqueos realizados" />
+                                        </f:facet>
+                                        <p:column headerText="Cod" filterBy="#{arqueo.idArqueo}" filterMatchMode="contains">
+                                            <p:outputLabel value="#{arqueo.idArqueo}"/>
+                                        </p:column>
+                                        <p:column headerText="Fecha Inicio" filterBy="#{arqueo.fechaInicio}" filterMatchMode="contains">
+                                            <p:outputLabel value="#{arqueo.fechaInicio}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy hh:mm a" />
+                                            </p:outputLabel>
+                                        </p:column>
+                                        <p:column headerText="Valor" filterBy="#{arqueo.valor}" filterMatchMode="contains">
+                                            <p:outputLabel value="#{arqueo.valor}"  >
+                                                <f:convertNumber type="currency" currencySymbol="$" integerOnly="true" maxFractionDigits="0" />
+                                            </p:outputLabel>
+                                        </p:column>
+                                        <p:column headerText="Usuario" filterBy="#{arqueo.idUsuario}" filterMatchMode="contains">
+                                            <p:outputLabel  value="#{arqueo.idUsuario} "/>
+                                        </p:column>
+                                        <p:column headerText="Modulo" filterBy="#{arqueo.idModulo.idModulo}" filterMatchMode="contains">
+                                            <p:outputLabel  value="#{arqueo.idModulo.idModulo} "/>
+                                        </p:column>
+                                        <p:column headerText="Tipo" filterBy="#{arqueo.tipo}" filterMatchMode="contains">
+                                            <p:outputLabel  value="#{arqueo.tipo}"/>
+                                        </p:column>
+                                        <p:column headerText="Sede" filterBy="#{arqueo.idSede.nombre}" filterMatchMode="contains">
+                                            <p:outputLabel  value="#{arqueo.idSede.nombre}"/>
+                                        </p:column>
+
+                                    </p:dataTable>
+                                    <p:panelGrid columns="2" styleClass="ui-panelgrid-blank" layout="grid">
+                                        <p:commandButton id="btnTrw" value="Ver transacciones"  icon="fa fa-money" oncomplete="ok()"  />
+                                        <p:commandButton id="btnDetal" value="Ver detalle"  icon="fa fa-clipboard" oncomplete="ok2()" />
+                                        <p:commandButton id="btnTotal21" value="Ver totales"  icon="fa fa-plus-square-o"  update="totalvalor totalvalorT" />
+
+
+                                        <p:overlayPanel id="panelOverTotales" for="btnTotal21" hideEffect="clip" showEffect="clip" dynamic="true"  my="left"  at="center" dismissable="false"  showCloseIcon="true">
+                                            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank" layout="grid">
+                                                <p:outputLabel value="Total Valor P"  styleClass="nombre"/>
+                                                <p:outputLabel value="Total Valor T"  styleClass="nombre"/>
+                                                <p:outputLabel value="#{beanArqueo.totalValorP}" id="totalvalor">
+                                                    <f:convertNumber type="currency" currencySymbol="$" integerOnly="true" maxFractionDigits="0" />
+                                                </p:outputLabel>
+                                                <p:outputLabel value="#{beanArqueo.totalValorT}" id="totalvalorT">
+                                                    <f:convertNumber type="currency" currencySymbol="$" integerOnly="true" maxFractionDigits="0" />
+                                                </p:outputLabel>
+                                            </p:panelGrid>
+
+                                        </p:overlayPanel>
+                                        <p:overlayPanel id="carPanel" for="btnDetal" onHide="ok2Close()" hideEffect="clip" showEffect="clip" dynamic="true"   dismissable="false"  showCloseIcon="true">
+                                            <div class="ui-g-12 ui-lg-10">
+                                                <p:dataTable id="tableMov"   value="#{beanArqueo.listMovimientosFiltrer}" var="mov" paginator="true" rows="5" reflow="true" >
+                                                    <f:facet name="header">
+                                                        <p:outputLabel value=" Detalle de la transaccion numero : #{beanArqueo.seleccionArqueos.idArqueo}" />
+                                                    </f:facet>
+                                                    <p:column headerText="Parte">
+                                                        <p:outputLabel value="#{mov.parte}"/>
+                                                    </p:column>
+                                                    <p:column headerText="Accion">
+                                                        <p:outputLabel value="#{mov.accion}"/>
+                                                    </p:column>
+                                                    <p:column headerText="Denom">
+                                                        <p:outputLabel value="#{mov.denominacion}" >
+                                                            <f:convertNumber type="currency" currencySymbol="$" integerOnly="true" maxFractionDigits="0" />
+                                                        </p:outputLabel>
+                                                    </p:column>
+                                                    <p:column headerText="Cantidad">
+                                                        <p:outputLabel value="#{mov.cantidad}"/>
+                                                    </p:column>
+                                                    <p:column headerText="Valor">
+                                                        <p:outputLabel value="#{mov.valor}">
+                                                            <f:convertNumber type="currency" currencySymbol="$" integerOnly="true" maxFractionDigits="0" />
+                                                        </p:outputLabel>
+                                                    </p:column>
+                                                </p:dataTable>
+                                                <p:panelGrid columns="1" styleClass="ui-panelgrid-blank" layout="grid">
+                                                    <p:commandButton id="btnTrE" value="Ver Totales" update="totalCantidad totalValores" icon="fa fa-plus-square-o" style="width: 50%;"/>
+                                                </p:panelGrid>
+                                                <p:overlayPanel id="carPanel21" for="btnTrE" hideEffect="clip" showEffect="clip" dynamic="true" showCloseIcon="true" dismissable="false">
+                                                    <p:panelGrid columns="2" styleClass="ui-panelgrid-blank">
+                                                        <p:outputLabel  value="Total Cantidad" styleClass="nombre"/>
+                                                        <p:outputLabel  value="Total Valor" styleClass="nombre"/>
+                                                        <p:outputLabel id="totalCantidad"  value="#{beanArqueo.totalesCantidad}" >
+                                                            <f:convertNumber pattern="###,###"/>
+                                                        </p:outputLabel>
+                                                        <p:outputLabel  id="totalValores" value="#{beanArqueo.totalesValor}" >
+                                                            <f:convertNumber type="currency" currencySymbol="$" integerOnly="true" maxFractionDigits="0" />
+                                                        </p:outputLabel>
+                                                    </p:panelGrid>
+                                                </p:overlayPanel>
+
+                                            </div>
+                                            <div class="ui-g-12 ui-lg-2">
+                                                <div class="card card-w-title" >
+                                                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                                        <p:outputLabel value="Exportar a:" style="font-weight: bold;font-size: 16px;"/>
+                                                    </p:panelGrid>
+                                                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                                        <h:commandLink>
+                                                            <p:graphicImage url="resources/ultima-layout/images/pdf.png" />
+                                                            <p:dataExporter type="pdf" target="tableMov" fileName="HistorialMovimientosDeArqueo#{beanArqueo.seleccionArqueos.idArqueo}Desde#{beanArqueo.seleccionArqueos.fechaFinAnterior.toGMTString()}A#{beanArqueo.seleccionArqueos.fechaInicio.toGMTString()}DelModulo#{beanArqueo.seleccionArqueos.idModulo.idModulo}YSede#{beanArqueo.seleccionArqueos.idSede.idSede}}" options="#{beanTransacciones.pdfOpt}"/>
+                                                        </h:commandLink>
+                                                        <h:commandLink>
+                                                            <p:graphicImage url="resources/ultima-layout/images/excel.png" />
+                                                            <p:dataExporter type="xls" target="tableMov" fileName="HistorialMovimientosDeArqueo#{beanArqueo.seleccionArqueos.idArqueo}Desde#{beanArqueo.seleccionArqueos.fechaFinAnterior.toGMTString()}A#{beanArqueo.seleccionArqueos.fechaInicio.toGMTString()}DelModulo#{beanArqueo.seleccionArqueos.idModulo.idModulo}YSede#{beanArqueo.seleccionArqueos.idSede.idSede}}" options="#{beanTransacciones.excelOpt}"/>
+                                                        </h:commandLink>
+                                                        <p:outputLabel value="PDF" style="font-weight: bold;font-size: 12px;" />
+                                                        <p:outputLabel value="EXCEL" style="font-weight: bold;font-size: 12px;"/>
+                                                    </p:panelGrid>
+                                                </div>
+                                            </div>
+
+                                        </p:overlayPanel>
+                                        <p:overlayPanel id="carPanel9" for="btnTrw"  onHide="limpiartransaccion()" hideEffect="clip" showEffect="clip" dynamic="true" showCloseIcon="true" dismissable="false"  >
+                                            <div class="ui-g-12 ui-lg-10">
+                                                <div class="card card-w-title">
+                                                    <p:dataTable id="transaccionesTable" reflow="true"  emptyMessage="Cero registros encontrados"  value="#{beanArqueo.listTransaccionesDeArqueos}"   paginator="true" rows="3"    var="transacciones" >
+                                                        <f:facet name="header">
+                                                            <p:outputLabel value="Detalle de las trasacciones con arqueo numero : #{beanArqueo.seleccionArqueos.idArqueo}" />
+                                                        </f:facet>
+                                                        <p:column headerText="Factura">
+                                                            <p:outputLabel value="#{transacciones.numeroFactura}"/>
+                                                        </p:column>
+                                                        <p:column headerText="Fecha Pago">
+                                                            <p:outputLabel value="#{transacciones.fechaTransaccion}">
+                                                                <f:convertDateTime pattern="dd/MM/yyyy hh:mm a" />
+                                                            </p:outputLabel>
+                                                        </p:column>
+                                                        <p:column headerText="Total Recibido">
+                                                            <p:outputLabel value="#{transacciones.valorRecibido}">
+                                                                <f:convertNumber type="currency" currencySymbol="$" maxFractionDigits="0" integerOnly="true"/>
+                                                            </p:outputLabel>
+                                                        </p:column>
+                                                        <p:column headerText="Sub total">
+                                                            <p:outputLabel value="#{transacciones.totalPagado}">
+                                                                <f:convertNumber type="currency" currencySymbol="$" maxFractionDigits="0" integerOnly="true" />
+                                                            </p:outputLabel>
+                                                        </p:column>
+                                                        <p:column headerText="Comision">
+                                                            <p:outputLabel value="#{transacciones.comision}">
+                                                                <f:convertNumber type="currency" currencySymbol="$" maxFractionDigits="0" integerOnly="true" />
+                                                            </p:outputLabel>
+                                                        </p:column>
+                                                        <p:column headerText="Redondeo">
+                                                            <p:outputLabel value="#{transacciones.redondeo}">
+                                                                <f:convertNumber type="currency" currencySymbol="$" maxFractionDigits="0" integerOnly="true" />
+                                                            </p:outputLabel>
+                                                        </p:column>
+                                                        <p:column headerText="Iva">
+                                                            <p:outputLabel value="#{transacciones.iva}">
+                                                                <f:convertNumber type="currency" currencySymbol="$" maxFractionDigits="0" integerOnly="true"/>
+                                                            </p:outputLabel>
+                                                        </p:column>
+                                                    </p:dataTable>
+                                                    <p:panelGrid columns="1" styleClass="ui-panelgrid-blank" layout="grid">
+                                                        <p:commandButton id="btnTr" value="Ver Totales" update="recibido subtotal comision redon iv totalMonedas" icon="fa fa-plus-square-o" style="width: 50%;"/>
+                                                    </p:panelGrid>
+                                                    <p:overlayPanel id="carPanel2" for="btnTr" hideEffect="clip" showEffect="clip" dynamic="true" showCloseIcon="true" dismissable="false">
+                                                        <p:panelGrid columns="6" styleClass="ui-panelgrid-blank" >
+                                                            <p:outputLabel  value="Total Recibido" styleClass="nombre"/>
+                                                            <p:outputLabel  value="Sub total" styleClass="nombre"/>
+                                                            <p:outputLabel value="Comision" styleClass="nombre"/>
+                                                            <p:outputLabel value="Redondeo" styleClass="nombre"/>
+                                                            <p:outputLabel value="Iva" styleClass="nombre"/>
+                                                            <p:outputLabel value="Total Monedas" styleClass="nombre"/>
+
+                                                            <p:outputLabel id="recibido" value="$#{beanArqueo.totalauxRecibidoFoot}"/>
+                                                            <p:outputLabel id="subtotal" value="$#{beanArqueo.totalauxSubFoot}"/>
+                                                            <p:outputLabel id="comision" value="$#{beanArqueo.totalauxcomisionFoot}"/>
+                                                            <p:outputLabel id="redon" value="$#{beanArqueo.totalauxRedondeoFoot}"/>
+                                                            <p:outputLabel id="iv" value="$#{beanArqueo.totalauxivaFoot}"/>
+                                                            <p:outputLabel id="totalMonedas" value="#{beanArqueo.totalMonedas}">
+                                                                <f:convertNumber pattern="###,###"/>
+                                                            </p:outputLabel>
+                                                        </p:panelGrid>
+                                                    </p:overlayPanel>
+                                                </div>
+                                            </div>
+                                            <div class="ui-g-12 ui-lg-2">
+                                                <div class="card card-w-title">
+                                                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                                        <p:outputLabel value="Exportar a:" style="font-weight: bold;font-size: 16px;"/>
+                                                    </p:panelGrid>
+
+                                                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                                        <h:commandLink>
+                                                            <p:graphicImage  url="resources/ultima-layout/images/pdf.png" />
+                                                            <p:dataExporter  type="pdf" target="transaccionesTable" fileName="HistorialTransaccionesDeArqueo#{beanArqueo.seleccionArqueos.idArqueo}De#{beanArqueo.seleccionArqueos.fechaFinAnterior.toGMTString()}Hasta#{beanArqueo.seleccionArqueos.fechaInicio.toGMTString()}Modulo#{beanArqueo.seleccionArqueos.idModulo.idModulo}Y#{beanArqueo.seleccionArqueos.idSede.idSede}" options="#{beanTransacciones.pdfOpt}"/>
+                                                            <p:outputLabel value="PDF" style="color: black;margin: 8px 8px 8px 8px;font-weight: bold;font-size: 12px;" />
+
+                                                        </h:commandLink>
+                                                        <h:commandLink>
+                                                            <p:graphicImage url="resources/ultima-layout/images/excel.png" />
+                                                            <p:dataExporter type="xls" target="transaccionesTable" fileName="HistorialTransaccionesDeArqueo#{beanArqueo.seleccionArqueos.idArqueo}De#{beanArqueo.seleccionArqueos.fechaFinAnterior.toGMTString()}Hasta#{beanArqueo.seleccionArqueos.fechaInicio.toGMTString()}Modulo#{beanArqueo.seleccionArqueos.idModulo.idModulo}Y#{beanArqueo.seleccionArqueos.idSede.idSede}" options="#{beanTransacciones.excelOpt}"/>
+                                                            <p:outputLabel value="EXCEL" style="color: black;margin: 8px 8px 8px 8px;font-weight: bold;font-size: 12px;" />
+
+                                                        </h:commandLink>
+                                                    </p:panelGrid>
+                                                </div>
+                                            </div>
+                                        </p:overlayPanel>
+                                    </p:panelGrid>
+
+
+
+                                    <p:remoteCommand name="ok2"  update="tableMov" actionListener="#{beanArqueo.generarListaMovimientoArqueo(egt)}"  />
+                                    <p:remoteCommand name="ok2Close"  update="tableMov" actionListener="#{beanArqueo.limpiarTablaMovimientos()}"  />
+                                    <p:remoteCommand name="ok"  update="transaccionesTable" actionListener="#{beanArqueo.generarTablaTransacciones(event)}" />
+                                    <p:remoteCommand name="limpiar"  update="arqueostabla" actionListener="#{beanArqueo.limpiar()}"  />
+                                    <p:remoteCommand name="limpiartransaccion"  update="transaccionesTable" actionListener="#{beanArqueo.limpiartransaccion()}"  />
+
+                                </div>
+                                <div class="ui-g-12 ui-lg-2">
+                                    <div class="card card-w-title">
+                                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                            <p:outputLabel value="Exportar a:" style="font-weight: bold;font-size: 16px;"/>
+                                        </p:panelGrid>
+                                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                            <h:commandLink>
+                                                <p:graphicImage  url="resources/ultima-layout/images/pdf.png" />
+                                                <p:dataExporter  type="pdf" target="arqueostabla" fileName="HistorialArqueoDe#{beanArqueo.valorModulo}Y#{beanArqueo.valorSedeIgual}De#{beanArqueo.calendarIni}A#{beanArqueo.calendarFin}" options="#{beanTransacciones.pdfOpt}"/>
+                                                <p:outputLabel value="PDF" style="color: black;margin: 8px 8px 8px 8px;font-weight: bold;font-size: 12px;" />
+                                            </h:commandLink>
+                                            <h:commandLink>
+                                                <p:graphicImage url="resources/ultima-layout/images/excel.png" />
+                                                <p:dataExporter type="xls" target="arqueostabla" fileName="HistorialArqueoDe#{beanArqueo.valorModulo}Y#{beanArqueo.valorSedeIgual}De#{beanArqueo.calendarIni}A#{beanArqueo.calendarFin}" options="#{beanTransacciones.excelOpt}" />
+                                                <p:outputLabel value="EXCEL" style="color: black;margin: 8px 8px 8px 8px;font-weight: bold;font-size: 12px;"/>
+                                            </h:commandLink>
+                                        </p:panelGrid>
+
+                                    </div>
+                                </div>
+
+                            </p:overlayPanel>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <p:messages id="message2" showDetail="true"   closable="true"  />
+
+                            <h1>Llena los datos para filtrar y buscar un <b>arqueo</b></h1>
+                            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                <p:selectOneMenu id="sedes" value="#{beanArqueo.valorSedeIgual}" style="margin-bottom:10px;">
+                                    <p:ajax event="valueChange"    update="modulos"
+                                            listener="#{beanArqueo.changeMenu(egt)}" />
+                                    <f:selectItem itemLabel="Todos" itemValue=""/>
+                                    <f:selectItems value="#{beanArqueo.listSedes}" var="sedes" itemLabel="#{sedes.ciudad}" itemValue="#{sedes.idciudad}"/>
+                                </p:selectOneMenu>
+                                <p:selectOneMenu id="modulos" value="#{beanArqueo.valorModulo}" style="margin-bottom:10px;">
+                                    <f:selectItem itemLabel="Todos" itemValue=""/>
+                                    <f:selectItems value="#{beanArqueo.listModulos}" var="modulo" itemLabel="${modulo.idModulo}" itemValue="${modulo.idModulo}"/>
+                                </p:selectOneMenu>
+                                <p:calendar  id="multi1"  placeholder="Pulse aquí para elegir fecha Inicio" maxdate="#{beanTransacciones.today}" value="#{beanArqueo.calendarIni}"  pattern="dd/MM/yyyy HH:mm"  required="true" locale="es" showButtonPanel="true" /> 
+                                <p:calendar id="multi2"  placeholder="Pulse aquí para elegir fecha Fin"  maxdate="#{beanTransacciones.today}" value="#{beanArqueo.calendarFin}" pattern="dd/MM/yyyy HH:mm"    required="true" locale="es" showButtonPanel="true" /> 
+                            </p:panelGrid>
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                <p:commandButton  id="search" value="Buscar Arqueos"  actionListener="#{beanArqueo.buscarArqueo(egt)}" update="arqueostabla message2"  icon="fa fa-search" />
+                            </p:panelGrid>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+
+
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

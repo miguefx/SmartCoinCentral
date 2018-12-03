@@ -1,0 +1,47 @@
+.login-body
+{
+    background-size: 111% auto !important;
+}
+
+.txt[contenteditable] {
+  outline: none;
+}
+
+/* Box ------------------------------------------------------ */
+
+#box {
+  padding: 50px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+
+/* txt ------------------------------------------------------ */
+
+.txt {
+  color: hsla(0,0%,0%,0);
+  text-shadow: #fff 0 0 60px;
+  transition: text-shadow 2s cubic-bezier(0, 1, 0, 1);
+	}
+	@-moz-document url-prefix() { .txt { text-shadow: #fff 0 0 14px; } } /* FF fix */
+
+#box:hover .txt {
+		text-shadow: #673AB7 0 0 1px;
+		transition: text-shadow 1s cubic-bezier(0, 0.75, 0, 1);
+}
+
+
+/* ♥ ------------------------------------------------------ */
+
+.♥ {
+  margin: 0 10px;
+  color: hsla(0,0%,0%,0);
+  text-shadow: black 0 0 1px;
+  transition: text-shadow 1s cubic-bezier(0, 1, 0, 1);
+	}
+
+#box:hover .♥ {
+		text-shadow: black 0 0 100px;
+		transition: text-shadow 2s cubic-bezier(0, 0.75, 0, 1);
+}
+  @-moz-document url-prefix() { #box:hover .♥ { text-shadow: black 0 0 14px; } } /* FF fix */

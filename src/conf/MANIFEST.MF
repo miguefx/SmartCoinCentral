@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Class-Path: lib/ultima-theme-1.1.3.jar 
+
+

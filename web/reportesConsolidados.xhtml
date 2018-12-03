@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="myform">
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-lg-10">
+                        <!-- Left Side -->
+                        <div class="card card-w-title">
+                            <p:messages id="message2" showDetail="true"   closable="true"  />
+                            <h3>Pulsa en el <b>botón </b>y podras descargar el reporte consolidado</h3>
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                <p:commandButton value="Descargar reporte"  styleClass="bottonsH" icon="fa fa-download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" >
+                                    <p:fileDownload value="#{beanReporte.file}"/>
+                                </p:commandButton>
+                            </p:panelGrid>
+                            <script type="text/javascript">
+                                //<![CDATA[
+                                function start() {
+                                    PF('statusDialog').show();
+                                }
+
+                                function stop() {
+                                    PF('statusDialog').hide();
+                                }
+                                //]]>
+                            </script>   
+                            <p:dialog modal="true" widgetVar="statusDialog" header="Cargando.." draggable="false" closable="false" resizable="false">
+                                <p:graphicImage name="resources/ultima-layout/images/preloader.gif" />
+                            </p:dialog> 
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,165 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+
+
+    <ui:define name="content">
+        <h:form id="myform">
+            <title>Cargas Smart</title>
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-lg-12">
+                        <!-- Left Side -->
+                        <div class="card card-w-title">
+                            <p:overlayPanel id="tablcarga"  for="search" hideEffect="clip" showEffect="clip" dismissable="false" dynamic="true"  onHide="cerrarCarga()"  showCloseIcon="true">
+                                <div class="ui-g-12">
+                                    <p:dataTable id="cargaTable" emptyMessage="Cero registros encontrados" style="font-size: 15px;" value="#{beanCarga.listCargas}" var="cargas" reflow="true" paginator="true" rows="5" selectionMode="single" selection="#{beanCarga.seleccionCarga}" rowKey="#{cargas.idCarga}" sortBy="#{cargas.idCarga}"  sortOrder="ascending" filteredValue="#{beanCarga.listCargasFiltrer}" >
+                                        <f:facet name="header">
+                                            <p:outputLabel value="Cargas Generadas" />
+                                        </f:facet>
+                                        <p:column headerText="Codigo" filterBy="#{cargas.idCarga}" filterMatchMode="contains"  >
+                                            <p:outputLabel value="#{cargas.idCarga}"/>
+                                        </p:column>
+                                        <p:column headerText="Fecha Inicial" filterBy="#{cargas.fechaInicio}" filterMatchMode="contains">
+                                            <p:outputLabel value="#{cargas.fechaInicio}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy hh:mm a" />
+                                            </p:outputLabel>
+                                        </p:column>
+                                        <p:column headerText="Valor" filterBy="#{cargas.valor}" filterMatchMode="contains">
+                                            <p:outputLabel value="#{cargas.valor}">
+                                                <f:convertNumber type="currency" currencySymbol="$" integerOnly="true" maxFractionDigits="0"/>
+                                            </p:outputLabel>
+                                        </p:column>
+                                        <p:column headerText="Usuario" filterBy="#{cargas.idUsuario}" filterMatchMode="contains" >
+                                            <p:outputLabel value="#{cargas.idUsuario}" />
+                                        </p:column>
+                                        <p:column headerText="Modulo" filterBy="#{cargas.idModulo.idModulo}" filterMatchMode="contains" >
+                                            <p:outputLabel value="#{cargas.idModulo.idModulo}" />
+                                        </p:column>
+                                    </p:dataTable>
+                                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" >
+                                        <p:commandButton id="btnDetallCarg" value="Ver Detalle"  icon="fa fa-clipboard" oncomplete="ok2()" />    
+                                    </p:panelGrid>
+                                    <p:overlayPanel id="overLay2" onHide="okCarga()" dynamic="true" for="btnDetallCarg" hideEffect="clip" showEffect="clip" showCloseIcon="true" dismissable="false">
+                                        <div class="ui-g-12 ui-lg-10">
+                                            <div class="card card-w-title">
+                                                <p:dataTable id="tableMov"  reflow="true"  value="#{beanCarga.listMovimientosFiltrer}" var="carg" paginator="true" rows="5" >
+                                                    <f:facet name="header">
+                                                        <p:outputLabel value="Detalle de la carga  : #{beanCarga.seleccionCarga.idCarga}"/>
+                                                    </f:facet>
+                                                    <p:column headerText="Parte" >
+                                                        <p:outputLabel value="#{carg.parte}"/>
+                                                    </p:column>
+                                                    <p:column headerText="Denominacion" >
+                                                        <p:outputLabel value="#{carg.denominacion}" >
+                                                            <f:convertNumber type="currency" currencySymbol="$" integerOnly="true" maxFractionDigits="0" />
+                                                        </p:outputLabel>
+                                                    </p:column>
+                                                    <p:column headerText="Cantidad">
+                                                        <p:outputLabel value="#{carg.cantidad}" />
+                                                    </p:column>
+                                                    <p:column headerText="Valor" >
+                                                        <p:outputLabel value="#{carg.valor}">
+                                                            <f:convertNumber type="currency" currencySymbol="$" integerOnly="true" maxFractionDigits="0" />
+                                                        </p:outputLabel>
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </div>
+                                        </div>
+                                        <div class="ui-g-12 ui-lg-2">
+                                            <div class="card card-w-title">
+                                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                                    <p:outputLabel value="Exportar a:" style="font-weight: bold;font-size: 16px;"/>
+                                                </p:panelGrid>
+                                                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                                    <h:commandLink>
+                                                        <p:graphicImage url="resources/ultima-layout/images/pdf.png" />
+                                                        <p:dataExporter type="pdf" target="tableMov" fileName="DetalleCargaNumero#{beanCarga.seleccionCarga.idCarga}" options="#{beanTransacciones.pdfOpt}" />
+                                                    </h:commandLink>
+                                                    <h:commandLink>
+                                                        <p:graphicImage url="resources/ultima-layout/images/excel.png" />
+                                                        <p:dataExporter type="csv" target="tableMov" fileName="DetalleCargaNumero#{beanCarga.seleccionCarga.idCarga}" options="#{beanTransacciones.excelOpt}" />
+                                                    </h:commandLink>
+                                                    <p:outputLabel value="PDF" style="font-weight: bold;font-size: 12px;" />
+                                                    <p:outputLabel value="EXCEL" style="font-weight: bold;font-size: 12px;"/>
+                                                </p:panelGrid>
+
+                                            </div>
+                                        </div>
+                                    </p:overlayPanel>
+                                    <p:remoteCommand name="ok2"  update="tableMov" actionListener="#{beanCarga.generarListaMovimientoCarga(egt)}"  />
+                                    <p:remoteCommand name="okCarga"  update="tableMov" actionListener="#{beanCarga.clearListMovimientosCarg(egt)}"  />
+                                    <p:remoteCommand name="cerrarCarga"  update="cargaTable" actionListener="#{beanCarga.clearCarga(egt)}"  />
+                                </div>
+                                <div class="ui-g-12 ui-lg-2">
+                                    <div class="card card-w-title" >
+                                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                            <p:outputLabel value="Exportar a:" style="font-weight: bold;font-size: 16px;"/>
+                                        </p:panelGrid>
+                                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                            <h:commandLink>
+                                                <p:graphicImage url="resources/ultima-layout/images/pdf.png" />
+                                                <p:dataExporter type="pdf" target="cargaTable" fileName="HistorialCargasDe#{beanCarga.valorModulo}Y#{beanCarga.valorSedeIgual}De#{beanCarga.calendarIni}A#{beanCarga.calendarFin}" options="#{beanTransacciones.pdfOpt}"/>
+                                                <p:outputLabel value="PDF" style="color: black;margin: 8px 8px 8px 8px;font-weight: bold;font-size: 12px;" />
+                                            </h:commandLink>
+                                            <h:commandLink>
+                                                <p:graphicImage url="resources/ultima-layout/images/excel.png" />
+                                                <p:dataExporter type="xls" target="cargaTable" fileName="HistorialCargasDe#{beanCarga.valorModulo}Y#{beanCarga.valorSedeIgual}De#{beanCarga.calendarIni}A#{beanCarga.calendarFin}"  options="#{beanTransacciones.excelOpt}" />
+                                                <p:outputLabel value="EXCEL" style="color: black;margin: 8px 8px 8px 8px;font-weight: bold;font-size: 12px;"/>
+                                            </h:commandLink>
+                                        </p:panelGrid>
+                                    </div>
+                                </div>
+
+                            </p:overlayPanel>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <p:messages id="message2" showDetail="true"   closable="true"  />
+
+                            <h1>Llena los datos para filtrar y buscar una <b>carga</b></h1>
+                            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                <p:selectOneMenu id="sedes" value="#{beanCarga.valorSedeIgual}" style="margin-bottom:10px;">
+                                    <p:ajax event="valueChange"    update="modulos"
+                                            listener="#{beanCarga.changeMenu(egt)}" />
+                                    <f:selectItem itemLabel="Todos" itemValue=""/>
+                                    <f:selectItems value="#{beanCarga.listSedes}" var="sedes" itemLabel="#{sedes.ciudad}" itemValue="#{sedes.idciudad}"/>
+                                </p:selectOneMenu>
+                                <p:selectOneMenu id="modulos" value="#{beanCarga.valorModulo}" style="margin-bottom:10px;">
+                                    <f:selectItem itemLabel="Todos" itemValue=""/>
+                                    <f:selectItems value="#{beanCarga.listModulos}" var="modulo" itemLabel="${modulo.idModulo}" itemValue="${modulo.idModulo}"/>
+                                </p:selectOneMenu>
+                                <p:calendar  id="multi1"  placeholder="Pulse aquí para elegir Fecha Inicio" maxdate="#{beanTransacciones.today}" value="#{beanCarga.calendarIni}"  pattern="dd/MM/yyyy HH:mm"     required="true" locale="es" showButtonPanel="true"  /> 
+                                <p:calendar id="multi2"  placeholder="Pulse aquí para elegir Fecha Fin"   value="#{beanCarga.calendarFin}" maxdate="#{beanTransacciones.today}" pattern="dd/MM/yyyy HH:mm"         required="true" locale="es" showButtonPanel="true" /> 
+                            </p:panelGrid>
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                <p:commandButton value="Buscar" id="search"  icon="fa fa-search" actionListener="#{beanCarga.buscarCarga(egt)}" update="cargaTable message2"  />
+                            </p:panelGrid> 
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

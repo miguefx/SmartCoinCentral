@@ -1,0 +1,143 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Index Smart Coin</ui:define>
+
+    <ui:define name="head">
+        <script type="text/javascript">
+            //<![CDATA[
+            function skinChart() {
+                this.cfg.shadow = false;
+                this.cfg.title = '';
+                this.cfg.seriesColors = ['#FFC107', '#03A9F4'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#ffffff',
+                    gridLineColor: '#EEEEEE',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    rendererOptions: {
+                        textColor: '#212121'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    lineWidth: 1,
+                    markerOptions: {
+                        shadow: false,
+                        size: 7,
+                        style: 'circle'
+                    }
+                }
+            }
+            //]]>  
+        </script>
+        <style type="text/css">
+            .main-content {
+                padding: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <title>Index Smart Coin</title>
+        <h:form>
+            <p:messages id="messages" showDetail="true" closable="true" />
+            <p:poll interval="10"    listener="#{beanAlarma.alarmaNueva(egt)}" update="messages alarmasNumero" />
+
+            <div class="ui-g dashboard">
+                <div class="ui-g-12 ui-md-12">
+                    <div class="card overview">
+                        <div class="overview-content clearfix">
+                            <p:chart type="bar" model="#{beanCharts.barModel2}" responsive="true" />
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-g-12 ui-md-12">
+                    <div class="card overview">
+                        <div class="overview-content clearfix">
+                            <p:chart type="bar" model="#{beanCharts.barModel}" responsive="true"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-g-24 ui-md-12">
+                    <div class="card overview">
+                        <div class="overview-content clearfix">
+                            <p:chart type="line" model="#{beanCharts.lineModel1}"  responsive="true" />
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-6 ui-lg-12">
+                    <div class="ui-g card colorbox colorbox-1">
+                        <div class="ui-g-6">
+                            <i class="material-icons">&#xe190;</i>
+                        </div>
+                        <div class="ui-g-6">
+                            <span class="colorbox-name">Alarmas</span>
+                            <span class="colorbox-count"><p:outputLabel value="#{beanAlarma.listalarmasMenu.size()} " /></span>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="ui-g-12 ui-md-6 ui-lg-6 ui-fluid contact-form">
+                    <p:panel header="Envianos un mensaje">
+                        <div class="ui-g">
+                            <div class="ui-g-12">
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText />
+                                    <label>Nombre</label>
+                                </h:panelGroup>
+                            </div>
+                            <div class="ui-g-12">
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText />
+                                    <label>Cargo</label>
+                                </h:panelGroup>
+                            </div>
+                            <div class="ui-g-12">
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText />
+                                    <label>Mensaje</label>
+                                </h:panelGroup>
+                            </div>
+                        </div>
+                        <p:commandButton type="button" value="Enviar" icon="ui-icon-send"></p:commandButton>
+                    </p:panel>
+                </div>
+                <div class="ui-g-12 ui-lg-6 contacts">
+                    <p:panel header="Alarmas en las ultimas 8 horas" id="panel12">
+                        <ui:repeat id="alarmaListAgo" value="#{beanAlarma.listalarmasHaceUnaSemana}" var="alarmasSemana"  >
+
+                            <ul>
+                                <li>
+                                    <a href="#">
+                                        <p:graphicImage name="images/alarm1.png" library="ultima-layout" width="45"/>
+                                        <span class="name"><p:outputLabel  value="#{alarmasSemana.descripcion}" /></span>
+                                        <span> <p:outputLabel value="#{alarmasSemana.fechaRegistro}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy hh:mm a" />
+                                            </p:outputLabel> 
+                                        </span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </ui:repeat>
+
+                    </p:panel>
+                </div>
+
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

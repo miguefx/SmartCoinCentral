@@ -1,0 +1,116 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="myform">
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-lg-12">
+                        <!-- Left Side -->
+                        <div class="card card-w-title">
+                            <p:overlayPanel id="overlaySaldos" for="search" onHide="limpiar()" hideEffect="clip" showEffect="clip" dismissable="true" dynamic="true"     showCloseIcon="true" >
+                                <div class="ui-g-12">
+                                    <p:dataTable id="saldostabla" var="saldos" value="#{beanArqueo.listPartes}"  style="font-size: 15px;"  rowKey="#{saldos.nombreParte}"    filteredValue="#{beanArqueo.listPartesFiltrado}"    >
+                                        <f:facet name="header">
+                                            <p:outputLabel value="Saldos en linea" />
+                                        </f:facet>
+                                        <p:column headerText="Nombre Parte"  filterBy="#{saldos.nombreParte}" filterMatchMode="contains" >
+                                            <p:outputLabel value="#{saldos.nombreParte}"/>
+                                        </p:column>
+                                        <p:column headerText="Denominacion" filterBy="#{saldos.denominacion}" filterMatchMode="contains">
+                                            <p:outputLabel value="#{saldos.denominacion}">
+                                                <f:convertNumber type="currency" currencySymbol="$" integerOnly="true" maxFractionDigits="0"/>
+                                            </p:outputLabel>
+                                        </p:column>
+                                        <p:column headerText="Cantidad"  filterBy="#{saldos.cantidadActual}" filterMatchMode="contains">
+                                            <p:outputLabel value="#{saldos.cantidadActual}"/>
+                                        </p:column>
+                                        <p:column headerText="Dinero Actual"  filterBy="#{saldos.dineroActual}" filterMatchMode="contains">
+                                            <p:outputLabel value="#{saldos.dineroActual}">
+                                                <f:convertNumber type="currency" currencySymbol="$" integerOnly="true" maxFractionDigits="0"/>
+                                            </p:outputLabel>
+                                        </p:column>
+                                    </p:dataTable>
+                                    <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group" layout="grid"   >
+                                        <p:commandButton  id="btnTotal" value="Ver Totales"    icon="fa fa-plus-square-o" />
+                                    </p:panelGrid>
+                                    <p:overlayPanel id="carPanel" for="btnTotal"  my="right" at="top"  hideEffect="clip" showEffect="clip"  showCloseIcon="true" dismissable="false">
+                                            <p:panelGrid columns="4" styleClass="ui-panelgrid-blank" >
+                                                <p:outputLabel value="Total Dinero Actual Modulo" styleClass="nombre"/>
+                                                <p:outputLabel value="Total Cantidad Cajones" styleClass="nombre"/>
+                                                <p:outputLabel value="Total Dinero Actual Cajones" styleClass="nombre"/>
+                                                <p:outputLabel value="Total Dinero Purga" styleClass="nombre"/>
+                                                <p:outputLabel id="totalDineroActualModulo" value="#{beanArqueo.totalDineroActualModulo}">
+                                                    <f:convertNumber  type="currency" currencySymbol="$" integerOnly="true" maxFractionDigits="0" />
+                                                </p:outputLabel>
+                                                <p:outputLabel id="totalCantidadCajones" value="#{beanArqueo.totalCantidadActualCajones}">
+                                                    <f:convertNumber pattern="###,###" />
+                                                </p:outputLabel>
+                                                <p:outputLabel id="totalDineroActualCajones" value="#{beanArqueo.totalDineroActualCajones}">
+                                                    <f:convertNumber  type="currency" currencySymbol="$" integerOnly="true" maxFractionDigits="0" />
+                                                </p:outputLabel>
+                                                <p:outputLabel id="totalDineroActualPurga" value="#{beanArqueo.totalDineroActualPurga}">
+                                                    <f:convertNumber  type="currency" currencySymbol="$" integerOnly="true" maxFractionDigits="0" />
+                                                </p:outputLabel>
+                                            </p:panelGrid>
+                                        </p:overlayPanel>
+                                </div>
+                                <div class="ui-g-12 ui-lg-2">
+                                    <div class="card card-w-title" >
+                                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                            <p:outputLabel value="Exportar a:" style="font-weight: bold;font-size: 16px;"/>
+                                        </p:panelGrid>
+                                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                            <h:commandLink>
+                                                <p:graphicImage url="resources/ultima-layout/images/pdf.png" />
+                                                <p:dataExporter type="pdf" target="saldostabla" fileName="InformeSaldoEnLineaDe#{beanArqueo.valorModulo}Y#{beanArqueo.valorSedeIgual}De#{beanArqueo.calendarIni}A#{beanArqueo.calendarFin}" options="#{beanTransacciones.pdfOpt}"/>
+                                                <p:outputLabel value="PDF" style="color: black;margin: 8px 8px 8px 8px;font-weight: bold;font-size: 12px;" />
+                                            </h:commandLink>
+                                            <h:commandLink>
+                                                <p:graphicImage url="resources/ultima-layout/images/excel.png" />
+                                                <p:dataExporter type="csv" target="saldostabla" fileName="InformeSaldoEnLinea#{beanArqueo.valorModulo}Y#{beanArqueo.valorSedeIgual}De#{beanArqueo.calendarIni}A#{beanArqueo.calendarFin}" options="#{beanTransacciones.excelOpt}"/>
+                                                <p:outputLabel value="EXCEL" style="color: black;margin: 8px 8px 8px 8px;font-weight: bold;font-size: 12px;"/>
+                                            </h:commandLink>
+                                        </p:panelGrid>
+                                    </div>
+                                </div>
+                                <p:remoteCommand name="limpiar" actionListener="#{beanArqueo.limpiarSaldoEnLinea()}"/>
+                            </p:overlayPanel>
+
+
+
+
+                            <p:messages id="message2" showDetail="true"   closable="true"  />
+
+                            <h1>Llena los datos para buscar un <b>Saldo en linea</b></h1>
+                            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                <p:selectOneMenu id="sedes" value="#{beanArqueo.valorSedeIgual}" style="margin-bottom:10px;">
+                                    <p:ajax event="valueChange"    update="modulos"
+                                            listener="#{beanArqueo.changeMenuSaldoEnLinea(egt)}" />
+                                    <f:selectItem itemLabel="Todos" itemValue=""/>
+                                    <f:selectItems value="#{beanArqueo.listSedesSaldoEnLinea}" var="sedes" itemLabel="#{sedes.ciudad}" itemValue="#{sedes.idciudad}"/>
+                                </p:selectOneMenu>
+                                <p:selectOneMenu id="modulos" value="#{beanArqueo.valorModulo}" style="margin-bottom:10px;">
+                                    <f:selectItem itemLabel="Todos" itemValue=""/>
+                                    <f:selectItems value="#{beanArqueo.listModulos}" var="modulo" itemLabel="${modulo.idModulo}" itemValue="${modulo.idModulo}"/>
+                                </p:selectOneMenu>
+                            </p:panelGrid>
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                <p:commandButton value="Buscar Saldo en linea" id="search" actionListener="#{beanArqueo.generarListaSaldosEnLinea(egt)}" update="myform:saldostabla totalDineroActualPurga totalDineroActualModulo totalCantidadCajones totalDineroActualCajones"  icon="fa fa-search" />
+                            </p:panelGrid>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

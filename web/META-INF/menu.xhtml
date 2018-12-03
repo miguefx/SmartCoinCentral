@@ -1,0 +1,77 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pu="http://primefaces.org/ultima">
+
+    <h:form id="menuform"> 
+        <div class="layout-menu #{guestPreferences.menuClass}">
+            <div class="nano">
+                <div class="nano-content menu-scroll-content">
+                    <ui:fragment rendered="#{guestPreferences.profileMode == 'inline' and guestPreferences.menuLayout != 'menu-layout-static menu-layout-horizontal'}">
+                        <div class="profile">
+                            <div class="profile-image"></div>
+                            <a id="profile-options" href="#">
+                                <span class="profile-name"><p:outputLabel value="#{beanUser.nombresParMostrar}"/></span>
+                                <i class="material-icons">&#xE313;</i>
+                            </a>
+                        </div>
+
+
+                        <ul id="profile-menu" class="ultima-menu">
+                            <li role="menuitem">
+                                <a href="#dlg"   class="ripplelink">
+                                    <i class="material-icons">&#xE7FD;</i>
+                                    <span>Perfil</span>
+                                </a>
+
+                            </li>
+                            <li role="menuitem">
+                                <a href="/SmartCoin/ActualizacionDeDatos.xhtml" onclick="actualizar()" class="ripplelink">
+                                    <i class="material-icons">&#xE8B9;</i>
+                                    <span>Configuracion</span>
+                                </a>
+                            </li>
+                            <p:remoteCommand name="actualizar" actionListener="#{beanUser.encontrarActualizar(egt)}" />
+                            <li role="menuitem">
+                                <a href="#confirm" onclick="PF('confirm').show()" class="ripplelink">
+                                    <i class="material-icons">&#xE8AC;</i>
+                                    <span>Desconectar</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <pu:menu widgetVar="me">
+                            <p:menuitem id="um_dashboard" value="Principal"  icon="dashboard" outcome="/dashboard"/>
+                            <p:submenu id="um_customization" label="Consultas" icon="&#xE54B;" styleClass="amber-badge" rendered="#{beanUser.btnConsultas}">
+                                <p:menuitem id="custom1" value="Arqueos" icon="&#xE8F9;" outcome="/arqueos" rendered="#{beanUser.arqueos}"/>
+                                <p:menuitem id="custom3" value="Transancciones" icon="payment" outcome="/transacciones" rendered="#{beanUser.transacciones}"/>
+                                <p:menuitem id="custom4" value="Cargas" icon="file_upload" outcome="/cargas" rendered="#{beanUser.cargas}" />
+                                <p:menuitem id="custom5" value="Saldos en linea" icon="&#xe227;" outcome="/saldosEnLinea" rendered="#{beanUser.saldoEnLinea}" />
+                            </p:submenu>
+                            <p:submenu id="um_orientation" label="Usuarios"  icon="person" rendered="#{beanUser.btnUsers}" >
+                                <p:menuitem id="um_ltr" value="Registro de usuarios" icon="&#xE7FE;" outcome="/registro"  rendered="#{beanUser.registro}"/>
+                                <p:menuitem id="um_rtl" value="Gestion de usuarios" icon="people"  outcome="/gestionDeUsuarios" rendered="#{beanUser.gestionDeUsuarios}" />
+                            </p:submenu>
+                            <p:submenu label="Reportes" icon="fa fa-download" rendered="#{beanUser.btnReporte}">
+                                <p:menuitem value="Reportes Consolidados" icon="today" outcome="/reportesConsolidados" rendered="#{beanUser.reportesConsolidados}"/>
+                            </p:submenu>
+                            <p:menuitem id="um_utils" value="Alarmas" icon="access_alarm" outcome="/alarmas" rendered="#{beanUser.alarmas}"/>
+                        </pu:menu>
+                    </ui:fragment>
+                </div>
+            </div>
+        </div>
+        <p:confirmDialog  header="Estas seguro ?" widgetVar="confirm" global="true" showEffect="fade" hideEffect="fade">
+            <p:button outcome="/login" value="Si" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" onclick="eliminarSesion2()" />
+            <p:button value="No" outcome="/dashboard" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+        </p:confirmDialog>
+        <p:remoteCommand name="eliminarSesion2" actionListener="#{beanUser.eliminarSesion()}" />
+
+
+
+
+    </h:form>
+</ui:composition>

@@ -59,7 +59,7 @@ public class TPermisosFacade extends AbstractFacade<TPermisos> {
     public Long traerCount(Long cedula) {
         Long resultado=new Long("0");
         try {
-            TypedQuery<Long> query = em.createQuery("SELECT COUNT(a.idModulo) from TPermisos a where a.documentoUsuario=?1 and a.nombreContol='Saldos en linea' ", Long.class);
+            TypedQuery<Long> query = em.createQuery("SELECT COUNT(a.idModulo) from TPermisos a where a.documentoUsuario=?1 and a.nombreControl='Saldos en linea' ", Long.class);
             query.setParameter(1, cedula);
             resultado=query.getSingleResult();
         } catch (Exception e) {

@@ -36,7 +36,7 @@ public class TAlarmasFacade extends AbstractFacade<TAlarmas> {
 
     public List<TAlarmas> actualizarTabla(Date fechaInicio, Date fechaFinal, Long cedula, String nombre) {
         try {
-            Query query = em.createQuery("SELECT a from TAlarmas a , TPermisos as b where (a.fechaRegistro BETWEEN ?1 AND ?2) and (a.idModulo.idModulo=b.idModulo) and (b.documentoUsuario=?3) and (b.nombreContol=?4) ");
+            Query query = em.createQuery("SELECT a from TAlarmas a , TPermisos as b where (a.fechaRegistro BETWEEN ?1 AND ?2) and (a.idModulo.idModulo=b.idModulo) and (b.documentoUsuario=?3) and (b.nombreControl=?4) ");
             query.setParameter(1, fechaInicio, TemporalType.TIMESTAMP);
             query.setParameter(2, fechaFinal, TemporalType.TIMESTAMP);
             query.setParameter(3, cedula);
@@ -107,7 +107,7 @@ public class TAlarmasFacade extends AbstractFacade<TAlarmas> {
 
     public List<TAlarmas> listAlarmas(Long cedulaEnSession, String nombrePermiso) {
         try {
-            Query query = em.createQuery("SELECT a from TAlarmas as a , TPermisos as b  where  (a.idModulo.idModulo=b.idModulo) and (b.documentoUsuario = ?1) and (b.nombreContol=?2)");
+            Query query = em.createQuery("SELECT a from TAlarmas as a , TPermisos as b  where  (a.idModulo.idModulo=b.idModulo) and (b.documentoUsuario = ?1) and (b.nombreControl=?2)");
             query.setParameter(1, cedulaEnSession);
             query.setParameter(2, nombrePermiso);
             List<TAlarmas> list = query.getResultList();

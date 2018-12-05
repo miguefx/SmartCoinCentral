@@ -35,7 +35,7 @@ public class TCiudadesFacade extends AbstractFacade<TCiudades> {
         List<TCiudades> listCiudades= null;
         
         try {
-            Query query =em.createQuery("select DISTINCT a from  TCiudades as a, TConfiguracion as b, TSedes as c,TPermisos as d where (b.idSede.idSede = c.idSede) and (c.idCiudad.idciudad=a.idciudad) and d.documentoUsuario = ?1 and d.idModulo=b.idModulo and d.nombreContol=?2");
+            Query query =em.createQuery("select DISTINCT a from  TCiudades as a, TConfiguracion as b, TSedes as c,TPermisos as d where (b.idSede.idSede = c.idSede) and (c.idCiudad.idciudad=a.idciudad) and d.documentoUsuario = ?1 and d.idModulo=b.idModulo and d.nombreControl=?2");
             query.setParameter(1, documento);
             query.setParameter(2, nombrePermiso);
             listCiudades=query.getResultList();

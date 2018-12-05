@@ -68,7 +68,7 @@ public class TConfiguracionFacade extends AbstractFacade<TConfiguracion> {
     {
         List<TConfiguracion> listModulos=null;
         try {
-            Query query = em.createQuery("SELECT DISTINCT a from TConfiguracion AS a, TPermisos as b where  a.idSede.idCiudad.idciudad = ?1 AND a.idModulo=b.idModulo AND b.documentoUsuario = ?2 AND b.nombreContol = ?3");
+            Query query = em.createQuery("SELECT DISTINCT a from TConfiguracion AS a, TPermisos as b where  a.idSede.idCiudad.idciudad = ?1 AND a.idModulo=b.idModulo AND b.documentoUsuario = ?2 AND b.nombreControl = ?3");
             query.setParameter(1, idCiudad);
             query.setParameter(2, documentoSession);
             query.setParameter(3, nombrePermiso);

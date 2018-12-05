@@ -55,16 +55,16 @@ public class TTransaccionesFacade extends AbstractFacade<TTransacciones> {
             String query2 = "";
             int casee = 0;
             if (idModulo == null && idSede == null) {
-                query2 = "SELECT  a FROM TTransacciones AS a , TPermisos as b  WHERE  (a.fechaTransaccion BETWEEN ?1 and ?2)  and (b.idModulo=a.idModulo.idModulo) and (a.idSede.idCiudad.idciudad=b.idCiudad) and (b.documentoUsuario=?3) and (b.nombreContol=?4) and (a.totalPagado > 0)";
+                query2 = "SELECT  a FROM TTransacciones AS a , TPermisos as b  WHERE  (a.fechaTransaccion BETWEEN ?1 and ?2)  and (b.idModulo=a.idModulo.idModulo) and (a.idSede.idCiudad.idciudad=b.idCiudad) and (b.documentoUsuario=?3) and (b.nombreControl=?4) and (a.totalPagado > 0)";
                 casee = 1;
             } else if (idModulo == null && idSede != null) {
-                query2 = "SELECT  a FROM TTransacciones AS a , TPermisos as b  WHERE  (a.fechaTransaccion BETWEEN ?1 and ?2) and (b.documentoUsuario=?3) and (b.nombreContol=?4) and (b.idModulo=a.idModulo.idModulo) and (a.idSede.idCiudad.idciudad=?5) and (a.totalPagado > 0)";
+                query2 = "SELECT  a FROM TTransacciones AS a , TPermisos as b  WHERE  (a.fechaTransaccion BETWEEN ?1 and ?2) and (b.documentoUsuario=?3) and (b.nombreControl=?4) and (b.idModulo=a.idModulo.idModulo) and (a.idSede.idCiudad.idciudad=?5) and (a.totalPagado > 0)";
                 casee = 2;
             } else if (idModulo != null && idSede == null) {
-                query2 = "SELECT  a FROM TTransacciones AS a , TPermisos as b  WHERE  (a.fechaTransaccion BETWEEN ?1 and ?2) and (b.documentoUsuario=?3) and (b.nombreContol=?4) and (a.idModulo.idModulo=?5) and (a.idSede.idCiudad.idciudad=b.idCiudad) and (a.totalPagado > 0)";
+                query2 = "SELECT  a FROM TTransacciones AS a , TPermisos as b  WHERE  (a.fechaTransaccion BETWEEN ?1 and ?2) and (b.documentoUsuario=?3) and (b.nombreControl=?4) and (a.idModulo.idModulo=?5) and (a.idSede.idCiudad.idciudad=b.idCiudad) and (a.totalPagado > 0)";
                 casee = 3;
             } else if (idModulo != null && idSede != null) {
-                query2 = "SELECT DISTINCT  a FROM TTransacciones AS a , TPermisos as b  WHERE  (a.fechaTransaccion BETWEEN ?1 and ?2) and (b.documentoUsuario=?3) and (b.nombreContol=?4) and (a.idModulo.idModulo=?5) and (a.idSede.idCiudad.idciudad=?6) and (a.totalPagado > 0)";
+                query2 = "SELECT DISTINCT  a FROM TTransacciones AS a , TPermisos as b  WHERE  (a.fechaTransaccion BETWEEN ?1 and ?2) and (b.documentoUsuario=?3) and (b.nombreControl=?4) and (a.idModulo.idModulo=?5) and (a.idSede.idCiudad.idciudad=?6) and (a.totalPagado > 0)";
                 casee = 4;
             }
             Query query = em.createQuery(query2);

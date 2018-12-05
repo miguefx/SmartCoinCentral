@@ -39,16 +39,16 @@ public class TArqueosFacade extends AbstractFacade<TArqueos> {
             String query2 = "";
             int casee = 0;
             if (idModulo == null && idSede == null) {
-                query2 = "SELECT  a FROM TArqueos AS a , TPermisos as b  WHERE  (a.fechaInicio BETWEEN ?1 and ?2)  and (b.idModulo=a.idModulo.idModulo) and (a.idSede.idCiudad.idciudad=b.idCiudad) and (b.documentoUsuario=?3) and (b.nombreContol=?4)";
+                query2 = "SELECT  a FROM TArqueos AS a , TPermisos as b  WHERE  (a.fechaInicio BETWEEN ?1 and ?2)  and (b.idModulo=a.idModulo.idModulo) and (a.idSede.idCiudad.idciudad=b.idCiudad) and (b.documentoUsuario=?3) and (b.nombreControl=?4)";
                 casee = 1;
             } else if (idModulo == null && idSede != null) {
-                query2 = "SELECT  a FROM TArqueos AS a , TPermisos as b  WHERE  (a.fechaInicio BETWEEN ?1 and ?2) and (b.documentoUsuario=?3) and (b.nombreContol=?4) and (b.idModulo=a.idModulo.idModulo) and (a.idSede.idCiudad.idciudad=?5)";
+                query2 = "SELECT  a FROM TArqueos AS a , TPermisos as b  WHERE  (a.fechaInicio BETWEEN ?1 and ?2) and (b.documentoUsuario=?3) and (b.nombreControl=?4) and (b.idModulo=a.idModulo.idModulo) and (a.idSede.idCiudad.idciudad=?5)";
                 casee = 2;
             } else if (idModulo != null && idSede == null) {
-                query2 = "SELECT  a FROM TArqueos AS a , TPermisos as b  WHERE  (a.fechaInicio BETWEEN ?1 and ?2) and (b.documentoUsuario=?3) and (b.nombreContol=?4) and (a.idModulo.idModulo=?5) and (a.idSede.idCiudad.idciudad=b.idCiudad)";
+                query2 = "SELECT  a FROM TArqueos AS a , TPermisos as b  WHERE  (a.fechaInicio BETWEEN ?1 and ?2) and (b.documentoUsuario=?3) and (b.nombreControl=?4) and (a.idModulo.idModulo=?5) and (a.idSede.idCiudad.idciudad=b.idCiudad)";
                 casee = 3;
             } else if (idModulo != null && idSede != null) {
-                query2 = "SELECT DISTINCT  a FROM TArqueos AS a , TPermisos as b  WHERE  (a.fechaInicio BETWEEN ?1 and ?2) and (b.documentoUsuario=?3) and (b.nombreContol=?4) and (a.idModulo.idModulo=?5) and (a.idSede.idCiudad.idciudad=?6)";
+                query2 = "SELECT DISTINCT  a FROM TArqueos AS a , TPermisos as b  WHERE  (a.fechaInicio BETWEEN ?1 and ?2) and (b.documentoUsuario=?3) and (b.nombreControl=?4) and (a.idModulo.idModulo=?5) and (a.idSede.idCiudad.idciudad=?6)";
                 casee = 4;
             }
             Query query = em.createQuery(query2);

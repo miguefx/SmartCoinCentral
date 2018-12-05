@@ -268,7 +268,6 @@ public class beanCharts {
         barModel2.setShowPointLabels(true);
         barModel2.setAnimate(true);
         barModel2.setDatatipFormat("%d - $ %i");
-        
         List<TConfiguracion> listModulos = objDaoConfiguracion.llenarReporteEstado();
         barModel2.setLegendCols(listModulos.size());
 
@@ -279,7 +278,7 @@ public class beanCharts {
 
         yAxis.setLabel("Valor");
         yAxis.setMin(0);
-        yAxis.setMax(5000000);
+        yAxis.setMax(10000000);
     }
 
     private BarChartModel initBarModel() {

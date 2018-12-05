@@ -36,7 +36,7 @@ public class TMovimientosFacade extends AbstractFacade<TMovimientos> {
         super(TMovimientos.class);
     }
 
-    public List<TmovimientosTable> retornarListaMovimientos(String idModulo,Long idArqueo) {
+    public List<TmovimientosTable> retornarListaMovimientos(String idModulo, Long idArqueo) {
         try {
             Query query = em.createNativeQuery("select Parte, Denominacion, SUM(Cantidad) as cantidad, Accion, SUM(Valor) as valor from T_Movimientos WHERE (IdModulo = ?) and (IdArqueo = ?) group by Denominacion,Parte,Accion", "mapeo");
             query.setParameter(1, idModulo);
@@ -48,7 +48,7 @@ public class TMovimientosFacade extends AbstractFacade<TMovimientos> {
         return null;
     }
 
-    public List<TmovimientosTable> retornarListaMovimientosById(Long idTransaccion,String idModulo) {
+    public List<TmovimientosTable> retornarListaMovimientosById(Long idTransaccion, String idModulo) {
         try {
             Query query = em.createNativeQuery("select IdMovimiento, Parte, Denominacion, SUM(Cantidad) as cantidad, SUM(Valor) as valor, Accion from T_Movimientos WHERE IdTransaccion = ? and IdModulo = ?  group by Denominacion,Parte, IdMovimiento,Accion", "mapeo");
             query.setParameter(1, idTransaccion);
@@ -60,7 +60,7 @@ public class TMovimientosFacade extends AbstractFacade<TMovimientos> {
         return null;
     }
 
-    public List<TmovimientosTable> retornarListaMovimientosByIdCarga(Long idCarga,String idModulo) {
+    public List<TmovimientosTable> retornarListaMovimientosByIdCarga(Long idCarga, String idModulo) {
         try {
             Query query = em.createNativeQuery("select Parte, Denominacion, SUM(Cantidad) as cantidad, SUM(Valor) as valor from T_Movimientos WHERE IdCarga = ? and IdModulo = ? group by Denominacion,Parte", "mapeo");
             query.setParameter(1, idCarga);
@@ -99,16 +99,16 @@ public class TMovimientosFacade extends AbstractFacade<TMovimientos> {
         String query2 = "";
         int caso = 0;
         if (idModulo == null && idSede == null) {
-            query2 = "SELECT DISTINCT SUM(a.cantidad) from TMovimientos AS a , TPermisos as b  where (a.parte='CtCoin') and (a.accion = 'Entrada') and (a.fechaMovimiento BETWEEN ?1 and ?2) and (a.idModulo=b.idModulo) and (a.idSede=b.idSede) and (b.documentoUsuario=?3) and (b.nombreContol=?4) ";
+            query2 = "SELECT DISTINCT SUM(a.cantidad) from TMovimientos AS a , TPermisos as b  where (a.parte='CtCoin') and (a.accion = 'Entrada') and (a.fechaMovimiento BETWEEN ?1 and ?2) and (a.idModulo=b.idModulo) and (a.idSede=b.idSede) and (b.documentoUsuario=?3) and (b.nombreControl=?4) ";
             caso = 1;
         } else if (idModulo == null && idSede != null) {
-            query2 = "SELECT DISTINCT SUM(a.cantidad) from TMovimientos AS a , TPermisos as b, TSedes as d   where (a.parte='CtCoin') and (a.accion = 'Entrada') and (a.fechaMovimiento BETWEEN ?1 and ?2)  and (b.documentoUsuario=?3) and (b.nombreContol=?4) and (a.idModulo=b.idModulo) and (a.idSede=d.idSede) and (d.idCiudad.idciudad=?5)";
+            query2 = "SELECT DISTINCT SUM(a.cantidad) from TMovimientos AS a , TPermisos as b, TSedes as d   where (a.parte='CtCoin') and (a.accion = 'Entrada') and (a.fechaMovimiento BETWEEN ?1 and ?2)  and (b.documentoUsuario=?3) and (b.nombreControl=?4) and (a.idModulo=b.idModulo) and (a.idSede=d.idSede) and (d.idCiudad.idciudad=?5)";
             caso = 2;
         } else if (idModulo != null && idSede == null) {
-            query2 = "SELECT DISTINCT SUM(a.cantidad) from TMovimientos AS a , TPermisos as b  where (a.parte='CtCoin') and (a.accion = 'Entrada') and (a.fechaMovimiento BETWEEN ?1 and ?2)  and (b.documentoUsuario=?3) and (b.nombreContol=?4) and (a.idModulo=?5) and (a.idSede=b.idSede)";
+            query2 = "SELECT DISTINCT SUM(a.cantidad) from TMovimientos AS a , TPermisos as b  where (a.parte='CtCoin') and (a.accion = 'Entrada') and (a.fechaMovimiento BETWEEN ?1 and ?2)  and (b.documentoUsuario=?3) and (b.nombreControl=?4) and (a.idModulo=?5) and (a.idSede=b.idSede)";
             caso = 3;
         } else if (idModulo != null && idSede != null) {
-            query2 = "SELECT DISTINCT SUM(a.cantidad) from TMovimientos AS a , TPermisos as b  where (a.parte='CtCoin') and (a.accion = 'Entrada') and (a.fechaMovimiento BETWEEN ?1 and ?2)  and (b.documentoUsuario=?3) and (b.nombreContol=?4) and (a.idModulo=?5) and (a.idSede=?6)";
+            query2 = "SELECT DISTINCT SUM(a.cantidad) from TMovimientos AS a , TPermisos as b  where (a.parte='CtCoin') and (a.accion = 'Entrada') and (a.fechaMovimiento BETWEEN ?1 and ?2)  and (b.documentoUsuario=?3) and (b.nombreControl=?4) and (a.idModulo=?5) and (a.idSede=?6)";
             caso = 4;
         }
 
@@ -147,14 +147,16 @@ public class TMovimientosFacade extends AbstractFacade<TMovimientos> {
     }
 
     public Long retornarTotalMonedasByIdTransaccion(Long idTransaccion) {
-        Long resultado = new Long("0");
         try {
-            TypedQuery<Long> query = em.createQuery("SELECT SUM(a.cantidad) from TMovimientos as a where a.idTransaccion = ?1 and a.accion='Entrada' and a.parte='CtCoin'", Long.class);
+            TypedQuery<Long> query = (TypedQuery<Long>) em.createQuery("SELECT SUM(a.cantidad) from TMovimientos as a where a.idTransaccion = ?1 and a.accion='Entrada' and a.parte='CtCoin'", Long.class);
             query.setParameter(1, idTransaccion);
-            resultado = query.getSingleResult();
-
+            Long resultado = query.getSingleResult();
+            if (resultado==null) {
+                 resultado= new Long("0");
+            }
+            return resultado;
         } catch (Exception e) {
         }
-        return resultado;
+        return null;
     }
 }

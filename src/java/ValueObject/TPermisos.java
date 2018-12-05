@@ -43,17 +43,14 @@ public class TPermisos implements Serializable {
             @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     @Basic(optional = false)
-    @NotNull
     @Column(name = "IdPermiso",insertable = false)
     private Long idPermiso;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "DocumentoUsuario")
+    @Column(name = "DocumentoUsuario",nullable = false)
     private long documentoUsuario;
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 50)
-    @Column(name = "NombreControl")
+    @Column(name = "NombreControl",nullable = false)
     private String nombreControl;
     @Size(max = 50)
     @Column(name = "IdModulo")
@@ -63,8 +60,7 @@ public class TPermisos implements Serializable {
     @Column(name = "IdSede")
     private BigInteger idSede;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "Sincronizacion")
+    @Column(name = "Sincronizacion",nullable = false)
     private boolean sincronizacion;
 
     public TPermisos() {

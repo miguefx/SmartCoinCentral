@@ -38,7 +38,7 @@ public class TUsuariosFacade extends AbstractFacade<TUsuarios> {
         try {
             String auxResultado = verificarEstado(objVOUsuarios.getUsuario());
             if (auxResultado.equals("1")) {
-                StoredProcedureQuery storedProcedure = em.createStoredProcedureQuery("P_AdminValidarClave;1");
+                    StoredProcedureQuery storedProcedure = em.createStoredProcedureQuery("P_AdminValidarClave;1");
                 storedProcedure.registerStoredProcedureParameter("Usuario", String.class, ParameterMode.INOUT);
                 storedProcedure.registerStoredProcedureParameter("clave", String.class, ParameterMode.IN);
 

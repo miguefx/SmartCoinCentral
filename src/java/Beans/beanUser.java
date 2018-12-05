@@ -20,6 +20,7 @@ import ValueObject.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
@@ -324,9 +325,6 @@ public class beanUser implements Serializable {
     private Boolean btnReporte = false;
     private Boolean btnUsers = false;
     private Boolean reportesConsolidados = false;
-    
-    
-    
 
     public Boolean getClaveDinamica() {
         return claveDinamica;
@@ -655,48 +653,50 @@ public class beanUser implements Serializable {
                 listaDePermisos.add(new Permisos("Registro de usuarios", false));
                 listaDePermisos.add(new Permisos("Gestion de usuarios", false));
                 listaDePermisos.add(new Permisos("Reportes Consolidados", false));
+                if (listPermisosSession != null) {
 
-                for (int i = 0; i < listPermisosSession.size(); i++) {
-                    for (int j = 0; j < listaDePermisos.size(); j++) {
-                        if (listPermisosSession.get(i).equals(listaDePermisos.get(j).getNombrePermiso())) {
-                            listaDePermisos.get(j).setEstado(true);
+                    for (int i = 0; i < listPermisosSession.size(); i++) {
+                        for (int j = 0; j < listaDePermisos.size(); j++) {
+                            if (listPermisosSession.get(i).equals(listaDePermisos.get(j).getNombrePermiso())) {
+                                listaDePermisos.get(j).setEstado(true);
+                            }
                         }
                     }
-                }
-                for (int i = 0; i < listaDePermisos.size(); i++) {
-                    if (listaDePermisos.get(i).getNombrePermiso().equals("Alarmas")) {
-                        alarmas = listaDePermisos.get(i).getEstado();
-                    } else if (listaDePermisos.get(i).getNombrePermiso().equals("Clave Dinamica")) {
-                        claveDinamica = listaDePermisos.get(i).getEstado();
-                    } else if (listaDePermisos.get(i).getNombrePermiso().equals("Arqueos")) {
-                        arqueos = listaDePermisos.get(i).getEstado();
-                    } else if (listaDePermisos.get(i).getNombrePermiso().equals("Transacciones")) {
-                        transacciones = listaDePermisos.get(i).getEstado();
-                    } else if (listaDePermisos.get(i).getNombrePermiso().equals("Cargas")) {
-                        cargas = listaDePermisos.get(i).getEstado();
-                    } else if (listaDePermisos.get(i).getNombrePermiso().equals("Saldos en linea")) {
-                        saldoEnLinea = listaDePermisos.get(i).getEstado();
-                    } else if (listaDePermisos.get(i).getNombrePermiso().equals("Registro de usuarios")) {
-                        registro = listaDePermisos.get(i).getEstado();
-                    } else if (listaDePermisos.get(i).getNombrePermiso().equals("Gestion de usuarios")) {
-                        gestionDeUsuarios = listaDePermisos.get(i).getEstado();
-                    } else if (listaDePermisos.get(i).getNombrePermiso().equals("Reporte Mensual")) {
-                        reporteMensual = listaDePermisos.get(i).getEstado();
-                    } else if (listaDePermisos.get(i).getNombrePermiso().equals("Reporte Anual")) {
-                        reporteAnual = listaDePermisos.get(i).getEstado();
-                    } else if (listaDePermisos.get(i).getNombrePermiso().equals("Reportes Consolidados")) {
-                        reportesConsolidados = listaDePermisos.get(i).getEstado();
+                    for (int i = 0; i < listaDePermisos.size(); i++) {
+                        if (listaDePermisos.get(i).getNombrePermiso().equals("Alarmas")) {
+                            alarmas = listaDePermisos.get(i).getEstado();
+                        } else if (listaDePermisos.get(i).getNombrePermiso().equals("Clave Dinamica")) {
+                            claveDinamica = listaDePermisos.get(i).getEstado();
+                        } else if (listaDePermisos.get(i).getNombrePermiso().equals("Arqueos")) {
+                            arqueos = listaDePermisos.get(i).getEstado();
+                        } else if (listaDePermisos.get(i).getNombrePermiso().equals("Transacciones")) {
+                            transacciones = listaDePermisos.get(i).getEstado();
+                        } else if (listaDePermisos.get(i).getNombrePermiso().equals("Cargas")) {
+                            cargas = listaDePermisos.get(i).getEstado();
+                        } else if (listaDePermisos.get(i).getNombrePermiso().equals("Saldos en linea")) {
+                            saldoEnLinea = listaDePermisos.get(i).getEstado();
+                        } else if (listaDePermisos.get(i).getNombrePermiso().equals("Registro de usuarios")) {
+                            registro = listaDePermisos.get(i).getEstado();
+                        } else if (listaDePermisos.get(i).getNombrePermiso().equals("Gestion de usuarios")) {
+                            gestionDeUsuarios = listaDePermisos.get(i).getEstado();
+                        } else if (listaDePermisos.get(i).getNombrePermiso().equals("Reporte Mensual")) {
+                            reporteMensual = listaDePermisos.get(i).getEstado();
+                        } else if (listaDePermisos.get(i).getNombrePermiso().equals("Reporte Anual")) {
+                            reporteAnual = listaDePermisos.get(i).getEstado();
+                        } else if (listaDePermisos.get(i).getNombrePermiso().equals("Reportes Consolidados")) {
+                            reportesConsolidados = listaDePermisos.get(i).getEstado();
+                        }
                     }
-                }
 
-                if (arqueos || transacciones || saldoEnLinea || cargas) {
-                    btnConsultas = true;
-                }
-                if (registro || gestionDeUsuarios) {
-                    btnUsers = true;
-                }
-                if (reportesConsolidados) {
-                    btnReporte = true;
+                    if (arqueos || transacciones || saldoEnLinea || cargas) {
+                        btnConsultas = true;
+                    }
+                    if (registro || gestionDeUsuarios) {
+                        btnUsers = true;
+                    }
+                    if (reportesConsolidados) {
+                        btnReporte = true;
+                    }
                 }
 
                 nombresParMostrar = objVoUsuarios.getNombres() + " " + objVoUsuarios.getApellidos();
@@ -922,7 +922,7 @@ public class beanUser implements Serializable {
             }
             for (int q = 0; q < listPermisos.size(); q++) {
                 for (int l = 0; l < nombreBoton.getTarget().size(); l++) {
-                    if (listPermisos.get(q).getNombreContol().equals(nombreBoton.getTarget().get(l))) {
+                    if (listPermisos.get(q).getNombreControl().equals(nombreBoton.getTarget().get(l))) {
                         nombreBoton.getTarget().remove(l);
                     }
                 }
@@ -933,15 +933,15 @@ public class beanUser implements Serializable {
                 objVoPermisos = new TPermisos();
                 objVoPermisos.setDocumentoUsuario(documentoElegido);
                 objVoPermisos.setSincronizacion(false);
-                objVoPermisos.setNombreContol(nombreBoton.getTarget().get(i));
+                objVoPermisos.setNombreControl(nombreBoton.getTarget().get(i));
                 objVoPermisos.setIdModulo(valorModulo);
-                objVoPermisos.setIdCiudad(valorSedeIgual);
-                objVoPermisos.setIdSede(numeroSede);
+                objVoPermisos.setIdCiudad(BigInteger.valueOf(valorSedeIgual));
+                objVoPermisos.setIdSede(BigInteger.valueOf(numeroSede));
                 objDaoPermisos.create(objVoPermisos);
             }
             for (int i = 0; i < listPermisos.size(); i++) {
                 for (int j = 0; j < auxListPermisos.size(); j++) {
-                    if (auxListPermisos.get(j).equals(listPermisos.get(i).getNombreContol())) {
+                    if (auxListPermisos.get(j).equals(listPermisos.get(i).getNombreControl())) {
                         objVoPermisos = new TPermisos();
                         objVoPermisos = objDaoPermisos.find(listPermisos.get(i).getIdPermiso());
                         objDaoPermisos.remove(objVoPermisos);
@@ -977,7 +977,7 @@ public class beanUser implements Serializable {
             }
             for (int q = 0; q < listPermisosDashBoard.size(); q++) {
                 for (int l = 0; l < nombreBoton2.getTarget().size(); l++) {
-                    if (listPermisosDashBoard.get(q).getNombreContol().equals(nombreBoton2.getTarget().get(l))) {
+                    if (listPermisosDashBoard.get(q).getNombreControl().equals(nombreBoton2.getTarget().get(l))) {
                         nombreBoton2.getTarget().remove(l);
                     }
                 }
@@ -987,15 +987,15 @@ public class beanUser implements Serializable {
                 objVoPermisos = new TPermisos();
                 objVoPermisos.setDocumentoUsuario(documentoElegido);
                 objVoPermisos.setSincronizacion(false);
-                objVoPermisos.setNombreContol(nombreBoton2.getTarget().get(i));
+                objVoPermisos.setNombreControl(nombreBoton2.getTarget().get(i));
                 objVoPermisos.setIdModulo("DashBoard");
-                objVoPermisos.setIdCiudad(new Long("0"));
-                objVoPermisos.setIdSede(new Long("0"));
+                objVoPermisos.setIdCiudad(new BigInteger("0"));
+                objVoPermisos.setIdSede(new BigInteger("0"));
                 objDaoPermisos.create(objVoPermisos);
             }
             for (int i = 0; i < listPermisosDashBoard.size(); i++) {
                 for (int j = 0; j < auxListPermisos.size(); j++) {
-                    if (auxListPermisos.get(j).equals(listPermisosDashBoard.get(i).getNombreContol())) {
+                    if (auxListPermisos.get(j).equals(listPermisosDashBoard.get(i).getNombreControl())) {
                         objVoPermisos = new TPermisos();
                         objVoPermisos = objDaoPermisos.find(listPermisosDashBoard.get(i).getIdPermiso());
                         objDaoPermisos.remove(objVoPermisos);
@@ -1047,7 +1047,7 @@ public class beanUser implements Serializable {
 
             for (int i = 0; i < listPermisos.size(); i++) {
                 for (int j = 0; j < listNombreControlSource.size(); j++) {
-                    if (listPermisos.get(i).getNombreContol().equals(listNombreControlSource.get(j))) {
+                    if (listPermisos.get(i).getNombreControl().equals(listNombreControlSource.get(j))) {
                         listNombreControlTarget.add(listNombreControlSource.get(j));
                         listNombreControlSource.remove(j);
                     }
@@ -1056,7 +1056,7 @@ public class beanUser implements Serializable {
 
             for (int i = 0; i < listPermisosDashBoard.size(); i++) {
                 for (int j = 0; j < listNombreControlSource2.size(); j++) {
-                    if (listPermisosDashBoard.get(i).getNombreContol().equals(listNombreControlSource2.get(j))) {
+                    if (listPermisosDashBoard.get(i).getNombreControl().equals(listNombreControlSource2.get(j))) {
                         listNombreControlTarget2.add(listNombreControlSource2.get(j));
                         listNombreControlSource2.remove(j);
                     }

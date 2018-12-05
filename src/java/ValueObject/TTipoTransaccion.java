@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author matc_
+ * @author miguel
  */
 @Entity
 @Table(name = "T_TipoTransaccion")

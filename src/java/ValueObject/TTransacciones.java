@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author matc_
+ * @author miguel
  */
 @Entity
 @Table(name = "T_Transacciones")
@@ -56,7 +56,6 @@ import javax.xml.bind.annotation.XmlRootElement;
                     @ColumnResult(name = "valorTotal", type = Double.class)
 
 }))
-
 public class TTransacciones implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -278,5 +277,5 @@ public class TTransacciones implements Serializable {
     public String toString() {
         return "ValueObject.TTransacciones[ idTransaccion=" + idTransaccion + " ]";
     }
-
+    
 }

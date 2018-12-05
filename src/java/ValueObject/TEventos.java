@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author matc_
+ * @author miguel
  */
 @Entity
 @Table(name = "T_Eventos")
@@ -59,7 +59,7 @@ public class TEventos implements Serializable {
     @JoinColumn(name = "IdSede", referencedColumnName = "IdSede")
     @ManyToOne
     private TSedes idSede;
-    @JoinColumn(name = "IdUsuario", referencedColumnName = "Documento")
+    @JoinColumn(name = "IdUsuario", referencedColumnName = "IdUsuario")
     @ManyToOne
     private TUsuarios idUsuario;
 

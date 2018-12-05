@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author matc_
+ * @author miguel
  */
 @Entity
 @Table(name = "T_Partes")
@@ -44,9 +44,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "TPartes.findByCantidadActual", query = "SELECT t FROM TPartes t WHERE t.cantidadActual = :cantidadActual")
     , @NamedQuery(name = "TPartes.findByPrioritario", query = "SELECT t FROM TPartes t WHERE t.prioritario = :prioritario")
     , @NamedQuery(name = "TPartes.findByEstado", query = "SELECT t FROM TPartes t WHERE t.estado = :estado")
-    , @NamedQuery(name = "TPartes.findBySincronizacion", query = "SELECT t FROM TPartes t WHERE t.sincronizacion = :sincronizacion")
-    , @NamedQuery(name = "TPartes.findByIdCiudad", query = "SELECT t FROM TPartes t WHERE t.idCiudad = :idCiudad")})
-
+    , @NamedQuery(name = "TPartes.findBySincronizacion", query = "SELECT t FROM TPartes t WHERE t.sincronizacion = :sincronizacion")})
  @SqlResultSetMapping(
         name = "mapeo67", classes = @ConstructorResult(targetClass = TSaldoEnLinea.class, columns = {
     @ColumnResult(name = "cantidadActual", type = Integer.class)
@@ -104,8 +102,6 @@ public class TPartes implements Serializable {
     @NotNull
     @Column(name = "Sincronizacion")
     private boolean sincronizacion;
-    @Column(name = "IdCiudad")
-    private Long idCiudad;
     @JoinColumn(name = "IdModulo", referencedColumnName = "IdModulo")
     @ManyToOne(optional = false)
     private TConfiguracion idModulo;
@@ -237,14 +233,6 @@ public class TPartes implements Serializable {
 
     public void setSincronizacion(boolean sincronizacion) {
         this.sincronizacion = sincronizacion;
-    }
-
-    public Long getIdCiudad() {
-        return idCiudad;
-    }
-
-    public void setIdCiudad(Long idCiudad) {
-        this.idCiudad = idCiudad;
     }
 
     public TConfiguracion getIdModulo() {

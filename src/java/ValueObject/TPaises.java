@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author matc_
+ * @author miguel
  */
 @Entity
 @Table(name = "T_Paises")
@@ -41,10 +41,14 @@ public class TPaises implements Serializable {
     @NotNull
     @Column(name = "IDPAIS")
     private Long idpais;
-    @Size(max = 50)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
     @Column(name = "ABREVIATURA")
     private String abreviatura;
-    @Size(max = 100)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "PAIS")
     private String pais;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idpais")
@@ -57,6 +61,12 @@ public class TPaises implements Serializable {
 
     public TPaises(Long idpais) {
         this.idpais = idpais;
+    }
+
+    public TPaises(Long idpais, String abreviatura, String pais) {
+        this.idpais = idpais;
+        this.abreviatura = abreviatura;
+        this.pais = pais;
     }
 
     public Long getIdpais() {

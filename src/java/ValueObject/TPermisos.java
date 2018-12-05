@@ -6,6 +6,7 @@
 package ValueObject;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author matc_
+ * @author miguel
  */
 @Entity
 @Table(name = "T_Permisos")
@@ -30,36 +31,41 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TPermisos.findAll", query = "SELECT t FROM TPermisos t")
     , @NamedQuery(name = "TPermisos.findByIdPermiso", query = "SELECT t FROM TPermisos t WHERE t.idPermiso = :idPermiso")
     , @NamedQuery(name = "TPermisos.findByDocumentoUsuario", query = "SELECT t FROM TPermisos t WHERE t.documentoUsuario = :documentoUsuario")
-    , @NamedQuery(name = "TPermisos.findByNombreContol", query = "SELECT t FROM TPermisos t WHERE t.nombreContol = :nombreContol")
+    , @NamedQuery(name = "TPermisos.findByNombreControl", query = "SELECT t FROM TPermisos t WHERE t.nombreControl = :nombreControl")
     , @NamedQuery(name = "TPermisos.findByIdModulo", query = "SELECT t FROM TPermisos t WHERE t.idModulo = :idModulo")
-    , @NamedQuery(name = "TPermisos.findBySincronizacion", query = "SELECT t FROM TPermisos t WHERE t.sincronizacion = :sincronizacion")
     , @NamedQuery(name = "TPermisos.findByIdCiudad", query = "SELECT t FROM TPermisos t WHERE t.idCiudad = :idCiudad")
-    , @NamedQuery(name = "TPermisos.findByIdSede", query = "SELECT t FROM TPermisos t WHERE t.idSede = :idSede")})
+    , @NamedQuery(name = "TPermisos.findByIdSede", query = "SELECT t FROM TPermisos t WHERE t.idSede = :idSede")
+    , @NamedQuery(name = "TPermisos.findBySincronizacion", query = "SELECT t FROM TPermisos t WHERE t.sincronizacion = :sincronizacion")})
 public class TPermisos implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+            @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Basic(optional = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "IdPermiso", nullable = false)
+    @NotNull
+    @Column(name = "IdPermiso",insertable = false)
     private Long idPermiso;
     @Basic(optional = false)
-    @Column(name = "DocumentoUsuario",nullable = true)
+    @NotNull
+    @Column(name = "DocumentoUsuario")
     private long documentoUsuario;
     @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 50)
-    @Column(name = "NombreContol",nullable = false)
-    private String nombreContol;
+    @Column(name = "NombreControl")
+    private String nombreControl;
     @Size(max = 50)
     @Column(name = "IdModulo")
     private String idModulo;
-    @Basic(optional = false)
-    @Column(name = "Sincronizacion",nullable = false)
-    private boolean sincronizacion;
     @Column(name = "IdCiudad")
-    private Long idCiudad;
+    private BigInteger idCiudad;
     @Column(name = "IdSede")
-    private Long idSede;
+    private BigInteger idSede;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "Sincronizacion")
+    private boolean sincronizacion;
 
     public TPermisos() {
     }
@@ -68,10 +74,10 @@ public class TPermisos implements Serializable {
         this.idPermiso = idPermiso;
     }
 
-    public TPermisos(Long idPermiso, long documentoUsuario, String nombreContol, boolean sincronizacion) {
+    public TPermisos(Long idPermiso, long documentoUsuario, String nombreControl, boolean sincronizacion) {
         this.idPermiso = idPermiso;
         this.documentoUsuario = documentoUsuario;
-        this.nombreContol = nombreContol;
+        this.nombreControl = nombreControl;
         this.sincronizacion = sincronizacion;
     }
 
@@ -91,12 +97,12 @@ public class TPermisos implements Serializable {
         this.documentoUsuario = documentoUsuario;
     }
 
-    public String getNombreContol() {
-        return nombreContol;
+    public String getNombreControl() {
+        return nombreControl;
     }
 
-    public void setNombreContol(String nombreContol) {
-        this.nombreContol = nombreContol;
+    public void setNombreControl(String nombreControl) {
+        this.nombreControl = nombreControl;
     }
 
     public String getIdModulo() {
@@ -107,28 +113,28 @@ public class TPermisos implements Serializable {
         this.idModulo = idModulo;
     }
 
+    public BigInteger getIdCiudad() {
+        return idCiudad;
+    }
+
+    public void setIdCiudad(BigInteger idCiudad) {
+        this.idCiudad = idCiudad;
+    }
+
+    public BigInteger getIdSede() {
+        return idSede;
+    }
+
+    public void setIdSede(BigInteger idSede) {
+        this.idSede = idSede;
+    }
+
     public boolean getSincronizacion() {
         return sincronizacion;
     }
 
     public void setSincronizacion(boolean sincronizacion) {
         this.sincronizacion = sincronizacion;
-    }
-
-    public Long getIdCiudad() {
-        return idCiudad;
-    }
-
-    public void setIdCiudad(Long idCiudad) {
-        this.idCiudad = idCiudad;
-    }
-
-    public Long getIdSede() {
-        return idSede;
-    }
-
-    public void setIdSede(Long idSede) {
-        this.idSede = idSede;
     }
 
     @Override
@@ -155,5 +161,5 @@ public class TPermisos implements Serializable {
     public String toString() {
         return "ValueObject.TPermisos[ idPermiso=" + idPermiso + " ]";
     }
-
+    
 }

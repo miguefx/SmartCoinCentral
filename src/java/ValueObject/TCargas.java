@@ -8,6 +8,7 @@ package ValueObject;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,22 +17,23 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author matc_
+ * @author miguel
  */
 @Entity
 @Table(name = "T_Cargas")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TCargas.findAll", query = "SELECT t FROM TCargas t")
-    , @NamedQuery(name = "TCargas.findById", query = "SELECT t FROM TCargas t WHERE t.id = :id")
     , @NamedQuery(name = "TCargas.findByIdCarga", query = "SELECT t FROM TCargas t WHERE t.idCarga = :idCarga")
     , @NamedQuery(name = "TCargas.findByFechaInicio", query = "SELECT t FROM TCargas t WHERE t.fechaInicio = :fechaInicio")
     , @NamedQuery(name = "TCargas.findByFechaFin", query = "SELECT t FROM TCargas t WHERE t.fechaFin = :fechaFin")
@@ -45,12 +47,8 @@ public class TCargas implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "Id")
-    private Long id;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "IdCarga")
-    private long idCarga;
+    private Long idCarga;
     @Column(name = "FechaInicio")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInicio;
@@ -75,33 +73,26 @@ public class TCargas implements Serializable {
     @JoinColumn(name = "IdSede", referencedColumnName = "IdSede")
     @ManyToOne
     private TSedes idSede;
+    @OneToMany(mappedBy = "idCarga")
+    private List<TMovimientos> tMovimientosList;
 
     public TCargas() {
     }
 
-    public TCargas(Long id) {
-        this.id = id;
+    public TCargas(Long idCarga) {
+        this.idCarga = idCarga;
     }
 
-    public TCargas(Long id, long idCarga, boolean sincronizacion) {
-        this.id = id;
+    public TCargas(Long idCarga, boolean sincronizacion) {
         this.idCarga = idCarga;
         this.sincronizacion = sincronizacion;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public long getIdCarga() {
+    public Long getIdCarga() {
         return idCarga;
     }
 
-    public void setIdCarga(long idCarga) {
+    public void setIdCarga(Long idCarga) {
         this.idCarga = idCarga;
     }
 
@@ -169,10 +160,19 @@ public class TCargas implements Serializable {
         this.idSede = idSede;
     }
 
+    @XmlTransient
+    public List<TMovimientos> getTMovimientosList() {
+        return tMovimientosList;
+    }
+
+    public void setTMovimientosList(List<TMovimientos> tMovimientosList) {
+        this.tMovimientosList = tMovimientosList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idCarga != null ? idCarga.hashCode() : 0);
         return hash;
     }
 
@@ -183,7 +183,7 @@ public class TCargas implements Serializable {
             return false;
         }
         TCargas other = (TCargas) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idCarga == null && other.idCarga != null) || (this.idCarga != null && !this.idCarga.equals(other.idCarga))) {
             return false;
         }
         return true;
@@ -191,7 +191,7 @@ public class TCargas implements Serializable {
 
     @Override
     public String toString() {
-        return "ValueObject.TCargas[ id=" + id + " ]";
+        return "ValueObject.TCargas[ idCarga=" + idCarga + " ]";
     }
     
 }

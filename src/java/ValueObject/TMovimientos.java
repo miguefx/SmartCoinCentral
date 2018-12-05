@@ -14,6 +14,8 @@ import javax.persistence.ColumnResult;
 import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SqlResultSetMapping;
@@ -26,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author matc_
+ * @author miguel
  */
 @Entity
 @Table(name = "T_Movimientos")
@@ -36,8 +38,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "TMovimientos.findByIdMovimiento", query = "SELECT t FROM TMovimientos t WHERE t.idMovimiento = :idMovimiento")
     , @NamedQuery(name = "TMovimientos.findByIdTransaccion", query = "SELECT t FROM TMovimientos t WHERE t.idTransaccion = :idTransaccion")
     , @NamedQuery(name = "TMovimientos.findByIdSede", query = "SELECT t FROM TMovimientos t WHERE t.idSede = :idSede")
-    , @NamedQuery(name = "TMovimientos.findByIdCarga", query = "SELECT t FROM TMovimientos t WHERE t.idCarga = :idCarga")
-    , @NamedQuery(name = "TMovimientos.findByIdArqueo", query = "SELECT t FROM TMovimientos t WHERE t.idArqueo = :idArqueo")
     , @NamedQuery(name = "TMovimientos.findByIdModulo", query = "SELECT t FROM TMovimientos t WHERE t.idModulo = :idModulo")
     , @NamedQuery(name = "TMovimientos.findByParte", query = "SELECT t FROM TMovimientos t WHERE t.parte = :parte")
     , @NamedQuery(name = "TMovimientos.findByAccion", query = "SELECT t FROM TMovimientos t WHERE t.accion = :accion")
@@ -73,10 +73,6 @@ public class TMovimientos implements Serializable {
     private BigInteger idTransaccion;
     @Column(name = "IdSede")
     private BigInteger idSede;
-    @Column(name = "IdCarga")
-    private BigInteger idCarga;
-    @Column(name = "IdArqueo")
-    private BigInteger idArqueo;
     @Size(max = 50)
     @Column(name = "IdModulo")
     private String idModulo;
@@ -100,6 +96,12 @@ public class TMovimientos implements Serializable {
     @NotNull
     @Column(name = "Sincronizacion")
     private boolean sincronizacion;
+    @JoinColumn(name = "IdArqueo", referencedColumnName = "IdArqueo")
+    @ManyToOne
+    private TArqueos idArqueo;
+    @JoinColumn(name = "IdCarga", referencedColumnName = "IdCarga")
+    @ManyToOne
+    private TCargas idCarga;
 
     public TMovimientos() {
     }
@@ -135,22 +137,6 @@ public class TMovimientos implements Serializable {
 
     public void setIdSede(BigInteger idSede) {
         this.idSede = idSede;
-    }
-
-    public BigInteger getIdCarga() {
-        return idCarga;
-    }
-
-    public void setIdCarga(BigInteger idCarga) {
-        this.idCarga = idCarga;
-    }
-
-    public BigInteger getIdArqueo() {
-        return idArqueo;
-    }
-
-    public void setIdArqueo(BigInteger idArqueo) {
-        this.idArqueo = idArqueo;
     }
 
     public String getIdModulo() {
@@ -215,6 +201,22 @@ public class TMovimientos implements Serializable {
 
     public void setSincronizacion(boolean sincronizacion) {
         this.sincronizacion = sincronizacion;
+    }
+
+    public TArqueos getIdArqueo() {
+        return idArqueo;
+    }
+
+    public void setIdArqueo(TArqueos idArqueo) {
+        this.idArqueo = idArqueo;
+    }
+
+    public TCargas getIdCarga() {
+        return idCarga;
+    }
+
+    public void setIdCarga(TCargas idCarga) {
+        this.idCarga = idCarga;
     }
 
     @Override

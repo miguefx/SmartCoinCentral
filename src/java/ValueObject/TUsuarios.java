@@ -7,7 +7,6 @@ package ValueObject;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,18 +15,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author matc_
+ * @author miguel
  */
 @Entity
 @Table(name = "T_Usuarios")
@@ -78,14 +75,14 @@ public class TUsuarios implements Serializable {
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "Estado")
-    private Boolean estado;
+    private boolean estado;
     @Basic(optional = false)
     @NotNull
     @Column(name = "Sincronizacion")
     private boolean sincronizacion;
-    @OneToMany(mappedBy = "idUsuario")
-    private List<TEventos> tEventosList;
     @JoinColumn(name = "IdEmpresa", referencedColumnName = "IdEmpresa")
     @ManyToOne
     private TEmpresas idEmpresa;
@@ -97,9 +94,10 @@ public class TUsuarios implements Serializable {
         this.documento = documento;
     }
 
-    public TUsuarios(Long documento, long idUsuario, boolean sincronizacion) {
+    public TUsuarios(Long documento, long idUsuario, boolean estado, boolean sincronizacion) {
         this.documento = documento;
         this.idUsuario = idUsuario;
+        this.estado = estado;
         this.sincronizacion = sincronizacion;
     }
 
@@ -175,11 +173,11 @@ public class TUsuarios implements Serializable {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public Boolean getEstado() {
+    public boolean getEstado() {
         return estado;
     }
 
-    public void setEstado(Boolean estado) {
+    public void setEstado(boolean estado) {
         this.estado = estado;
     }
 
@@ -189,15 +187,6 @@ public class TUsuarios implements Serializable {
 
     public void setSincronizacion(boolean sincronizacion) {
         this.sincronizacion = sincronizacion;
-    }
-
-    @XmlTransient
-    public List<TEventos> getTEventosList() {
-        return tEventosList;
-    }
-
-    public void setTEventosList(List<TEventos> tEventosList) {
-        this.tEventosList = tEventosList;
     }
 
     public TEmpresas getIdEmpresa() {

@@ -8,6 +8,7 @@ package ValueObject;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.ColumnResult;
@@ -18,23 +19,24 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author matc_
+ * @author miguel
  */
 @Entity
 @Table(name = "T_Arqueos")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TArqueos.findAll", query = "SELECT t FROM TArqueos t")
-    , @NamedQuery(name = "TArqueos.findById", query = "SELECT t FROM TArqueos t WHERE t.id = :id")
     , @NamedQuery(name = "TArqueos.findByIdArqueo", query = "SELECT t FROM TArqueos t WHERE t.idArqueo = :idArqueo")
     , @NamedQuery(name = "TArqueos.findByFechaInicio", query = "SELECT t FROM TArqueos t WHERE t.fechaInicio = :fechaInicio")
     , @NamedQuery(name = "TArqueos.findByFechaFin", query = "SELECT t FROM TArqueos t WHERE t.fechaFin = :fechaFin")
@@ -59,12 +61,8 @@ public class TArqueos implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "Id")
-    private Long id;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "IdArqueo")
-    private long idArqueo;
+    private Long idArqueo;
     @Column(name = "FechaInicio")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInicio;
@@ -72,7 +70,7 @@ public class TArqueos implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFin;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "Valor",precision = Integer.SIZE)
+    @Column(name = "Valor")
     private Double valor;
     @Column(name = "IdUsuario")
     private BigInteger idUsuario;
@@ -97,33 +95,26 @@ public class TArqueos implements Serializable {
     @JoinColumn(name = "IdSede", referencedColumnName = "IdSede")
     @ManyToOne
     private TSedes idSede;
+    @OneToMany(mappedBy = "idArqueo")
+    private List<TMovimientos> tMovimientosList;
 
     public TArqueos() {
     }
 
-    public TArqueos(Long id) {
-        this.id = id;
+    public TArqueos(Long idArqueo) {
+        this.idArqueo = idArqueo;
     }
 
-    public TArqueos(Long id, long idArqueo, boolean sincronizacion) {
-        this.id = id;
+    public TArqueos(Long idArqueo, boolean sincronizacion) {
         this.idArqueo = idArqueo;
         this.sincronizacion = sincronizacion;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public long getIdArqueo() {
+    public Long getIdArqueo() {
         return idArqueo;
     }
 
-    public void setIdArqueo(long idArqueo) {
+    public void setIdArqueo(Long idArqueo) {
         this.idArqueo = idArqueo;
     }
 
@@ -223,10 +214,19 @@ public class TArqueos implements Serializable {
         this.idSede = idSede;
     }
 
+    @XmlTransient
+    public List<TMovimientos> getTMovimientosList() {
+        return tMovimientosList;
+    }
+
+    public void setTMovimientosList(List<TMovimientos> tMovimientosList) {
+        this.tMovimientosList = tMovimientosList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idArqueo != null ? idArqueo.hashCode() : 0);
         return hash;
     }
 
@@ -237,7 +237,7 @@ public class TArqueos implements Serializable {
             return false;
         }
         TArqueos other = (TArqueos) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idArqueo == null && other.idArqueo != null) || (this.idArqueo != null && !this.idArqueo.equals(other.idArqueo))) {
             return false;
         }
         return true;
@@ -245,7 +245,7 @@ public class TArqueos implements Serializable {
 
     @Override
     public String toString() {
-        return "ValueObject.TArqueos[ id=" + id + " ]";
+        return "ValueObject.TArqueos[ idArqueo=" + idArqueo + " ]";
     }
     
 }

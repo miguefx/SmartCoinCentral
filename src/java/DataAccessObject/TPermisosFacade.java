@@ -47,7 +47,7 @@ public class TPermisosFacade extends AbstractFacade<TPermisos> {
 
     public List<String> buscarPermisosPorCedula(Long documentoElegido) {
         try {
-            Query query = em.createQuery("select DISTINCT a.nombreContol from TPermisos a where a.documentoUsuario = ?1");
+            Query query = em.createQuery("select DISTINCT a.nombreControl from TPermisos a where a.documentoUsuario = ?1");
             query.setParameter(1, documentoElegido);
             List<String> listPermisos = query.getResultList();
             return listPermisos;

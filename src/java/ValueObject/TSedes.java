@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author matc_
+ * @author miguel
  */
 @Entity
 @Table(name = "T_Sedes")
@@ -62,8 +62,10 @@ public class TSedes implements Serializable {
     @Size(max = 50)
     @Column(name = "TelefonoContacto")
     private String telefonoContacto;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "Estado")
-    private Boolean estado;
+    private boolean estado;
     @OneToMany(mappedBy = "idSede")
     private List<TCargas> tCargasList;
     @OneToMany(mappedBy = "idSede")
@@ -96,10 +98,11 @@ public class TSedes implements Serializable {
         this.idSede = idSede;
     }
 
-    public TSedes(Long idSede, String nombre, String usuarioAsigando) {
+    public TSedes(Long idSede, String nombre, String usuarioAsigando, boolean estado) {
         this.idSede = idSede;
         this.nombre = nombre;
         this.usuarioAsigando = usuarioAsigando;
+        this.estado = estado;
     }
 
     public Long getIdSede() {
@@ -142,11 +145,11 @@ public class TSedes implements Serializable {
         this.telefonoContacto = telefonoContacto;
     }
 
-    public Boolean getEstado() {
+    public boolean getEstado() {
         return estado;
     }
 
-    public void setEstado(Boolean estado) {
+    public void setEstado(boolean estado) {
         this.estado = estado;
     }
 

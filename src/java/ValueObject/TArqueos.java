@@ -57,6 +57,9 @@ import javax.xml.bind.annotation.XmlTransient;
 }))
 public class TArqueos implements Serializable {
 
+    @Column(name = "IdLocal")
+    private BigInteger idLocal;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -246,6 +249,14 @@ public class TArqueos implements Serializable {
     @Override
     public String toString() {
         return "ValueObject.TArqueos[ idArqueo=" + idArqueo + " ]";
+    }
+
+    public BigInteger getIdLocal() {
+        return idLocal;
+    }
+
+    public void setIdLocal(BigInteger idLocal) {
+        this.idLocal = idLocal;
     }
     
 }

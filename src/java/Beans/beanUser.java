@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.sql.Connection;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -325,6 +326,17 @@ public class beanUser implements Serializable {
     private Boolean btnReporte = false;
     private Boolean btnUsers = false;
     private Boolean reportesConsolidados = false;
+    private Boolean monitoreo = false;
+
+    public Boolean getMonitoreo() {
+        return monitoreo;
+    }
+
+    public void setMonitoreo(Boolean monitoreo) {
+        this.monitoreo = monitoreo;
+    }
+    
+    
 
     public Boolean getClaveDinamica() {
         return claveDinamica;
@@ -546,6 +558,11 @@ public class beanUser implements Serializable {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
                 }
 
+            } else if (url.equals("http://107.180.70.70:9090/SmartCoin/monitoreo.xhtml")) {
+                if (monitoreo == false) {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
+                }
+
             }
 
         } catch (Exception e) {
@@ -653,6 +670,7 @@ public class beanUser implements Serializable {
                 listaDePermisos.add(new Permisos("Registro de usuarios", false));
                 listaDePermisos.add(new Permisos("Gestion de usuarios", false));
                 listaDePermisos.add(new Permisos("Reportes Consolidados", false));
+                listaDePermisos.add(new Permisos("Monitoreo", false));
                 if (listPermisosSession != null) {
 
                     for (int i = 0; i < listPermisosSession.size(); i++) {
@@ -685,10 +703,12 @@ public class beanUser implements Serializable {
                             reporteAnual = listaDePermisos.get(i).getEstado();
                         } else if (listaDePermisos.get(i).getNombrePermiso().equals("Reportes Consolidados")) {
                             reportesConsolidados = listaDePermisos.get(i).getEstado();
+                        }else if (listaDePermisos.get(i).getNombrePermiso().equals("Monitoreo")) {
+                            monitoreo = listaDePermisos.get(i).getEstado();
                         }
                     }
 
-                    if (arqueos || transacciones || saldoEnLinea || cargas) {
+                    if (arqueos || transacciones || saldoEnLinea || cargas || monitoreo) {
                         btnConsultas = true;
                     }
                     if (registro || gestionDeUsuarios) {
@@ -833,7 +853,11 @@ public class beanUser implements Serializable {
             objDaoUsuario.edit(objVoUsuarios);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto", "Usuario Actualizado"));
             banderaDisa = true;
-            editar = false;
+            editar = false;cargo="";
+            nombre="";
+            apellido="";
+            usuario="";
+            
 
         } catch (Exception e) {
         }
@@ -1044,6 +1068,7 @@ public class beanUser implements Serializable {
             listNombreControlSource2.add("Registro de usuarios");
             listNombreControlSource2.add("Gestion de usuarios");
             listNombreControlSource2.add("Reportes Consolidados");
+            listNombreControlSource2.add("Monitoreo");
 
             for (int i = 0; i < listPermisos.size(); i++) {
                 for (int j = 0; j < listNombreControlSource.size(); j++) {

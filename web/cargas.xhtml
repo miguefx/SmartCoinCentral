@@ -17,12 +17,12 @@
                         <div class="card card-w-title">
                             <p:overlayPanel id="tablcarga"  for="search" hideEffect="clip" showEffect="clip" dismissable="false" dynamic="true"  onHide="cerrarCarga()"  showCloseIcon="true">
                                 <div class="ui-g-12">
-                                    <p:dataTable id="cargaTable" emptyMessage="Cero registros encontrados" style="font-size: 15px;" value="#{beanCarga.listCargas}" var="cargas" reflow="true" paginator="true" rows="5" selectionMode="single" selection="#{beanCarga.seleccionCarga}" rowKey="#{cargas.idCarga}" sortBy="#{cargas.idCarga}"  sortOrder="ascending" filteredValue="#{beanCarga.listCargasFiltrer}" >
+                                    <p:dataTable id="cargaTable" emptyMessage="Cero registros encontrados" style="font-size: 15px;" value="#{beanCarga.listCargas}" var="cargas" reflow="true" paginator="true" rows="5" selectionMode="single" selection="#{beanCarga.seleccionCarga}" rowKey="#{cargas.idLocal}" sortBy="#{cargas.idLocal}"  sortOrder="ascending" filteredValue="#{beanCarga.listCargasFiltrer}" >
                                         <f:facet name="header">
                                             <p:outputLabel value="Cargas Generadas" />
                                         </f:facet>
-                                        <p:column headerText="Codigo" filterBy="#{cargas.idCarga}" filterMatchMode="contains"  >
-                                            <p:outputLabel value="#{cargas.idCarga}"/>
+                                        <p:column headerText="Codigo" filterBy="#{cargas.idLocal}" filterMatchMode="contains"  >
+                                            <p:outputLabel value="#{cargas.idLocal}"/>
                                         </p:column>
                                         <p:column headerText="Fecha Inicial" filterBy="#{cargas.fechaInicio}" filterMatchMode="contains">
                                             <p:outputLabel value="#{cargas.fechaInicio}">
@@ -38,7 +38,7 @@
                                             <p:outputLabel value="#{cargas.idUsuario}" />
                                         </p:column>
                                         <p:column headerText="Modulo" filterBy="#{cargas.idModulo.idModulo}" filterMatchMode="contains" >
-                                            <p:outputLabel value="#{cargas.idModulo.idModulo}" />
+                                            <p:outputLabel value="#{cargas.idModulo.idModulo.toString().substring(9)}" />
                                         </p:column>
                                     </p:dataTable>
                                     <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" >
@@ -49,7 +49,7 @@
                                             <div class="card card-w-title">
                                                 <p:dataTable id="tableMov"  reflow="true"  value="#{beanCarga.listMovimientosFiltrer}" var="carg" paginator="true" rows="5" >
                                                     <f:facet name="header">
-                                                        <p:outputLabel value="Detalle de la carga  : #{beanCarga.seleccionCarga.idCarga}"/>
+                                                        <p:outputLabel value="Detalle de la carga  : #{beanCarga.seleccionCarga.idLocal}"/>
                                                     </f:facet>
                                                     <p:column headerText="Parte" >
                                                         <p:outputLabel value="#{carg.parte}"/>

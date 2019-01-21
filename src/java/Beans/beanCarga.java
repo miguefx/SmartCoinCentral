@@ -357,7 +357,7 @@ public class beanCarga implements Serializable {
 
     public void generarListaMovimientoCarga(ActionEvent egt) {
         try {
-            listMovimientosFiltrer = objDaoMovimientos.retornarListaMovimientosByIdCarga(seleccionCarga.getIdCarga(),seleccionCarga.getIdModulo().getIdModulo());
+            listMovimientosFiltrer = objDaoMovimientos.retornarListaMovimientosByIdCarga(seleccionCarga.getIdLocal(),seleccionCarga.getIdModulo().getIdModulo());
         } catch (Exception e) {
         }
     }

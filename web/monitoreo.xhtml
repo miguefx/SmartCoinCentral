@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="myform">
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-lg-12">
+                        <!-- Left Side -->
+                        <div class="card card-w-title">
+                            <h1>Estados de los modulos <b>Smart Coin</b></h1>
+                        </div>
+                        <p:poll interval="1" listener="#{beanMonitoreo.actualizarTabla()}" update="tablaMonitoreo" />
+                        <p:dataTable id="tablaMonitoreo" var="monitoreo" value="#{beanMonitoreo.listMonitoreo}"  style="font-size: 15px;"  >
+                            <f:facet name="header">
+                                <p:outputLabel value="Monitoreo" />
+                            </f:facet>
+                            <p:column headerText="Modulo">
+                                <p:outputLabel value="#{monitoreo.modulo.toString().substring(9)}"/>
+                            </p:column>
+                            <p:column headerText="Estado">
+                                <p:outputLabel value="#{monitoreo.estado}" style="color: #{beanMonitoreo.calculaColor(monitoreo.estado)};"/>
+                            </p:column>
+                            <p:column headerText="Fecha Del Reporte" >
+                                <p:outputLabel value="#{monitoreo.dateFinal}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

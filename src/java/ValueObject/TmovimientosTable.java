@@ -5,6 +5,8 @@
  */
 package ValueObject;
 
+import java.text.DecimalFormat;
+
 /**
  *
  * @author matc_
@@ -12,12 +14,12 @@ package ValueObject;
 public class TmovimientosTable {
 
     private String parte;
-    private String denominacion;
+    private Double denominacion;
     private Integer cantidad;
     private String accion;
     private Long idTransaccion;
 
-    public TmovimientosTable(String parte, String denominacion, Integer cantidad, String accion, Long idTransaccion, Double valor) {
+    public TmovimientosTable(String parte, Double denominacion, Integer cantidad, String accion, Long idTransaccion, Double valor) {
         this.parte = parte;
         this.denominacion = denominacion;
         this.cantidad = cantidad;
@@ -57,11 +59,11 @@ public class TmovimientosTable {
         this.parte = parte;
     }
 
-    public String getDenominacion() {
+    public Double getDenominacion() {
         return denominacion;
     }
 
-    public void setDenominacion(String denominacion) {
+    public void setDenominacion(Double denominacion) {
         this.denominacion = denominacion;
     }
 

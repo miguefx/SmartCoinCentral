@@ -43,6 +43,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "TCargas.findByFechaUltimaAnterior", query = "SELECT t FROM TCargas t WHERE t.fechaUltimaAnterior = :fechaUltimaAnterior")})
 public class TCargas implements Serializable {
 
+    @Column(name = "IdLocal")
+    private BigInteger idLocal;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -192,6 +195,14 @@ public class TCargas implements Serializable {
     @Override
     public String toString() {
         return "ValueObject.TCargas[ idCarga=" + idCarga + " ]";
+    }
+
+    public BigInteger getIdLocal() {
+        return idLocal;
+    }
+
+    public void setIdLocal(BigInteger idLocal) {
+        this.idLocal = idLocal;
     }
     
 }

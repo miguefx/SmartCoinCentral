@@ -50,7 +50,7 @@ import javax.xml.bind.annotation.XmlRootElement;
             name = "mapeo", classes = @ConstructorResult(targetClass = TmovimientosTable.class, columns = {
         @ColumnResult(name = "parte", type = String.class)
         ,
-                        @ColumnResult(name = "denominacion", type = String.class)
+                        @ColumnResult(name = "denominacion", type = Double.class)
         ,
                         @ColumnResult(name = "cantidad", type = Integer.class)
         ,

@@ -15,12 +15,12 @@
 
                             <p:overlayPanel id="tablArq"  for="search" onHide="limpiar()"    hideEffect="clip" showEffect="clip" dismissable="false" dynamic="true"     showCloseIcon="true">
                                 <div class="ui-g-12">
-                                    <p:dataTable id="arqueostabla"   var="arqueo" value="#{beanArqueo.listArqueosFiltrado}" style="font-size: 15px;" emptyMessage="Cero registros encontrados" selectionMode="single" selection="#{beanArqueo.seleccionArqueos}"  rowKey="#{arqueo.id}"  sortBy="#{arqueo.fechaInicio.time}" sortOrder="descending"  filteredValue="#{beanArqueo.listArqueosFiltradoTable}"  reflow="true" paginator="true" rows="5"  >
+                                    <p:dataTable id="arqueostabla"   var="arqueo" value="#{beanArqueo.listArqueosFiltrado}" style="font-size: 15px;" emptyMessage="Cero registros encontrados" selectionMode="single" selection="#{beanArqueo.seleccionArqueos}"  rowKey="#{arqueo.idLocal}"  sortBy="#{arqueo.fechaInicio.time}" sortOrder="descending"  filteredValue="#{beanArqueo.listArqueosFiltradoTable}"  reflow="true" paginator="true" rows="5"  >
                                         <f:facet name="header">
                                             <p:outputLabel value="Arqueos realizados" />
                                         </f:facet>
-                                        <p:column headerText="Cod" filterBy="#{arqueo.idArqueo}" filterMatchMode="contains">
-                                            <p:outputLabel value="#{arqueo.idArqueo}"/>
+                                        <p:column headerText="Cod" filterBy="#{arqueo.idLocal}" filterMatchMode="contains">
+                                            <p:outputLabel value="#{arqueo.idLocal}"/>
                                         </p:column>
                                         <p:column headerText="Fecha Inicio" filterBy="#{arqueo.fechaInicio}" filterMatchMode="contains">
                                             <p:outputLabel value="#{arqueo.fechaInicio}">
@@ -36,7 +36,7 @@
                                             <p:outputLabel  value="#{arqueo.idUsuario} "/>
                                         </p:column>
                                         <p:column headerText="Modulo" filterBy="#{arqueo.idModulo.idModulo}" filterMatchMode="contains">
-                                            <p:outputLabel  value="#{arqueo.idModulo.idModulo} "/>
+                                            <p:outputLabel  value="#{arqueo.idModulo.idModulo.toString().substring(9)} "/>
                                         </p:column>
                                         <p:column headerText="Tipo" filterBy="#{arqueo.tipo}" filterMatchMode="contains">
                                             <p:outputLabel  value="#{arqueo.tipo}"/>
@@ -69,7 +69,7 @@
                                             <div class="ui-g-12 ui-lg-10">
                                                 <p:dataTable id="tableMov"   value="#{beanArqueo.listMovimientosFiltrer}" var="mov" paginator="true" rows="5" reflow="true" >
                                                     <f:facet name="header">
-                                                        <p:outputLabel value=" Detalle de la transaccion numero : #{beanArqueo.seleccionArqueos.idArqueo}" />
+                                                        <p:outputLabel value=" Detalle de la transaccion numero : #{beanArqueo.seleccionArqueos.idLocal}" />
                                                     </f:facet>
                                                     <p:column headerText="Parte">
                                                         <p:outputLabel value="#{mov.parte}"/>
@@ -134,7 +134,7 @@
                                                 <div class="card card-w-title">
                                                     <p:dataTable id="transaccionesTable" reflow="true"  emptyMessage="Cero registros encontrados"  value="#{beanArqueo.listTransaccionesDeArqueos}"   paginator="true" rows="3"    var="transacciones" >
                                                         <f:facet name="header">
-                                                            <p:outputLabel value="Detalle de las trasacciones con arqueo numero : #{beanArqueo.seleccionArqueos.idArqueo}" />
+                                                            <p:outputLabel value="Detalle de las trasacciones con arqueo numero : #{beanArqueo.seleccionArqueos.idLocal}" />
                                                         </f:facet>
                                                         <p:column headerText="Factura">
                                                             <p:outputLabel value="#{transacciones.numeroFactura}"/>

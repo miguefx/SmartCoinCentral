@@ -87,6 +87,7 @@ public class TConfiguracion implements Serializable {
     }
 
     public String getIdModulo() {
+        
         return idModulo;
     }
 

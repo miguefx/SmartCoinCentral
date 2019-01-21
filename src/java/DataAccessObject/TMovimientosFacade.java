@@ -8,6 +8,7 @@ package DataAccessObject;
 import ValueObject.TMovimientos;
 import ValueObject.TmovimientosTable;
 import ValueObject.TreporteArqueos;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -36,9 +37,9 @@ public class TMovimientosFacade extends AbstractFacade<TMovimientos> {
         super(TMovimientos.class);
     }
 
-    public List<TmovimientosTable> retornarListaMovimientos(String idModulo, Long idArqueo) {
+    public List<TmovimientosTable> retornarListaMovimientos(String idModulo, BigInteger idArqueo) {
         try {
-            Query query = em.createNativeQuery("select Parte, Denominacion, SUM(Cantidad) as cantidad, Accion, SUM(Valor) as valor from T_Movimientos WHERE (IdModulo = ?) and (IdArqueo = ?) group by Denominacion,Parte,Accion", "mapeo");
+            Query query = em.createNativeQuery("select Parte, Denominacion, SUM(Cantidad) as cantidad, Accion, SUM(Valor) as valor from T_Movimientos  WHERE (IdModulo = ?) and (IdArqueo = ?) group by Denominacion,Parte,Accion", "mapeo");
             query.setParameter(1, idModulo);
             query.setParameter(2, idArqueo);
             List<TmovimientosTable> listMovimientos = query.getResultList();
@@ -60,9 +61,9 @@ public class TMovimientosFacade extends AbstractFacade<TMovimientos> {
         return null;
     }
 
-    public List<TmovimientosTable> retornarListaMovimientosByIdCarga(Long idCarga, String idModulo) {
+    public List<TmovimientosTable> retornarListaMovimientosByIdCarga(BigInteger idCarga, String idModulo) {
         try {
-            Query query = em.createNativeQuery("select Parte, Denominacion, SUM(Cantidad) as cantidad, SUM(Valor) as valor from T_Movimientos WHERE IdCarga = ? and IdModulo = ? group by Denominacion,Parte", "mapeo");
+            Query query = em.createNativeQuery("select Parte, Denominacion, SUM(Cantidad) as cantidad, SUM(Valor) as valor from T_Movimientos  WHERE IdCarga = ? and IdModulo = ?  group by Denominacion,Parte", "mapeo");
             query.setParameter(1, idCarga);
             query.setParameter(2, idModulo);
             List<TmovimientosTable> listMovimientos = query.getResultList();

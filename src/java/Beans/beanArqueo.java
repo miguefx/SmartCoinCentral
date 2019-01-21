@@ -605,7 +605,7 @@ public class beanArqueo implements Serializable {
 
     public void generarListaMovimientoArqueo(ActionEvent egt) {
         try {
-            listMovimientosFiltrer = objDaoMovimientos.retornarListaMovimientos(seleccionArqueos.getIdModulo().getIdModulo(),seleccionArqueos.getIdArqueo());
+            listMovimientosFiltrer = objDaoMovimientos.retornarListaMovimientos(seleccionArqueos.getIdModulo().getIdModulo(),seleccionArqueos.getIdLocal());
 
             for (int i = 0; i < listMovimientosFiltrer.size(); i++) {
                 if (listMovimientosFiltrer.get(i).getAccion().equals("Entrada")) {

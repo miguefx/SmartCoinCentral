@@ -6,6 +6,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
+
     <ui:define name="content">
         <title>Transacciones Smart</title>
         <h:form id="myform" >
@@ -20,8 +21,8 @@
                                         <f:facet name="header">
                                             Transacciones
                                         </f:facet>
-                                        <p:column headerText="Modulo" filterBy="#{transacciones.idModulo.idModulo}"   filterMatchMode="contains" >
-                                            <p:outputLabel value="#{transacciones.idModulo.idModulo}" />
+                                        <p:column  headerText="Modulo" filterBy="#{transacciones.idModulo.idModulo}"   filterMatchMode="contains" >
+                                            <p:outputLabel value="#{transacciones.idModulo.idModulo.toString().substring(9)}" />
                                         </p:column>
                                         <p:column headerText="Factura" filterBy="#{transacciones.numeroFactura}"   filterMatchMode="contains" >
                                             <p:outputLabel value="#{transacciones.numeroFactura}" />
@@ -101,7 +102,7 @@
                                                 </p:column>
                                                 <p:column headerText="Valor">
                                                     <p:outputLabel value="#{mov.valor}">
-                                                        <f:convertNumber type="currency" currencySymbol="$" />
+                                                        <f:convertNumber type="currency" currencySymbol="$" integerOnly="true" maxFractionDigits="0" />
                                                     </p:outputLabel>
                                                 </p:column>
                                             </p:dataTable>

@@ -17,35 +17,20 @@ package Beans;
 
 import DataAccessObject.*;
 import ValueObject.*;
-import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.sql.Connection;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
-import java.util.HashMap;
-import java.util.Map;
-import javax.annotation.PostConstruct;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.export.JRXlsExporter;
 import javax.servlet.http.HttpSession;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.event.SelectEvent;
@@ -326,7 +311,28 @@ public class beanUser implements Serializable {
     private Boolean btnReporte = false;
     private Boolean btnUsers = false;
     private Boolean reportesConsolidados = false;
+    private Boolean reportesTransportadora = false;
+    private Boolean drivers = false;
     private Boolean monitoreo = false;
+
+    public Boolean getReportesTransportadora() {
+        return reportesTransportadora;
+    }
+
+    public void setReportesTransportadora(Boolean reportesTransportadora) {
+        this.reportesTransportadora = reportesTransportadora;
+    }
+
+    public Boolean getDrivers() {
+        return drivers;
+    }
+
+    public void setDrivers(Boolean drivers) {
+        this.drivers = drivers;
+    }
+    
+    
+    
 
     public Boolean getMonitoreo() {
         return monitoreo;
@@ -548,13 +554,13 @@ public class beanUser implements Serializable {
                 if (gestionDeUsuarios == false) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
                 }
-            } else if (url.equals("http://107.180.70.70:9090/SmartCoin/reporteMensual.xhtml")) {
-                if (reporteMensual == false) {
+            } else if (url.equals("http://107.180.70.70:9090/SmartCoin/reportesConsolidados.xhtml")) {
+                if (reportesConsolidados == false) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
                 }
 
-            } else if (url.equals("http://107.180.70.70:9090/SmartCoin/reporteAnual.xhtml")) {
-                if (reporteAnual == false) {
+            } else if (url.equals("http://107.180.70.70:9090/SmartCoin/reporteTransportadora.xhtml")) {
+                if (reportesTransportadora == false) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
                 }
 
@@ -670,6 +676,7 @@ public class beanUser implements Serializable {
                 listaDePermisos.add(new Permisos("Registro de usuarios", false));
                 listaDePermisos.add(new Permisos("Gestion de usuarios", false));
                 listaDePermisos.add(new Permisos("Reportes Consolidados", false));
+                listaDePermisos.add(new Permisos("Reporte Transportadora", false));
                 listaDePermisos.add(new Permisos("Monitoreo", false));
                 if (listPermisosSession != null) {
 
@@ -703,7 +710,9 @@ public class beanUser implements Serializable {
                             reporteAnual = listaDePermisos.get(i).getEstado();
                         } else if (listaDePermisos.get(i).getNombrePermiso().equals("Reportes Consolidados")) {
                             reportesConsolidados = listaDePermisos.get(i).getEstado();
-                        }else if (listaDePermisos.get(i).getNombrePermiso().equals("Monitoreo")) {
+                        }else if (listaDePermisos.get(i).getNombrePermiso().equals("Reporte Transportadora")) {
+                            reportesTransportadora=listaDePermisos.get(i).getEstado();
+                        } else if (listaDePermisos.get(i).getNombrePermiso().equals("Monitoreo")) {
                             monitoreo = listaDePermisos.get(i).getEstado();
                         }
                     }
@@ -714,7 +723,7 @@ public class beanUser implements Serializable {
                     if (registro || gestionDeUsuarios) {
                         btnUsers = true;
                     }
-                    if (reportesConsolidados) {
+                    if (reportesConsolidados || reportesTransportadora) {
                         btnReporte = true;
                     }
                 }
@@ -1068,6 +1077,7 @@ public class beanUser implements Serializable {
             listNombreControlSource2.add("Registro de usuarios");
             listNombreControlSource2.add("Gestion de usuarios");
             listNombreControlSource2.add("Reportes Consolidados");
+            listNombreControlSource2.add("Reporte Transportadora");
             listNombreControlSource2.add("Monitoreo");
 
             for (int i = 0; i < listPermisos.size(); i++) {

@@ -29,7 +29,7 @@
                                         </p:column>
                                         <p:column headerText="Fecha Pago" filterBy="#{transacciones.fechaTransaccion}" width="17%"  filterMatchMode="contains" >
                                             <p:outputLabel value="#{transacciones.fechaTransaccion}">
-                                                <f:convertDateTime pattern="MM/dd/yyyy hh:mm a" dateStyle="both" type="date"  />
+                                                <f:convertDateTime pattern="dd/MM/yyyy hh:mm a" dateStyle="both" type="date"  />
                                             </p:outputLabel>
 
                                         </p:column>
@@ -54,9 +54,10 @@
                                             </p:outputLabel>
                                         </p:column>
                                     </p:dataTable>
-                                    <p:panelGrid columns="2" styleClass="ui-panelgrid-blank" layout="grid">
+                                    <p:panelGrid columns="3" styleClass="ui-panelgrid-blank" layout="grid">
                                         <p:commandButton  id="btnTotal" value="Ver Totales" update="recibido2 subtotal2 comision2 redon2 iv2 totalMonedas"  icon="fa fa-plus-square-o"  />
                                         <p:commandButton id="btnDq" value="Ver Detalle"  icon="fa fa-clipboard" oncomplete="ok2()" />
+                                        <p:commandButton id="btnfacturaGenerar" value="Copia de factura"  icon="fa fa fa-money" actionListener="#{beanTransacciones.emitirFactura(egt)}"  ajax="false" />
                                     </p:panelGrid>
                                     <p:overlayPanel id="carPanel" for="btnTotal" my="right" at="top" hideEffect="clip" showEffect="clip" dynamic="true" showCloseIcon="true" dismissable="false" >
                                         <p:panelGrid columns="6" styleClass="ui-panelgrid-blank" >

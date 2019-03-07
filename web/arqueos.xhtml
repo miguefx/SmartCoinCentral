@@ -223,9 +223,9 @@
 
                                     <p:remoteCommand name="ok2"  update="tableMov" actionListener="#{beanArqueo.generarListaMovimientoArqueo(egt)}"  />
                                     <p:remoteCommand name="ok2Close"  update="tableMov" actionListener="#{beanArqueo.limpiarTablaMovimientos()}"  />
-                                    <p:remoteCommand name="ok"  update="transaccionesTable" actionListener="#{beanArqueo.generarTablaTransacciones(event)}" />
+                                    <p:remoteCommand name="ok"  update="transaccionesTable" actionListener="#{beanArqueo.generarTablaTransacciones(egt)}" />
                                     <p:remoteCommand name="limpiar"  update="arqueostabla" actionListener="#{beanArqueo.limpiar()}"  />
-                                    <p:remoteCommand name="limpiartransaccion"  update="transaccionesTable" actionListener="#{beanArqueo.limpiartransaccion()}"  />
+                                    <p:remoteCommand name="limpiartransaccion"  update="transaccionesTable recibido subtotal comision redon iv totalMonedas" actionListener="#{beanArqueo.limpiartransaccion()}"  />
 
                                 </div>
                                 <div class="ui-g-12 ui-lg-2">

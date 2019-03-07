@@ -14,6 +14,7 @@ import ValueObject.*;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.inject.Instance;
 import javax.faces.application.FacesMessage;
@@ -28,6 +29,11 @@ import javax.inject.Inject;
 @ManagedBean
 @SessionScoped
 public class beanAlarma implements Serializable {
+
+    @PostConstruct
+    public void init() {
+        listAlarma = objDaoAlarmas.listAlarmas(cedulaEnSession, "Alarmas");
+    }
 
     @Inject
     transient Instance<FacesContext> facesContext;
@@ -53,8 +59,26 @@ public class beanAlarma implements Serializable {
     List<TAlarmas> listalarmasUpdate;
     List<TAlarmas> listalarmasHaceUnaSemana;
     List<TAlarmas> listFiltrer;
+    private Date dateInicio;
+    private Date dateFin;
 
     private static int alarmasNuevas = 0;
+
+    public Date getDateInicio() {
+        return dateInicio;
+    }
+
+    public void setDateInicio(Date dateInicio) {
+        this.dateInicio = dateInicio;
+    }
+
+    public Date getDateFin() {
+        return dateFin;
+    }
+
+    public void setDateFin(Date dateFin) {
+        this.dateFin = dateFin;
+    }
 
     public int getAlarmasNuevas() {
         return alarmasNuevas;
@@ -89,15 +113,11 @@ public class beanAlarma implements Serializable {
     public void setListalarmasMenu(List<TAlarmas> listalarmasMenu) {
         this.listalarmasMenu = listalarmasMenu;
     }
-    private Date fechaInicial;
-    private Date fechaFinal;
+    private static Date fechaInicial;
+    private static Date fechaFinal;
     private TAlarmas alarmaSelected;
 
     public Date getFechaInicial() {
-        fechaInicial = new Date();
-        fechaInicial.setHours(0);
-        fechaInicial.setMinutes(0);
-        fechaInicial.setSeconds(0);
         return fechaInicial;
     }
 
@@ -106,7 +126,6 @@ public class beanAlarma implements Serializable {
     }
 
     public Date getFechaFinal() {
-        fechaFinal = new Date();
         return fechaFinal;
     }
 
@@ -115,7 +134,6 @@ public class beanAlarma implements Serializable {
     }
 
     public List<TAlarmas> getListAlarma() {
-        listAlarma = objDaoAlarmas.listAlarmas(cedulaEnSession, "Alarmas");
         return listAlarma;
     }
 
@@ -156,7 +174,7 @@ public class beanAlarma implements Serializable {
             } else if (fechaInicial.after(new Date()) && fechaFinal.after(new Date())) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Las fechas no pueden superar la fecha actual", ""));
             } else {
-                listAlarmaHistorico = objDaoAlarmas.actualizarTabla(fechaInicial, fechaFinal,cedulaEnSession,"Alarmas");
+                listAlarmaHistorico = objDaoAlarmas.actualizarTabla(fechaInicial, fechaFinal, cedulaEnSession, "Alarmas");
             }
 
         } catch (Exception e) {
@@ -171,6 +189,37 @@ public class beanAlarma implements Serializable {
             objDaoAlarmas.edit(objVOAlarmas);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bien", "Se actualizo la alarma"));
 
+        } catch (Exception e) {
+        }
+    }
+
+    
+    public void limpiar(ActionEvent egt)
+    {
+        try {
+            fechaFinal=null;
+            fechaInicial=null;
+            alarmasFiltro(egt);
+        } catch (Exception e) {
+        }
+    }
+    public void alarmasFiltro(ActionEvent egt) {
+        try {
+            if (fechaInicial == null && fechaFinal == null) {
+                listAlarma = objDaoAlarmas.listAlarmas(cedulaEnSession, "Alarmas");
+            } else if (fechaInicial == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso!", "Debe llenar el campo fecha inicial"));
+            }
+
+            if (fechaInicial != null || fechaFinal != null) {
+                if (fechaFinal.before(fechaInicial)) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "La fecha inicial debe ser menor que la fecha final", ""));
+                } else if (fechaInicial.after(new Date()) && fechaFinal.after(new Date())) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Las fechas no pueden superar la fecha actual", ""));
+                } else {
+                    listAlarma = objDaoAlarmas.listAlarmasFiltrer(cedulaEnSession, "Alarmas", fechaInicial, fechaFinal);
+                }
+            }
         } catch (Exception e) {
         }
     }

@@ -499,7 +499,13 @@ public class beanArqueo implements Serializable {
 
     public void generarTablaTransacciones(ActionEvent event) {
         try {
-            limp();
+           limpiartransaccion();
+           totalSubFoot=0.0;
+           totalivaFoot=0.0;
+           totalcomisionFoot=0.0;
+           totalRedondeoFoot=0.0;
+           totalRecibidoFoot=0.0;
+           totalMonedas=new Long("0");
             listTransaccionesDeArqueos = objDaoTransacciones.listArqueosFinal(seleccionArqueos.getIdModulo().getIdModulo(), seleccionArqueos.getIdSede().getIdSede(), seleccionArqueos.getFechaInicio(), seleccionArqueos.getFechaFinAnterior());
             for (int i = 0; i < listTransaccionesDeArqueos.size(); i++) {
 

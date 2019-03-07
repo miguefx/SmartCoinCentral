@@ -36,7 +36,7 @@ public class TAlarmasFacade extends AbstractFacade<TAlarmas> {
 
     public List<TAlarmas> actualizarTabla(Date fechaInicio, Date fechaFinal, Long cedula, String nombre) {
         try {
-            Query query = em.createQuery("SELECT a from TAlarmas a , TPermisos as b where (a.fechaRegistro BETWEEN ?1 AND ?2) and (a.idModulo.idModulo=b.idModulo) and (b.documentoUsuario=?3) and (b.nombreControl=?4) ");
+            Query query = em.createQuery("SELECT a from TAlarmas a , TPermisos as b where (a.fechaRegistro BETWEEN ?1 AND ?2) and (a.idModulo.idModulo=b.idModulo) and (b.documentoUsuario=?3) and (b.nombreControl=?4) ORDER BY a.fechaRegistro DESC ");
             query.setParameter(1, fechaInicio, TemporalType.TIMESTAMP);
             query.setParameter(2, fechaFinal, TemporalType.TIMESTAMP);
             query.setParameter(3, cedula);
@@ -107,9 +107,24 @@ public class TAlarmasFacade extends AbstractFacade<TAlarmas> {
 
     public List<TAlarmas> listAlarmas(Long cedulaEnSession, String nombrePermiso) {
         try {
-            Query query = em.createQuery("SELECT a from TAlarmas as a , TPermisos as b  where  (a.idModulo.idModulo=b.idModulo) and (b.documentoUsuario = ?1) and (b.nombreControl=?2)");
+            Query query = em.createQuery("SELECT a from TAlarmas as a , TPermisos as b  where  (a.idModulo.idModulo=b.idModulo) and (b.documentoUsuario = ?1) and (b.nombreControl=?2) and (a.fechaSolucion  <> '1900-01-01 00:00:00.000') ORDER BY a.fechaRegistro DESC");
             query.setParameter(1, cedulaEnSession);
             query.setParameter(2, nombrePermiso);
+            List<TAlarmas> list = query.getResultList();
+
+            return list;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public List<TAlarmas> listAlarmasFiltrer(Long cedulaEnSession, String nombrePermiso, Date fechaInicio, Date fechaFinal) {
+        try {
+            Query query = em.createQuery("SELECT a from TAlarmas as a , TPermisos as b  where  (a.idModulo.idModulo=b.idModulo) and (b.documentoUsuario = ?1) and (b.nombreControl=?2) and (a.fechaSolucion  <> '1900-01-01 00:00:00.000') and (a.fechaRegistro between ?3 and ?4)");
+            query.setParameter(1, cedulaEnSession);
+            query.setParameter(2, nombrePermiso);
+            query.setParameter(3, fechaInicio);
+            query.setParameter(4, fechaFinal);
             List<TAlarmas> list = query.getResultList();
 
             return list;

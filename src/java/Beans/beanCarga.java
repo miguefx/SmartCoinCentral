@@ -64,6 +64,7 @@ public class beanCarga implements Serializable {
     private String totalauxSubFoot;
     private List<TCargas> listCargas;
     private List<TCargas> listCargasFiltrer;
+    private Double valor=0.0;
 
     private List<TmovimientosTable> listMovimientosFiltrer;
     private Date calendarIni;
@@ -82,6 +83,14 @@ public class beanCarga implements Serializable {
     private Boolean disable = false;
     private Boolean render = false;
     private static Long cedulaEnSession;
+
+    public Double getValor() {
+        return valor;
+    }
+
+    public void setValor(Double valor) {
+        this.valor = valor;
+    }
 
     public Boolean getDisable() {
         return disable;
@@ -306,7 +315,7 @@ public class beanCarga implements Serializable {
     private String totalauxcomisionFoot;
 
     public List<TCiudades> getListSedes() {
-        listSedes = objDaoCiudades.listaCiudadesCargas(cedulaEnSession,"Cargas");
+        listSedes = objDaoCiudades.listaCiudadesCargas(cedulaEnSession, "Cargas");
         return listSedes;
     }
 
@@ -335,7 +344,7 @@ public class beanCarga implements Serializable {
 
     public void changeMenu(ActionEvent egt) {
         try {
-            listModulos = objDaoConfiguracion.listModulosPorCiudades(valorSedeIgual, cedulaEnSession,"Cargas");
+            listModulos = objDaoConfiguracion.listModulosPorCiudades(valorSedeIgual, cedulaEnSession, "Cargas");
         } catch (Exception e) {
         }
     }
@@ -348,16 +357,20 @@ public class beanCarga implements Serializable {
             } else if (calendarIni.after(new Date()) && calendarFin.after(new Date())) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Las fechas no pueden superar la fecha actual", ""));
             } else {
-                listCargas = objDaoCarga.actualizarTablaCargas(calendarIni, calendarFin, valorModulo, valorSedeIgual,cedulaEnSession,"Cargas");
+                listCargas = objDaoCarga.actualizarTablaCargas(calendarIni, calendarFin, valorModulo, valorSedeIgual, cedulaEnSession, "Cargas");
+                if (!listCargas.isEmpty()) {
+                    for (int i = 0; i < listCargas.size(); i++) {
+                        valor = valor + listCargas.get(i).getValor();
+                    }
+                }
             }
         } catch (Exception e) {
         }
-
     }
 
     public void generarListaMovimientoCarga(ActionEvent egt) {
         try {
-            listMovimientosFiltrer = objDaoMovimientos.retornarListaMovimientosByIdCarga(seleccionCarga.getIdLocal(),seleccionCarga.getIdModulo().getIdModulo());
+            listMovimientosFiltrer = objDaoMovimientos.retornarListaMovimientosByIdCarga(seleccionCarga.getIdLocal(), seleccionCarga.getIdModulo().getIdModulo());
         } catch (Exception e) {
         }
     }
@@ -368,12 +381,12 @@ public class beanCarga implements Serializable {
         } catch (Exception e) {
         }
     }
-    
-    public void clearCarga(ActionEvent egt)
-    {
+
+    public void clearCarga(ActionEvent egt) {
         try {
             if (!listCargas.isEmpty()) {
                 listCargas.clear();
+                valor=0.0;
             }
         } catch (Exception e) {
         }

@@ -41,9 +41,18 @@
                                             <p:outputLabel value="#{cargas.idModulo.idModulo.toString().substring(9)}" />
                                         </p:column>
                                     </p:dataTable>
-                                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" >
-                                        <p:commandButton id="btnDetallCarg" value="Ver Detalle"  icon="fa fa-clipboard" oncomplete="ok2()" />    
+                                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank" >
+                                        <p:commandButton id="btnDetallCarg" value="Ver Detalle"  icon="fa fa-clipboard" oncomplete="ok2()" />      
+                                        <p:commandButton id="btnTotal21" value="Ver totales"  icon="fa fa-plus-square-o"  update="totalvalor" />
                                     </p:panelGrid>
+                                    <p:overlayPanel id="panelOverTotales" for="btnTotal21" hideEffect="clip" showEffect="clip" dynamic="true"  my="left"  at="center" dismissable="false"  showCloseIcon="true">
+                                        <p:panelGrid columns="2" styleClass="ui-panelgrid-blank" layout="grid">
+                                            <p:outputLabel value="Total Valor"  styleClass="nombre"/>
+                                            <p:outputLabel value="#{beanCarga.valor}" id="totalvalor">
+                                                <f:convertNumber type="currency" currencySymbol="$" integerOnly="true" maxFractionDigits="0" />
+                                            </p:outputLabel>
+                                        </p:panelGrid>
+                                    </p:overlayPanel>
                                     <p:overlayPanel id="overLay2" onHide="okCarga()" dynamic="true" for="btnDetallCarg" hideEffect="clip" showEffect="clip" showCloseIcon="true" dismissable="false">
                                         <div class="ui-g-12 ui-lg-10">
                                             <div class="card card-w-title">

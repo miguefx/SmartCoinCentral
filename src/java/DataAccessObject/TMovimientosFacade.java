@@ -152,12 +152,22 @@ public class TMovimientosFacade extends AbstractFacade<TMovimientos> {
             TypedQuery<Long> query = (TypedQuery<Long>) em.createQuery("SELECT SUM(a.cantidad) from TMovimientos as a where a.idTransaccion = ?1 and a.accion='Entrada' and a.parte='CtCoin'", Long.class);
             query.setParameter(1, idTransaccion);
             Long resultado = query.getSingleResult();
-            if (resultado==null) {
-                 resultado= new Long("0");
+            if (resultado == null) {
+                resultado = new Long("0");
             }
             return resultado;
         } catch (Exception e) {
         }
         return null;
+    }
+
+    public List<TMovimientos> listReporteFactura(Long idTransaccion) {
+        List<TMovimientos> list = null;
+        try {
+            Query query = em.createQuery("SELECT a from TMovimientos a where a.parte='CtCoin' and a.idTransaccion=?1 ORDER BY a.denominacion ASC").setParameter(1, idTransaccion);
+            list = query.getResultList();
+        } catch (Exception e) {
+        }
+        return list;
     }
 }

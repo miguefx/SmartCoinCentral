@@ -56,19 +56,33 @@ public class beanCharts {
     @EJB
     TMovimientosFacade objDaoMovimientos;
 
+    @EJB
+
+    TPartesFacade objDaoPartes;
+
     @PostConstruct
     public void init() {
-        createBarModels();
         createBarModel2();
+        createBarModel3();
+
     }
 
     private BarChartModel barModel;
     private BarChartModel barModel2;
+    private BarChartModel barModel3;
 
     private DonutChartModel donutModel1;
     private LineChartModel lineModel1;
     private static List<String> listFechasEscritas = new ArrayList();
     private static String titulo = " ";
+
+    public BarChartModel getBarModel3() {
+        return barModel3;
+    }
+
+    public void setBarModel3(BarChartModel barModel3) {
+        this.barModel3 = barModel3;
+    }
 
     public BarChartModel getBarModel2() {
         return barModel2;
@@ -92,6 +106,168 @@ public class beanCharts {
 
     public LineChartModel getLineModel1() {
         return lineModel1;
+    }
+
+    private void createBarModel3() {
+        barModel3 = initBarModel3();
+        barModel3.setAnimate(true);
+        barModel3.setTitle("Total Dinero Actual");
+        barModel3.setLegendPosition("s");
+        barModel3.setShowDatatip(true);
+        barModel3.setShowPointLabels(true);
+        barModel3.setAnimate(true);
+        barModel3.setDatatipFormat("%d - $ %i");
+        List<TConfiguracion> listModulos = objDaoConfiguracion.llenarReporteEstado();
+        barModel3.setLegendCols(listModulos.size());
+
+        barModel3.setLegendPlacement(LegendPlacement.OUTSIDEGRID);
+
+        Axis yAxis = barModel3.getAxis(AxisType.Y);
+        Axis xAxis = barModel3.getAxis(AxisType.X);
+
+        yAxis.setLabel("Valor");
+        yAxis.setMin(0);
+        yAxis.setMax(10000000);
+    }
+
+    private BarChartModel initBarModel3() {
+        BarChartModel model2 = new BarChartModel();
+        try {
+            ChartSeries cajeros = new ChartSeries();
+            ChartSeries cajeros2 = new ChartSeries();
+            ChartSeries cajeros3 = new ChartSeries();
+            ChartSeries cajeros4 = new ChartSeries();
+            ChartSeries cajeros5 = new ChartSeries();
+            ChartSeries cajeros6 = new ChartSeries();
+            ChartSeries cajeros7 = new ChartSeries();
+            ChartSeries cajeros8 = new ChartSeries();
+            ChartSeries cajeros9 = new ChartSeries();
+            ChartSeries cajeros10 = new ChartSeries();
+            ChartSeries cajeros11 = new ChartSeries();
+            ChartSeries cajeros12 = new ChartSeries();
+            ChartSeries cajeros13 = new ChartSeries();
+            Double resultado = null;
+            TreporteTransacciones objVoReporteTransacciones;
+            List<TreporteTransacciones> listTransaccionesReport = new ArrayList<>();
+            List<TConfiguracion> listModulos = objDaoConfiguracion.llenarReporteEstado();
+            for (int i = 0; i < listModulos.size(); i++) {
+                resultado = objDaoPartes.listReporteValor(listModulos.get(i).getIdModulo());
+                objVoReporteTransacciones = new TreporteTransacciones(listModulos.get(i).getIdModulo(), 0, resultado);
+                listTransaccionesReport.add(objVoReporteTransacciones);
+            }
+            for (int i = 0; i < listTransaccionesReport.size(); i++) {
+                if (i == 0) {
+                    cajeros.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
+                    cajeros.set("Cajeros", listTransaccionesReport.get(i).getValorTotal());
+
+                } else if (i == 1) {
+                    cajeros2.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
+                    cajeros2.set("Cajeros1", listTransaccionesReport.get(i).getValorTotal());
+
+                } else if (i == 2) {
+                    cajeros3.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
+                    cajeros3.set("Cajeros2", listTransaccionesReport.get(i).getValorTotal());
+
+                } else if (i == 3) {
+                    cajeros4.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
+                    cajeros4.set("Cajeros3", listTransaccionesReport.get(i).getValorTotal());
+
+                } else if (i == 4) {
+                    cajeros5.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
+                    cajeros5.set("Cajeros4", listTransaccionesReport.get(i).getValorTotal());
+                } else if (i == 5) {
+                    cajeros6.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
+                    cajeros6.set("Cajeros5", listTransaccionesReport.get(i).getValorTotal());
+
+                } else if (i == 6) {
+
+                    cajeros7.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
+                    cajeros7.set("Cajeros6", listTransaccionesReport.get(i).getValorTotal());
+
+                } else if (i == 7) {
+                    cajeros8.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
+                    cajeros8.set("Cajeros7", listTransaccionesReport.get(i).getValorTotal());
+
+                } else if (i == 8) {
+                    cajeros9.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
+                    cajeros9.set("Cajeros8", listTransaccionesReport.get(i).getValorTotal());
+                } else if (i == 9) {
+                    cajeros10.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
+                    cajeros10.set("Cajeros9", listTransaccionesReport.get(i).getValorTotal());
+                } else if (i == 10) {
+                    cajeros11.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
+                    cajeros11.set("Cajeros10", listTransaccionesReport.get(i).getValorTotal());
+                } else if (i == 11) {
+                    cajeros12.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
+                    cajeros12.set("Cajeros11", listTransaccionesReport.get(i).getValorTotal());
+                } else if (i == 12) {
+                    cajeros13.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
+                    cajeros13.set("Cajeros12", listTransaccionesReport.get(i).getValorTotal());
+                }
+
+            }
+
+            switch (listModulos.size()) {
+                case 10:
+                    model2.addSeries(cajeros);
+                    model2.addSeries(cajeros2);
+                    model2.addSeries(cajeros3);
+                    model2.addSeries(cajeros4);
+                    model2.addSeries(cajeros5);
+                    model2.addSeries(cajeros6);
+                    model2.addSeries(cajeros7);
+                    model2.addSeries(cajeros8);
+                    model2.addSeries(cajeros9);
+                    model2.addSeries(cajeros10);
+                    model2.addSeries(cajeros11);
+                    break;
+                case 11:
+                    model2.addSeries(cajeros);
+                    model2.addSeries(cajeros2);
+                    model2.addSeries(cajeros3);
+                    model2.addSeries(cajeros4);
+                    model2.addSeries(cajeros5);
+                    model2.addSeries(cajeros6);
+                    model2.addSeries(cajeros7);
+                    model2.addSeries(cajeros8);
+                    model2.addSeries(cajeros9);
+                    model2.addSeries(cajeros10);
+                    model2.addSeries(cajeros11);
+                    break;
+                case 12:
+                    model2.addSeries(cajeros);
+                    model2.addSeries(cajeros2);
+                    model2.addSeries(cajeros3);
+                    model2.addSeries(cajeros4);
+                    model2.addSeries(cajeros5);
+                    model2.addSeries(cajeros6);
+                    model2.addSeries(cajeros7);
+                    model2.addSeries(cajeros8);
+                    model2.addSeries(cajeros9);
+                    model2.addSeries(cajeros10);
+                    model2.addSeries(cajeros11);
+                    model2.addSeries(cajeros12);
+                    break;
+                case 13:
+                    model2.addSeries(cajeros);
+                    model2.addSeries(cajeros2);
+                    model2.addSeries(cajeros3);
+                    model2.addSeries(cajeros4);
+                    model2.addSeries(cajeros5);
+                    model2.addSeries(cajeros6);
+                    model2.addSeries(cajeros7);
+                    model2.addSeries(cajeros8);
+                    model2.addSeries(cajeros9);
+                    model2.addSeries(cajeros10);
+                    model2.addSeries(cajeros11);
+                    model2.addSeries(cajeros12);
+                    model2.addSeries(cajeros13);
+                    break;
+            }
+
+        } catch (Exception e) {
+        }
+        return model2;
     }
 
     private BarChartModel initBarModel2() {
@@ -143,7 +319,6 @@ public class beanCharts {
                 cajeros6.set("Cajeros5", listTransaccionesReport.get(i).getValorTotal());
 
             } else if (i == 6) {
-                
 
                 cajeros7.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
                 cajeros7.set("Cajeros6", listTransaccionesReport.get(i).getValorTotal());
@@ -595,7 +770,7 @@ public class beanCharts {
 
                     }
                     break;
-                    case 12:
+                case 12:
                     while (list.size() - 1 > k) {
                         uno.setLabel(list.get(k).getIdModulo());
                         k++;
@@ -648,7 +823,7 @@ public class beanCharts {
                             diez.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         } else if (once.getLabel().equals(listReport.get(j).getIdModulo())) {
                             once.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
-                        }else if (doce.getLabel().equals(listReport.get(j).getIdModulo())) {
+                        } else if (doce.getLabel().equals(listReport.get(j).getIdModulo())) {
                             doce.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         }
 
@@ -721,7 +896,7 @@ public class beanCharts {
                 model.addSeries(diez);
                 model.addSeries(once);
                 break;
-                case 12:
+            case 12:
                 model.addSeries(uno);
                 model.addSeries(dos);
                 model.addSeries(tres);
@@ -1268,7 +1443,7 @@ public class beanCharts {
                         }
                     }
                     break;
-                     case 12:
+                case 12:
                     while (list.size() - 1 > k) {
                         uno.setLabel(list.get(k).getIdModulo());
                         k++;
@@ -1319,7 +1494,7 @@ public class beanCharts {
                             diez.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         } else if (once.getLabel().equals(listReport.get(j).getIdModulo())) {
                             once.set(listFechasEscritas.get(i), listReport.get(j).getValor());
-                        }else if (doce.getLabel().equals(listReport.get(j).getIdModulo())) {
+                        } else if (doce.getLabel().equals(listReport.get(j).getIdModulo())) {
                             doce.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         }
                     }
@@ -1392,7 +1567,7 @@ public class beanCharts {
                 model.addSeries(diez);
                 model.addSeries(once);
                 break;
-                 case 12:
+            case 12:
                 model.addSeries(uno);
                 model.addSeries(dos);
                 model.addSeries(tres);

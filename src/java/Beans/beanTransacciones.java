@@ -17,10 +17,20 @@ package Beans;
 
 import DataAccessObject.*;
 import ValueObject.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -31,6 +41,14 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.engine.DefaultJasperReportsContext;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRPropertiesUtil;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -52,8 +70,8 @@ public class beanTransacciones implements Serializable {
 
     @EJB
     TMovimientosFacade objDaoMovimientos;
-    
-      @EJB
+
+    @EJB
     TUsuariosFacade objDaoUsuario;
 
     @EJB
@@ -68,6 +86,7 @@ public class beanTransacciones implements Serializable {
     @EJB
     TCiudadesFacade objDaoCiudades;
 
+    private Connection conexion = null;
     private List<TCiudades> listSedes;
     private List<TTransacciones> listTransaccionesFil;
     private List<TConfiguracion> listModulos;
@@ -420,8 +439,8 @@ public class beanTransacciones implements Serializable {
         try {
             if (!listMovimientosFiltrer.isEmpty()) {
                 listMovimientosFiltrer.clear();
-                totalesCantidad=null;
-                totalesValor=0.0;
+                totalesCantidad = null;
+                totalesValor = 0.0;
             }
         } catch (Exception e) {
         }
@@ -462,6 +481,70 @@ public class beanTransacciones implements Serializable {
         pdfOpt.setFacetFontColor("#07190B");
         pdfOpt.setFacetFontStyle("BOLD");
         pdfOpt.setCellFontSize("15");
+    }
+
+    public void emitirFactura(ActionEvent egt) throws IOException, JRException {
+
+        try {
+            this.conexion = Conexion.getConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(beanUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        List<TMovimientos> listMov = objDaoMovimientos.listReporteFactura(seleccionTransacciones.getIdTransaccion());
+        Map<String, Object> parametros = new HashMap<String, Object>();
+        parametros.put("almacen", seleccionTransacciones.getIdSede().getNombre());
+        parametros.put("maquina", seleccionTransacciones.getIdModulo().getIdModulo());
+        parametros.put("direccion", seleccionTransacciones.getIdSede().getDireccion());
+        parametros.put("ciudad", seleccionTransacciones.getIdSede().getIdCiudad().getCiudad());
+        parametros.put("cantidad50", listMov.get(0).getCantidad());
+        parametros.put("cantidad100", listMov.get(1).getCantidad());
+        parametros.put("cantidad200", listMov.get(2).getCantidad());
+        parametros.put("cantidad500", listMov.get(3).getCantidad());
+        parametros.put("cantidad1000", listMov.get(4).getCantidad());
+        parametros.put("redondeo", seleccionTransacciones.getRedondeo());
+        parametros.put("total", seleccionTransacciones.getTotalPagado());
+        parametros.put("fecha", seleccionTransacciones.getFechaTransaccion());
+        parametros.put("hora", seleccionTransacciones.getFechaTransaccion().getHours() + ":" + seleccionTransacciones.getFechaTransaccion().getMinutes());
+        parametros.put("numerofactura", seleccionTransacciones.getNumeroFactura());
+
+        File jasper = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/facturasSmart.jasper"));
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasper.getPath(), parametros, conexion);
+
+        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        response.addHeader("Content-disposition", "attachment; filename=Factura" + seleccionTransacciones.getNumeroFactura() + ".pdf");
+        ServletOutputStream stream = response.getOutputStream();
+        DefaultJasperReportsContext context = DefaultJasperReportsContext.getInstance();
+        JRPropertiesUtil.getInstance(context).setProperty("net.sf.jasperreports.default.font.name", "DejaVu Sans");
+        JRPropertiesUtil.getInstance(context).setProperty("net.sf.jasperreports.default.pdf.embedded", "true");
+        JRPropertiesUtil.getInstance(context).setProperty("net.sf.jasperreports.default.pdf.font.name", "DejaVu Sans");
+        JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
+
+        stream.flush();
+        stream.close();
+        FacesContext.getCurrentInstance().responseComplete();
+    }
+
+    public void emitirFactura2(ActionEvent egt) throws IOException {
+        try {
+            this.conexion = Conexion.getConexion();
+            Map<String, Object> parametros = new HashMap<String, Object>();
+            parametros.put("parameter1", "cualquier mierda");
+
+            File jasper = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/report1.jasper"));
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasper.getPath(), parametros, conexion);
+
+            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            response.addHeader("Content-disposition", "attachment; filename=Factura.pdf");
+            ServletOutputStream stream = response.getOutputStream();
+
+            JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
+
+            stream.flush();
+            stream.close();
+            FacesContext.getCurrentInstance().responseComplete();
+        } catch (Exception e) {
+
+        }
     }
 
     public void buscarTransacciones(ActionEvent egt) {

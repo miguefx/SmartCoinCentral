@@ -13,10 +13,38 @@
                         <!-- Left Side -->
                         <div class="card card-w-title">
                             <h1>Estados de los modulos <b>Smart Coin</b></h1>
+                            <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                <p:outputLabel value="Ciudad" style="font-weight: bold;margin-bottom: 5px;">
+                                    <p:selectOneMenu id="sedes" value="#{beanMonitoreo.valorSedeIgual}"  >
+                                        <p:ajax event="valueChange"    update="modulos"
+                                                listener="#{beanMonitoreo.changeMenu(egt)}" />
+                                        <f:selectItem itemLabel="TODOS" itemValue="#{null}" noSelectionOption="true"/>
+                                        <f:selectItems value="#{beanMonitoreo.listSedes}" var="sedes" itemLabel="#{sedes.ciudad}" itemValue="#{sedes.idciudad}" />
+                                    </p:selectOneMenu>
+                                </p:outputLabel>
+                                <p:outputLabel value="Modulo" style="font-weight: bold;margin-bottom: 5px;">
+                                    <p:selectOneMenu id="modulos" value="#{beanMonitoreo.valorModulo}" style="margin-bottom:10px;">
+                                        <f:selectItem itemLabel="TODOS" itemValue="#{null}" noSelectionOption="true"/>
+                                        <f:selectItems value="#{beanMonitoreo.listModulos}" var="modulo" itemLabel="${modulo.idModulo}" itemValue="${modulo.idModulo}"/>
+                                    </p:selectOneMenu>
+                                </p:outputLabel>
+                                <p:outputLabel value="Estado" style="font-weight: bold; margin-bottom: 5px;">
+                                    <p:selectOneMenu  value="#{beanMonitoreo.estadoElegido}" styleClass="custom-filter">
+                                        <f:selectItem itemLabel="TODOS" itemValue="#{null}" noSelectionOption="true" />
+                                        <f:selectItem itemLabel="EN LINEA" itemValue="EN LINEA" />
+                                        <f:selectItem itemLabel="MENU SISTEMA" itemValue="MENU SISTEMA" />
+                                        <f:selectItem itemLabel="SISTEMA SUSPENDIDO" itemValue="SISTEMA SUSPENDIDO" />
+                                        <f:selectItem itemLabel="FUERA DE SERVICIO" itemValue="FUERA DE SERVICIO" />
+                                    </p:selectOneMenu>
+                                </p:outputLabel>
+                            </p:panelGrid>
+
+
                         </div>
-                        <p:poll interval="1" listener="#{beanMonitoreo.actualizarTabla()}" update="tablaMonitoreo" />
-                        <p:dataTable id="tablaMonitoreo" var="monitoreo" value="#{beanMonitoreo.listMonitoreo}"  style="font-size: 15px;"  >
+                        <p:poll interval="1" listener="#{beanMonitoreo.actualizarTabla()}" update="tablaMonitoreo"   id="pollPrincipal"  />
+                        <p:dataTable id="tablaMonitoreo" var="monitoreo" value="#{beanMonitoreo.listMonitoreo}" widgetVar="monit" sortBy="#{monitoreo.dateFinal.toString()}"   sortOrder="descending"  style="font-size: 15px;"  >
                             <f:facet name="header">
+
                                 <p:outputLabel value="Monitoreo" />
                             </f:facet>
                             <p:column headerText="Modulo">
@@ -25,8 +53,8 @@
                             <p:column headerText="Estado">
                                 <p:outputLabel value="#{monitoreo.estado}" style="color: #{beanMonitoreo.calculaColor(monitoreo.estado)};"/>
                             </p:column>
-                            <p:column headerText="Fecha Del Reporte" >
-                                <p:outputLabel value="#{monitoreo.dateFinal}"/>
+                            <p:column headerText="Fecha">
+                                <p:outputLabel  id="valor" value="#{monitoreo.dateFinal}"  />
                             </p:column>
                         </p:dataTable>
                     </div>

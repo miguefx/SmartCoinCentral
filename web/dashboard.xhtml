@@ -61,18 +61,11 @@
                 <div class="ui-g-12 ui-md-12">
                     <div class="card overview">
                         <div class="overview-content clearfix">
-                            <p:chart type="bar" model="#{beanCharts.barModel}" responsive="true"/>
+                            <p:chart type="bar" model="#{beanCharts.barModel3}" responsive="true"/>
                         </div>
                     </div>
                 </div>
-                <div class="ui-g-24 ui-md-12">
-                    <div class="card overview">
-                        <div class="overview-content clearfix">
-                            <p:chart type="line" model="#{beanCharts.lineModel1}"  responsive="true" />
-
-                        </div>
-                    </div>
-                </div>
+                
 
                 <div class="ui-g-12 ui-md-6 ui-lg-12">
                     <div class="ui-g card colorbox colorbox-1">
@@ -88,7 +81,7 @@
 
 
 
-                <div class="ui-g-12 ui-md-6 ui-lg-6 ui-fluid contact-form">
+                <div class="ui-g-12 ui-md-12 ui-lg-12 ui-fluid contact-form">
                     <p:panel header="Envianos un mensaje">
                         <div class="ui-g">
                             <div class="ui-g-12">
@@ -113,28 +106,6 @@
                         <p:commandButton type="button" value="Enviar" icon="ui-icon-send"></p:commandButton>
                     </p:panel>
                 </div>
-                <div class="ui-g-12 ui-lg-6 contacts">
-                    <p:panel header="Alarmas en las ultimas 8 horas" id="panel12">
-                        <ui:repeat id="alarmaListAgo" value="#{beanAlarma.listalarmasHaceUnaSemana}" var="alarmasSemana"  >
-
-                            <ul>
-                                <li>
-                                    <a href="#">
-                                        <p:graphicImage name="images/alarm1.png" library="ultima-layout" width="45"/>
-                                        <span class="name"><p:outputLabel  value="#{alarmasSemana.descripcion}" /></span>
-                                        <span> <p:outputLabel value="#{alarmasSemana.fechaRegistro}" >
-                                                <f:convertDateTime pattern="dd/MM/yyyy hh:mm a" />
-                                            </p:outputLabel> 
-                                        </span>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </ui:repeat>
-
-                    </p:panel>
-                </div>
-
             </div>
         </h:form>
 

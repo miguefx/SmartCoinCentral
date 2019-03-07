@@ -288,10 +288,24 @@ public class beanReporte implements Serializable {
     public StreamedContent getFile() {
         return file;
     }
+    private StreamedContent file2;
+
+    public StreamedContent getFile2() {
+        return file2;
+    }
+    private StreamedContent file3;
+
+    public StreamedContent getFile3() {
+        return file3;
+    }
 
     public beanReporte() {
         InputStream stream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/ReporteCompilado.xlsx");
         file = new DefaultStreamedContent(stream, "xlsx/xlsx", "ReporteCompilado.xlsx");
+        InputStream stream2 = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/ReporteTransportadora.rar");
+        file2 = new DefaultStreamedContent(stream2, "rar/rar", "ReporteTransportadora.rar");
+        InputStream stream3 = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/Drivers.rar");
+        file3= new DefaultStreamedContent(stream3, "rar/rar", "Drivers.rar");
     }
 
 }

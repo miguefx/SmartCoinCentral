@@ -312,8 +312,17 @@ public class beanUser implements Serializable {
     private Boolean btnUsers = false;
     private Boolean reportesConsolidados = false;
     private Boolean reportesTransportadora = false;
+    private Boolean reportesHistoricoSaldos = false;
     private Boolean drivers = false;
     private Boolean monitoreo = false;
+
+    public Boolean getReportesHistoricoSaldos() {
+        return reportesHistoricoSaldos;
+    }
+
+    public void setReportesHistoricoSaldos(Boolean reportesHistoricoSaldos) {
+        this.reportesHistoricoSaldos = reportesHistoricoSaldos;
+    }
 
     public Boolean getReportesTransportadora() {
         return reportesTransportadora;
@@ -330,9 +339,6 @@ public class beanUser implements Serializable {
     public void setDrivers(Boolean drivers) {
         this.drivers = drivers;
     }
-    
-    
-    
 
     public Boolean getMonitoreo() {
         return monitoreo;
@@ -341,8 +347,6 @@ public class beanUser implements Serializable {
     public void setMonitoreo(Boolean monitoreo) {
         this.monitoreo = monitoreo;
     }
-    
-    
 
     public Boolean getClaveDinamica() {
         return claveDinamica;
@@ -569,6 +573,11 @@ public class beanUser implements Serializable {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
                 }
 
+            } else if (url.equals("http://107.180.70.70:9090/SmartCoin/reporteHistoricoSaldos.xhtml")) {
+                if (reportesHistoricoSaldos == false) {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
+                }
+
             }
 
         } catch (Exception e) {
@@ -677,6 +686,7 @@ public class beanUser implements Serializable {
                 listaDePermisos.add(new Permisos("Gestion de usuarios", false));
                 listaDePermisos.add(new Permisos("Reportes Consolidados", false));
                 listaDePermisos.add(new Permisos("Reporte Transportadora", false));
+                listaDePermisos.add(new Permisos("Reporte Historico Saldos", false));
                 listaDePermisos.add(new Permisos("Monitoreo", false));
                 if (listPermisosSession != null) {
 
@@ -710,8 +720,10 @@ public class beanUser implements Serializable {
                             reporteAnual = listaDePermisos.get(i).getEstado();
                         } else if (listaDePermisos.get(i).getNombrePermiso().equals("Reportes Consolidados")) {
                             reportesConsolidados = listaDePermisos.get(i).getEstado();
-                        }else if (listaDePermisos.get(i).getNombrePermiso().equals("Reporte Transportadora")) {
-                            reportesTransportadora=listaDePermisos.get(i).getEstado();
+                        } else if (listaDePermisos.get(i).getNombrePermiso().equals("Reporte Transportadora")) {
+                            reportesTransportadora = listaDePermisos.get(i).getEstado();
+                        } else if (listaDePermisos.get(i).getNombrePermiso().equals("Reporte Historico Saldos")) {
+                            reportesHistoricoSaldos = listaDePermisos.get(i).getEstado();
                         } else if (listaDePermisos.get(i).getNombrePermiso().equals("Monitoreo")) {
                             monitoreo = listaDePermisos.get(i).getEstado();
                         }
@@ -723,8 +735,11 @@ public class beanUser implements Serializable {
                     if (registro || gestionDeUsuarios) {
                         btnUsers = true;
                     }
-                    if (reportesConsolidados || reportesTransportadora) {
+                    if (reportesConsolidados || reportesTransportadora || reportesHistoricoSaldos) {
                         btnReporte = true;
+                    }
+                    if (reportesHistoricoSaldos || reportesTransportadora) {
+                        drivers = true;
                     }
                 }
 
@@ -862,11 +877,11 @@ public class beanUser implements Serializable {
             objDaoUsuario.edit(objVoUsuarios);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto", "Usuario Actualizado"));
             banderaDisa = true;
-            editar = false;cargo="";
-            nombre="";
-            apellido="";
-            usuario="";
-            
+            editar = false;
+            cargo = "";
+            nombre = "";
+            apellido = "";
+            usuario = "";
 
         } catch (Exception e) {
         }
@@ -1078,6 +1093,7 @@ public class beanUser implements Serializable {
             listNombreControlSource2.add("Gestion de usuarios");
             listNombreControlSource2.add("Reportes Consolidados");
             listNombreControlSource2.add("Reporte Transportadora");
+            listNombreControlSource2.add("Reporte Historico Saldos");
             listNombreControlSource2.add("Monitoreo");
 
             for (int i = 0; i < listPermisos.size(); i++) {

@@ -58,8 +58,9 @@
                             </p:submenu>
                             <p:submenu label="Reportes" icon="fa fa-download" rendered="#{beanUser.btnReporte}">
                                 <p:menuitem value="Reportes Consolidados" icon="today" outcome="/reportesConsolidados" rendered="#{beanUser.reportesConsolidados}"/>
-                                <p:menuitem value="Reporte Transportadora" icon="&#xe0af;" outcome="/ReporteTransportadora" rendered="#{beanUser.reportesTransportadora}"/>
-                                <p:menuitem value="Drivers" icon="&#xe24d;" outcome="/Drivers" rendered="#{beanUser.reportesTransportadora}"/>
+                                <p:menuitem value="Reporte Transportadora" icon="&#xe0af;" outcome="/reporteTransportadora" rendered="#{beanUser.reportesTransportadora}"/>
+                                <p:menuitem value="Reporte Historico Saldos" icon="&#xe02f;" outcome="/reporteHistoricoSaldos" rendered="#{beanUser.reportesHistoricoSaldos}"/>
+                                <p:menuitem value="Drivers" icon="&#xe24d;" outcome="/Drivers" rendered="#{beanUser.drivers}"/>
                             </p:submenu>
                             <p:menuitem id="um_utils" value="Alarmas" icon="access_alarm" outcome="/alarmas" rendered="#{beanUser.alarmas}"/>
                         </pu:menu>

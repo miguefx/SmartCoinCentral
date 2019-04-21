@@ -3,6 +3,7 @@
   <persistence-unit name="SmartCoinCentralPU" transaction-type="JTA">
     <jta-data-source>java:app/SmartCoinCentral</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties/>
+    <properties>
+    </properties>
   </persistence-unit>
 </persistence>

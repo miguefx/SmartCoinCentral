@@ -1,18 +1,3 @@
-/*
- * Copyright 2009-2014 PrimeTek.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package Beans;
 
 import DataAccessObject.*;
@@ -313,11 +298,20 @@ public class beanUser implements Serializable {
     private Boolean reportesConsolidados = false;
     private Boolean reportesTransportadora = false;
     private Boolean reportesHistoricoSaldos = false;
+    private Boolean reportesGerencial = false;
     private Boolean drivers = false;
     private Boolean monitoreo = false;
 
     public Boolean getReportesHistoricoSaldos() {
         return reportesHistoricoSaldos;
+    }
+
+    public Boolean getReportesGerencial() {
+        return reportesGerencial;
+    }
+
+    public void setReportesGerencial(Boolean reportesGerencial) {
+        this.reportesGerencial = reportesGerencial;
     }
 
     public void setReportesHistoricoSaldos(Boolean reportesHistoricoSaldos) {
@@ -526,58 +520,62 @@ public class beanUser implements Serializable {
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             String url = request.getRequestURL().toString();
             if (url.equals("http://107.180.70.70:9090/SmartCoin/alarmas.xhtml")) {
-                if (alarmas == false) {
+                if (!alarmas) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
                 }
 
             } else if (url.equals("http://107.180.70.70:9090/SmartCoin/arqueos.xhtml")) {
-                if (arqueos == false) {
+                if (!arqueos) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
                 }
 
             } else if (url.equals("http://107.180.70.70:9090/SmartCoin/transacciones.xhtml")) {
-                if (transacciones == false) {
+                if (!transacciones) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
                 }
 
             } else if (url.equals("http://107.180.70.70:9090/SmartCoin/cargas.xhtml")) {
-                if (cargas == false) {
+                if (!cargas) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
                 }
             } else if (url.equals("http://107.180.70.70:9090/SmartCoin/saldosEnLinea.xhtml")) {
-                if (saldoEnLinea == false) {
+                if (!saldoEnLinea) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
                 }
 
             } else if (url.equals("http://107.180.70.70:9090/SmartCoin/registro.xhtml")) {
-                if (registro == false) {
+                if (!registro) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
                 }
 
             } else if (url.equals("http://107.180.70.70:9090/SmartCoin/gestionDeUsuarios.xhtml")) {
-                if (gestionDeUsuarios == false) {
+                if (!gestionDeUsuarios) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
                 }
             } else if (url.equals("http://107.180.70.70:9090/SmartCoin/reportesConsolidados.xhtml")) {
-                if (reportesConsolidados == false) {
+                if (!reportesConsolidados) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
                 }
 
             } else if (url.equals("http://107.180.70.70:9090/SmartCoin/reporteTransportadora.xhtml")) {
-                if (reportesTransportadora == false) {
+                if (!reportesTransportadora) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
                 }
 
             } else if (url.equals("http://107.180.70.70:9090/SmartCoin/monitoreo.xhtml")) {
-                if (monitoreo == false) {
+                if (!monitoreo) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
                 }
 
             } else if (url.equals("http://107.180.70.70:9090/SmartCoin/reporteHistoricoSaldos.xhtml")) {
-                if (reportesHistoricoSaldos == false) {
+                if (!reportesHistoricoSaldos) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
                 }
 
+            } else if (url.equals("http://107.180.70.70:9090/SmartCoin/reporteGerencial.xhtml")) {
+                if (!reportesGerencial) {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
+                }
             }
 
         } catch (Exception e) {
@@ -687,6 +685,7 @@ public class beanUser implements Serializable {
                 listaDePermisos.add(new Permisos("Reportes Consolidados", false));
                 listaDePermisos.add(new Permisos("Reporte Transportadora", false));
                 listaDePermisos.add(new Permisos("Reporte Historico Saldos", false));
+                listaDePermisos.add(new Permisos("Reporte Gerencial", false));
                 listaDePermisos.add(new Permisos("Monitoreo", false));
                 if (listPermisosSession != null) {
 
@@ -726,6 +725,8 @@ public class beanUser implements Serializable {
                             reportesHistoricoSaldos = listaDePermisos.get(i).getEstado();
                         } else if (listaDePermisos.get(i).getNombrePermiso().equals("Monitoreo")) {
                             monitoreo = listaDePermisos.get(i).getEstado();
+                        } else if (listaDePermisos.get(i).getNombrePermiso().equals("Reporte Gerencial")) {
+                            reportesGerencial = listaDePermisos.get(i).getEstado();
                         }
                     }
 
@@ -735,10 +736,10 @@ public class beanUser implements Serializable {
                     if (registro || gestionDeUsuarios) {
                         btnUsers = true;
                     }
-                    if (reportesConsolidados || reportesTransportadora || reportesHistoricoSaldos) {
+                    if (reportesConsolidados || reportesTransportadora || reportesHistoricoSaldos || reportesGerencial) {
                         btnReporte = true;
                     }
-                    if (reportesHistoricoSaldos || reportesTransportadora) {
+                    if (reportesHistoricoSaldos || reportesTransportadora || reportesGerencial) {
                         drivers = true;
                     }
                 }
@@ -755,8 +756,7 @@ public class beanUser implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Hubo un error", "El usuario o la contraseña son incorrectos."));
             } else if (resultado.equals("ESTADOOFF")) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Hubo un error", "El usuario al que intenta ingresar esta desactivado."));
-
-            }
+            } 
 
         } catch (Exception e) {
         }
@@ -1094,6 +1094,7 @@ public class beanUser implements Serializable {
             listNombreControlSource2.add("Reportes Consolidados");
             listNombreControlSource2.add("Reporte Transportadora");
             listNombreControlSource2.add("Reporte Historico Saldos");
+            listNombreControlSource2.add("Reporte Gerencial");
             listNombreControlSource2.add("Monitoreo");
 
             for (int i = 0; i < listPermisos.size(); i++) {

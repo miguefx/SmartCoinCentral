@@ -299,6 +299,16 @@ public class beanReporte implements Serializable {
         return file3;
     }
     private StreamedContent file4;
+    private StreamedContent file5;
+
+    public StreamedContent getFile5() {
+        return file5;
+    }
+
+    public void setFile5(StreamedContent file5) {
+        this.file5 = file5;
+    }
+    
 
     public StreamedContent getFile4() {
         return file4;
@@ -313,6 +323,10 @@ public class beanReporte implements Serializable {
         file3= new DefaultStreamedContent(stream3, "rar/rar", "Drivers.rar");
         InputStream stream4 = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/ReporteHistoricoSaldos.rar");
         file4= new DefaultStreamedContent(stream4, "rar/rar", "ReporteHistoricoSaldos.rar");
+        InputStream stream5 = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/ReporteHistoricoSaldos.rar");
+        file5= new DefaultStreamedContent(stream5, "rar/rar", "ReporteGerencial.rar");
+        
+        
     }
 
 }

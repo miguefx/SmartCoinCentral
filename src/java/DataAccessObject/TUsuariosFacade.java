@@ -38,7 +38,7 @@ public class TUsuariosFacade extends AbstractFacade<TUsuarios> {
         try {
             String auxResultado = verificarEstado(objVOUsuarios.getUsuario());
             if (auxResultado.equals("1")) {
-                    StoredProcedureQuery storedProcedure = em.createStoredProcedureQuery("P_AdminValidarClave;1");
+                StoredProcedureQuery storedProcedure = em.createStoredProcedureQuery("P_AdminValidarClave;1");
                 storedProcedure.registerStoredProcedureParameter("Usuario", String.class, ParameterMode.INOUT);
                 storedProcedure.registerStoredProcedureParameter("clave", String.class, ParameterMode.IN);
 
@@ -47,10 +47,10 @@ public class TUsuariosFacade extends AbstractFacade<TUsuarios> {
                 storedProcedure.execute();
                 resultado = (String) storedProcedure.getOutputParameterValue("Usuario");
 
-            } else if (auxResultado.equals(null)) {
-                resultado = "LOGINOFF";
             } else if (auxResultado.equals("0")) {
                 resultado = "ESTADOOFF";
+            } else {
+                resultado = "LOGINOFF";
             }
 
         } catch (Exception e) {
@@ -88,8 +88,6 @@ public class TUsuariosFacade extends AbstractFacade<TUsuarios> {
 
         return t;
     }
-
-    
 
     public void registrar(TUsuarios objVoUsuarios) {
         try {

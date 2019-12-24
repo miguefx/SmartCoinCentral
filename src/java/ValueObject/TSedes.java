@@ -40,6 +40,14 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "TSedes.findByEstado", query = "SELECT t FROM TSedes t WHERE t.estado = :estado")})
 public class TSedes implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSede")
+    private List<TRecargas> tRecargasList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSede")
+    private List<TCambio> tCambioList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSede")
+    private List<TDonaciones> tDonacionesList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -273,6 +281,33 @@ public class TSedes implements Serializable {
     @Override
     public String toString() {
         return "ValueObject.TSedes[ idSede=" + idSede + " ]";
+    }
+
+    @XmlTransient
+    public List<TDonaciones> getTDonacionesList() {
+        return tDonacionesList;
+    }
+
+    public void setTDonacionesList(List<TDonaciones> tDonacionesList) {
+        this.tDonacionesList = tDonacionesList;
+    }
+
+    @XmlTransient
+    public List<TRecargas> getTRecargasList() {
+        return tRecargasList;
+    }
+
+    public void setTRecargasList(List<TRecargas> tRecargasList) {
+        this.tRecargasList = tRecargasList;
+    }
+
+    @XmlTransient
+    public List<TCambio> getTCambioList() {
+        return tCambioList;
+    }
+
+    public void setTCambioList(List<TCambio> tCambioList) {
+        this.tCambioList = tCambioList;
     }
     
 }

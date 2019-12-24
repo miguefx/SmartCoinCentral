@@ -39,6 +39,13 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "TConfiguracion.findByEstado", query = "SELECT t FROM TConfiguracion t WHERE t.estado = :estado")})
 public class TConfiguracion implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idModulo")
+    private List<TRecargas> tRecargasList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idModulo")
+    private List<TCambio> tCambioList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idModulo")
+    private List<TDonaciones> tDonacionesList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -238,6 +245,33 @@ public class TConfiguracion implements Serializable {
     @Override
     public String toString() {
         return "ValueObject.TConfiguracion[ idModulo=" + idModulo + " ]";
+    }
+
+    @XmlTransient
+    public List<TRecargas> getTRecargasList() {
+        return tRecargasList;
+    }
+
+    public void setTRecargasList(List<TRecargas> tRecargasList) {
+        this.tRecargasList = tRecargasList;
+    }
+
+    @XmlTransient
+    public List<TCambio> getTCambioList() {
+        return tCambioList;
+    }
+
+    public void setTCambioList(List<TCambio> tCambioList) {
+        this.tCambioList = tCambioList;
+    }
+
+    @XmlTransient
+    public List<TDonaciones> getTDonacionesList() {
+        return tDonacionesList;
+    }
+
+    public void setTDonacionesList(List<TDonaciones> tDonacionesList) {
+        this.tDonacionesList = tDonacionesList;
     }
     
 }

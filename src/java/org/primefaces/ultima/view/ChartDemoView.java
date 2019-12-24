@@ -202,20 +202,20 @@ public class ChartDemoView implements Serializable {
         LineChartModel model = new LineChartModel();
 
         ChartSeries boys = new ChartSeries();
-        boys.setLabel("Boys");
-        boys.set("2004", 120);
-        boys.set("2005", 100);
-        boys.set("2006", 44);
-        boys.set("2007", 150);
-        boys.set("2008", 25);
+        boys.setLabel("Ayer");
+        boys.set("8 Am", 120);
+        boys.set("9 Am", 100);
+        boys.set("10 Am", 44);
+        boys.set("11 Am", 150);
+        boys.set("12 Pm", 25);
 
         ChartSeries girls = new ChartSeries();
-        girls.setLabel("Girls");
-        girls.set("2004", 52);
-        girls.set("2005", 60);
-        girls.set("2006", 110);
-        girls.set("2007", 90);
-        girls.set("2008", 120);
+        girls.setLabel("Hoy");
+        girls.set("8 Am", 52);
+        girls.set("9 Am", 60);
+        girls.set("10 Am", 110);
+        girls.set("11 Am", 90);
+        girls.set("12 Pm", 120);
 
         model.addSeries(boys);
         model.addSeries(girls);
@@ -233,12 +233,12 @@ public class ChartDemoView implements Serializable {
         lineModel1.setExtender("skinChart");
         
         lineModel2 = initCategoryModel();
-        lineModel2.setTitle("Category Chart");
+        lineModel2.setTitle("Ingreso de facturas");
         lineModel2.setLegendPosition("e");
         lineModel2.setShowPointLabels(true);
-        lineModel2.getAxes().put(AxisType.X, new CategoryAxis("Years"));
+        lineModel2.getAxes().put(AxisType.X, new CategoryAxis("Horas"));
         yAxis = lineModel2.getAxis(AxisType.Y);
-        yAxis.setLabel("Births");
+        yAxis.setLabel("Cantidad");
         yAxis.setMin(0);
         yAxis.setMax(200);
         

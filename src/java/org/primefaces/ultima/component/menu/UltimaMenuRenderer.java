@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.AjaxSource;
@@ -19,7 +20,7 @@ import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.model.menu.Submenu;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class UltimaMenuRenderer extends BaseMenuRenderer {
@@ -234,7 +235,7 @@ public class UltimaMenuRenderer extends BaseMenuRenderer {
             else {
                 writer.writeAttribute("href", "#", null);
 
-                UIComponent form = ComponentUtils.findParentForm(context, menu);
+                UIForm form = ComponentTraversalUtils.closestForm(context, menu);
                 if(form == null) {
                     throw new FacesException("MenuItem must be inside a form element");
                 }
@@ -311,7 +312,9 @@ public class UltimaMenuRenderer extends BaseMenuRenderer {
         UltimaMenu menu = (UltimaMenu) abstractMenu;
         String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Ultima", menu.resolveWidgetVar(), clientId).finish();
+        wb.init("Ultima", menu.resolveWidgetVar(), clientId)
+                .attr("stateful", menu.isStateful());
+        wb.finish();
     }
     
 }

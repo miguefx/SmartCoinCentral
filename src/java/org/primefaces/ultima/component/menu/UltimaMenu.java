@@ -39,7 +39,7 @@ public class UltimaMenu extends AbstractMenu implements Widget,ComponentSystemEv
     
     protected enum PropertyKeys {
 
-        widgetVar, model, style, styleClass;
+        widgetVar, model, style, styleClass, stateful;
 
         String toString;
 
@@ -93,6 +93,14 @@ public class UltimaMenu extends AbstractMenu implements Widget,ComponentSystemEv
 
     public void setStyleClass(java.lang.String _styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    }
+    
+    public boolean isStateful() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.stateful, true);
+    }
+
+    public void setStateful(boolean _stateful) {
+        getStateHelper().put(PropertyKeys.stateful, _stateful);
     }
 
     public String resolveWidgetVar() {

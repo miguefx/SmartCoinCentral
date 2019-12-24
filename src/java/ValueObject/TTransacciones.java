@@ -7,7 +7,9 @@ package ValueObject;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ColumnResult;
 import javax.persistence.ConstructorResult;
@@ -17,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -24,6 +27,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -57,6 +61,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 }))
 public class TTransacciones implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTransaccion")
+    private List<TRecargas> tRecargasList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTransaccion")
+    private List<TCambio> tCambioList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTransaccion")
+    private List<TDonaciones> tDonacionesList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -276,6 +287,33 @@ public class TTransacciones implements Serializable {
     @Override
     public String toString() {
         return "ValueObject.TTransacciones[ idTransaccion=" + idTransaccion + " ]";
+    }
+
+    @XmlTransient
+    public List<TRecargas> getTRecargasList() {
+        return tRecargasList;
+    }
+
+    public void setTRecargasList(List<TRecargas> tRecargasList) {
+        this.tRecargasList = tRecargasList;
+    }
+
+    @XmlTransient
+    public List<TCambio> getTCambioList() {
+        return tCambioList;
+    }
+
+    public void setTCambioList(List<TCambio> tCambioList) {
+        this.tCambioList = tCambioList;
+    }
+
+    @XmlTransient
+    public List<TDonaciones> getTDonacionesList() {
+        return tDonacionesList;
+    }
+
+    public void setTDonacionesList(List<TDonaciones> tDonacionesList) {
+        this.tDonacionesList = tDonacionesList;
     }
     
 }

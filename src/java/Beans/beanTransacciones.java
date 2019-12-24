@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -104,6 +105,7 @@ public class beanTransacciones implements Serializable {
     private String totalauxivaFoot;
     private String totalauxRedondeoFoot;
     private String totalauxRecibidoFoot;
+    private String totalTransaccionesFoot;
     private String totalauxMonedas;
     private String valorModulo;
     private Date fechaInicialAux;
@@ -113,6 +115,17 @@ public class beanTransacciones implements Serializable {
     private ExcelOptions excelOpt;
     private PDFOptions pdfOpt;
 
+    public String getTotalTransaccionesFoot() {
+        return totalTransaccionesFoot;
+    }
+
+    public void setTotalTransaccionesFoot(String totalTransaccionesFoot) {
+        this.totalTransaccionesFoot = totalTransaccionesFoot;
+    }
+
+    
+    
+    
     @PostConstruct
     public void init() {
         customizationOptions();
@@ -601,14 +614,14 @@ public class beanTransacciones implements Serializable {
         this.listTransacciones = listTransacciones;
     }
 
-    private Long totalesCantidad = new Long("0");
+    private Integer totalesCantidad =0;
     private Double totalesValor = 0.0;
 
-    public Long getTotalesCantidad() {
+    public Integer getTotalesCantidad() {
         return totalesCantidad;
     }
 
-    public void setTotalesCantidad(Long totalesCantidad) {
+    public void setTotalesCantidad(Integer totalesCantidad) {
         this.totalesCantidad = totalesCantidad;
     }
 
@@ -623,14 +636,11 @@ public class beanTransacciones implements Serializable {
     public void generarListaMovimientoTransaccion(ActionEvent egt) {
         try {
             listMovimientosFiltrer = objDaoMovimientos.retornarListaMovimientosById(seleccionTransacciones.getIdTransaccion(), seleccionTransacciones.getIdModulo().getIdModulo());
-
-            for (int i = 0; i < listMovimientosFiltrer.size(); i++) {
-                if (listMovimientosFiltrer.get(i).getAccion().equals("Entrada")) {
-                    totalesCantidad = totalesCantidad + listMovimientosFiltrer.get(i).getCantidad();
-                    totalesValor = totalesValor + listMovimientosFiltrer.get(i).getValor();
-                }
-            }
-
+            List<TmovimientosTable> listMovimientosXEntrada = listMovimientosFiltrer.stream().filter(mov -> mov.getAccion().equalsIgnoreCase("Entrada")).collect(Collectors.toList());
+            listMovimientosXEntrada.stream().forEach(movimients -> {
+                totalesCantidad = totalesCantidad + movimients.getCantidad();
+                totalesValor = totalesValor + movimients.getValor();
+            });
         } catch (Exception e) {
         }
     }

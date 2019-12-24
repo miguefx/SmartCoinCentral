@@ -1,0 +1,147 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+
+    <ui:define name="content">
+        <title>Cambios Smart</title>
+        <h:form id="myform" >
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-lg-12">
+                        <!-- Left Side -->
+                        <div class="card card-w-title">
+                            <p:overlayPanel id="tableTransaccion"  for="search" hideEffect="clip"  onHide="limpiar()" showEffect="clip" dismissable="false" dynamic="true"     showCloseIcon="true" >
+                                <div class="ui-g-12">
+                                    <p:dataTable id="cambiosTable"   widgetVar="traTra" reflow="true" style="font-size: 15px;" 
+                                                 value="#{beanCambios.listCambiosFiltrados}"  
+                                                 paginator="true" rows="6"   var="cambio"  
+                                                 sortBy="#{cambio.fechaOperacion.time}"  sortOrder="descending" 
+                                                 filteredValue="#{beanCambios.listCambiosFiltradoTable}" emptyMessage="Cero registros encontrados" >
+                                        <f:facet name="header">
+                                            Cambios
+                                        </f:facet>
+                                        <p:column  headerText="Transaccion" filterBy="#{cambio.idTransaccion.idTransaccion}"   filterMatchMode="contains" >
+                                            <p:outputLabel value="#{cambio.idTransaccion.idTransaccion}" />
+                                        </p:column>
+                                        <p:column  headerText="Factura" filterBy="#{cambio.numeroFactura}"   filterMatchMode="contains" >
+                                            <p:outputLabel value="#{cambio.numeroFactura}" />
+                                        </p:column>
+                                        <p:column  headerText="Sede" filterBy="#{cambio.idModulo.idModulo}"   filterMatchMode="contains" >
+                                            <p:outputLabel value="#{cambio.idModulo.idModulo.toString().substring(9)}" />
+                                        </p:column>
+                                        <p:column headerText="Fecha Transaccion" filterBy="#{cambio.fechaOperacion}" width="17%"  filterMatchMode="contains" >
+                                            <p:outputLabel value="#{cambio.fechaOperacion}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy hh:mm a" dateStyle="both" type="date"  />
+                                            </p:outputLabel>
+                                        </p:column>
+                                        <p:column headerText="Cambio" >
+                                            <p:outputLabel value="#{cambio.valorRetirado}">
+                                                <f:convertNumber type="currency"   integerOnly="true" maxFractionDigits="0"/>
+                                            </p:outputLabel>
+                                        </p:column>
+                                        <p:column headerText="Valor Recibido" >
+                                            <p:outputLabel value="#{cambio.idTransaccion.valorRecibido}">
+                                                <f:convertNumber type="currency" integerOnly="true" maxFractionDigits="0"/>
+                                            </p:outputLabel>
+                                        </p:column>
+                                        <p:column headerText="Iva">
+                                            <p:outputLabel value="#{cambio.iva}">
+                                                <f:convertNumber type="currency"   integerOnly="true" maxFractionDigits="0"/>
+                                            </p:outputLabel>
+                                        </p:column>
+                                        <p:column headerText="Comision" >
+                                            <p:outputLabel value="#{cambio.comision}">
+                                                <f:convertNumber type="currency"   integerOnly="true" maxFractionDigits="0"/>
+                                            </p:outputLabel>
+                                        </p:column>
+                                        <p:column headerText="Estado"  filterBy="#{cambio.iva}" filterMatchMode="contains"  >
+                                            <p:outputLabel value="#{beanCambios.obtenerEstado(cambio.estadoTransaccion)}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                    <p:panelGrid columns="3" styleClass="ui-panelgrid-blank" layout="grid">
+                                        <p:commandButton  id="btnTotal" value="Ver Totales" update="recibido2 comision2 iv2 totalMonedas"  icon="fa fa-plus-square-o"  />
+                                    </p:panelGrid>
+                                    <p:overlayPanel id="carPanel" for="btnTotal" my="right" at="top" hideEffect="clip" showEffect="clip" dynamic="true" showCloseIcon="true" dismissable="false" >
+                                        <p:panelGrid columns="4" styleClass="ui-panelgrid-blank" >
+                                            <p:outputLabel value="Total Recibido" styleClass="nombre"/>
+                                            <p:outputLabel value="Comision" styleClass="nombre"/>
+                                            <p:outputLabel value="Iva" styleClass="nombre"/>
+                                            <p:outputLabel value="Total Monedas" styleClass="nombre"/>
+                                            <p:outputLabel id="recibido2" value="$#{beanCambios.totalauxRecibidoFoot}"/>
+                                            <p:outputLabel id="comision2" value="$#{beanCambios.totalauxComisionFoot}"/>
+                                            <p:outputLabel id="iv2" value="$#{beanCambios.totalauxIvaFoot}"/>
+                                            <p:outputLabel id="totalMonedas" value="#{beanCambios.totalMonedas}">
+                                                <f:convertNumber pattern="###,###" />
+                                            </p:outputLabel>
+                                        </p:panelGrid>
+                                    </p:overlayPanel>
+                                </div>
+                                <div class="ui-g-12 ui-lg-2">
+                                    <div class="card card-w-title" >
+                                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                            <p:outputLabel value="Exportar a:" style="font-weight: bold;font-size: 16px;"/>
+                                        </p:panelGrid>
+                                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                            <h:commandLink>
+                                                <p:graphicImage url="resources/ultima-layout/images/pdf.png" />
+                                                <p:dataExporter type="pdf" target="cambiosTable" fileName="HistorialCambiosDe#{beanCambios.valorModulo}Y#{beanCambios.valorSedeIgual}De#{beanCambios.calendarIni}A#{beanCambios.calendarFin}" options="#{beanTransacciones.pdfOpt}"/>
+                                                <p:outputLabel value="PDF" style="color: black;margin: 8px 8px 8px 8px;font-weight: bold;font-size: 12px;" />
+                                            </h:commandLink>
+                                            <h:commandLink>
+                                                <p:graphicImage url="resources/ultima-layout/images/excel.png" />
+                                                <p:dataExporter type="xls" target="cambiosTable" fileName="HistorialCambiosDe#{beanCambios.valorModulo}Y#{beanCambios.valorSedeIgual}De#{beanCambios.calendarIni}A#{beanCambios.calendarFin}" options="#{beanTransacciones.excelOpt}" />
+                                                <p:outputLabel value="EXCEL" style="color: black;margin: 8px 8px 8px 8px;font-weight: bold;font-size: 12px;"/>
+                                            </h:commandLink>
+
+                                        </p:panelGrid>
+                                    </div>
+                                </div>
+
+                                <p:remoteCommand name="limpiar"  update="cambiosTable" actionListener="#{beanCambios.limpiar()}"  />
+                            </p:overlayPanel>
+
+                            <p:messages id="message2" showDetail="true"   closable="true"  />
+
+                            <h1>Llena los datos para filtrar y buscar un <b>Cambio</b></h1>
+                            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                <p:outputLabel value="Ciudad" styleClass="fontBold" style="font-weight: bold">
+                                    <p:selectOneMenu id="sedes" value="#{beanCambios.valorSedeIgual}"  >
+                                        <p:ajax event="valueChange"    update="modulos"
+                                                listener="#{beanCambios.changeMenu(egt)}" />
+                                        <f:selectItem itemLabel="Todos" itemValue=""/>
+                                        <f:selectItems value="#{beanCambios.listSedes}" var="sedes" itemLabel="#{sedes.ciudad}" itemValue="#{sedes.idciudad}" />
+                                    </p:selectOneMenu>
+                                </p:outputLabel>
+                                <p:outputLabel value="Sede" styleClass="fontBold" style="font-weight: bold">
+                                    <p:selectOneMenu id="modulos" value="#{beanCambios.valorModulo}" style="margin-bottom:10px;">
+                                        <f:selectItem itemLabel="Todos" itemValue=""/>
+                                        <f:selectItems value="#{beanCambios.listModulos}" var="modulo" itemLabel="${modulo.idModulo}" itemValue="${modulo.idModulo}"/>
+                                    </p:selectOneMenu>
+                                </p:outputLabel>
+
+                                <p:outputLabel value="Fecha Inicio" styleClass="fontBold" style="font-weight: bold">
+                                    <p:calendar  id="multi1"  placeholder="Pulse aquí para elegir fecha Inicio" maxdate="#{beanCambios.today}"  value="#{beanCambios.calendarIni}"  pattern="dd/MM/yyyy HH:mm"  required="true"  locale="es" showButtonPanel="true" /> 
+                                </p:outputLabel>
+                                <p:outputLabel value="Fecha Fin" styleClass="fontBold" style="font-weight: bold">
+                                    <p:calendar id="multi2"  placeholder="Pulse aquí para elegir fecha Fin" maxdate="#{beanCambios.today}"  value="#{beanCambios.calendarFin}" pattern="dd/MM/yyyy HH:mm" required="true" locale="es" showButtonPanel="true" /> 
+                                </p:outputLabel>
+                            </p:panelGrid>
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                <p:commandButton id="search" value="Buscar"  icon="fa fa-search" actionListener="#{beanCambios.buscarCambios(egt)}" update="cambiosTable message2"  />
+                            </p:panelGrid>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

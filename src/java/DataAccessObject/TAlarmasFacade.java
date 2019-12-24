@@ -53,11 +53,13 @@ public class TAlarmasFacade extends AbstractFacade<TAlarmas> {
             Calendar cal = Calendar.getInstance();
             Date fechaHaceUnMes = cal.getTime();
             cal.setTime(fechaHaceUnMes);
-            cal.add(Calendar.DAY_OF_MONTH, -30);
+            cal.set(Calendar.HOUR_OF_DAY,0);
+            cal.set(Calendar.MINUTE,0);
+            cal.set(Calendar.SECOND,0);
             fechaHaceUnMes = cal.getTime();
             Date hoy = new Date();
 
-            Query query = em.createQuery("SELECT a from TAlarmas a where a.fechaRegistro BETWEEN ?1 AND ?2 ");
+            Query query = em.createQuery("SELECT a from TAlarmas a where (a.fechaRegistro BETWEEN ?1 AND ?2) AND a.fechaSolucion IS NULL ");
             query.setParameter(1, fechaHaceUnMes, TemporalType.TIMESTAMP);
             query.setParameter(2, hoy, TemporalType.TIMESTAMP);
             List<TAlarmas> listAlarmasFiltradas = query.getResultList();

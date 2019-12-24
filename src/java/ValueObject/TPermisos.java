@@ -56,7 +56,7 @@ public class TPermisos implements Serializable {
     @Column(name = "IdModulo")
     private String idModulo;
     @Column(name = "IdCiudad")
-    private BigInteger idCiudad;
+    private Long idCiudad;
     @Column(name = "IdSede")
     private BigInteger idSede;
     @Basic(optional = false)
@@ -109,11 +109,11 @@ public class TPermisos implements Serializable {
         this.idModulo = idModulo;
     }
 
-    public BigInteger getIdCiudad() {
+    public Long getIdCiudad() {
         return idCiudad;
     }
 
-    public void setIdCiudad(BigInteger idCiudad) {
+    public void setIdCiudad(Long idCiudad) {
         this.idCiudad = idCiudad;
     }
 

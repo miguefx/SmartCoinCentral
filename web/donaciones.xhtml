@@ -1,0 +1,126 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+
+    <ui:define name="content">
+        <title>Donaciones Smart</title>
+        <h:form id="myform" >
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-lg-12">
+                        <!-- Left Side -->
+                        <div class="card card-w-title">
+                            <p:overlayPanel id="tableTransaccion"  for="search" hideEffect="clip"  onHide="limpiar()" showEffect="clip" dismissable="false" dynamic="true"     showCloseIcon="true" >
+                                <div class="ui-g-12">
+                                    <p:dataTable id="donacionesTable"   widgetVar="traTra" reflow="true" style="font-size: 15px;" 
+                                                 value="#{beanDonaciones.listDonacionesFiltrados}"  
+                                                 paginator="true" rows="6"   var="donaciones"  
+                                                 sortBy="#{donaciones.fechaOperacion.time}"  sortOrder="descending" 
+                                                 filteredValue="#{beanDonaciones.listDonacionesFiltradoTable}" emptyMessage="Cero registros encontrados" >
+                                        <f:facet name="header">
+                                            Donaciones
+                                        </f:facet>
+                                        <p:column  headerText="Transaccion" filterBy="#{donaciones.idTransaccion.idTransaccion}"   filterMatchMode="contains" >
+                                            <p:outputLabel value="#{donaciones.idTransaccion.idTransaccion}" />
+                                        </p:column>
+                                        <p:column  headerText="Modulo" filterBy="#{donaciones.idModulo.idModulo}"   filterMatchMode="contains" >
+                                            <p:outputLabel value="#{donaciones.idModulo.idModulo.toString().substring(9)}" />
+                                        </p:column>
+                                        <p:column headerText="Valor"  filterBy="#{donaciones.fundacion}" filterMatchMode="contains"  >
+                                            <p:outputLabel value="#{donaciones.valorOperacion}">
+                                                <f:convertNumber type="currency"   integerOnly="true" maxFractionDigits="0"/>
+                                            </p:outputLabel>                                        
+                                        </p:column>
+                                        <p:column headerText="Fecha Transaccion" filterBy="#{donaciones.fechaOperacion}" width="17%"  filterMatchMode="contains" >
+                                            <p:outputLabel value="#{donaciones.fechaOperacion}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy hh:mm a" dateStyle="both" type="date"  />
+                                            </p:outputLabel>
+                                        </p:column>
+                                        <p:column headerText="Fundacion"  filterBy="#{donaciones.fundacion}" filterMatchMode="contains"  >
+                                            <p:outputLabel value="#{donaciones.fundacion}"/>
+                                        </p:column>
+
+                                    </p:dataTable>
+                                    <p:panelGrid columns="3" styleClass="ui-panelgrid-blank" layout="grid">
+                                        <p:commandButton  id="btnTotal" value="Ver Totales" update="recibido2 totalMonedas"  icon="fa fa-plus-square-o"  />
+                                    </p:panelGrid>
+                                    <p:overlayPanel id="carPanel" for="btnTotal" my="right" at="top" hideEffect="clip" showEffect="clip" dynamic="true" showCloseIcon="true" dismissable="false" >
+                                        <p:panelGrid columns="2" styleClass="ui-panelgrid-blank" >
+                                            <p:outputLabel value="Total Recibido" styleClass="nombre"/>
+                                            <p:outputLabel value="Total Monedas" styleClass="nombre"/>
+                                            <p:outputLabel id="recibido2" value="$#{beanDonaciones.totalauxRecibidoFoot}"/>
+                                            <p:outputLabel id="totalMonedas" value="#{beanDonaciones.totalMonedas}">
+                                                <f:convertNumber pattern="###,###" />
+                                            </p:outputLabel>
+                                        </p:panelGrid>
+                                    </p:overlayPanel>
+                                </div>
+                                <div class="ui-g-12 ui-lg-2">
+                                    <div class="card card-w-title" >
+                                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                            <p:outputLabel value="Exportar a:" style="font-weight: bold;font-size: 16px;"/>
+                                        </p:panelGrid>
+                                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                            <h:commandLink>
+                                                <p:graphicImage url="resources/ultima-layout/images/pdf.png" />
+                                                <p:dataExporter type="pdf" target="donacionesTable" fileName="HistorialDonacionesDe#{beanDonaciones.valorModulo}Y#{beanDonaciones.valorSedeIgual}De#{beanDonaciones.calendarIni}A#{beanDonaciones.calendarFin}" options="#{beanTransacciones.pdfOpt}"/>
+                                                <p:outputLabel value="PDF" style="color: black;margin: 8px 8px 8px 8px;font-weight: bold;font-size: 12px;" />
+                                            </h:commandLink>
+                                            <h:commandLink>
+                                                <p:graphicImage url="resources/ultima-layout/images/excel.png" />
+                                                <p:dataExporter type="xls" target="donacionesTable" fileName="HistorialDonacionesDe#{beanDonaciones.valorModulo}Y#{beanDonaciones.valorSedeIgual}De#{beanDonaciones.calendarIni}A#{beanDonaciones.calendarFin}" options="#{beanTransacciones.excelOpt}" />
+                                                <p:outputLabel value="EXCEL" style="color: black;margin: 8px 8px 8px 8px;font-weight: bold;font-size: 12px;"/>
+                                            </h:commandLink>
+
+                                        </p:panelGrid>
+                                    </div>
+                                </div>
+
+                                <p:remoteCommand name="limpiar"  update="donacionesTable" actionListener="#{beanDonaciones.limpiar()}"  />
+                            </p:overlayPanel>
+
+                            <p:messages id="message2" showDetail="true"   closable="true"  />
+
+                            <h1>Llena los datos para filtrar y buscar una <b>Donacion</b></h1>
+                            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                <p:outputLabel value="Ciudad" styleClass="fontBold" style="font-weight: bold">
+                                    <p:selectOneMenu id="sedes" value="#{beanDonaciones.valorSedeIgual}"  >
+                                        <p:ajax event="valueChange"    update="modulos"
+                                                listener="#{beanDonaciones.changeMenu(egt)}" />
+                                        <f:selectItem itemLabel="Todos" itemValue=""/>
+                                        <f:selectItems value="#{beanDonaciones.listSedes}" var="sedes" itemLabel="#{sedes.ciudad}" itemValue="#{sedes.idciudad}" />
+                                    </p:selectOneMenu>
+                                </p:outputLabel>
+                                <p:outputLabel value="Sede" styleClass="fontBold" style="font-weight: bold">
+                                    <p:selectOneMenu id="modulos" value="#{beanDonaciones.valorModulo}" style="margin-bottom:10px;">
+                                        <f:selectItem itemLabel="Todos" itemValue=""/>
+                                        <f:selectItems value="#{beanDonaciones.listModulos}" var="modulo" itemLabel="${modulo.idModulo}" itemValue="${modulo.idModulo}"/>
+                                    </p:selectOneMenu>
+                                </p:outputLabel>   
+                                <p:outputLabel value="Fecha Inicio" styleClass="fontBold" style="font-weight: bold">
+                                    <p:calendar  id="multi1"  placeholder="Pulse aquí para elegir fecha Inicio" maxdate="#{beanDonaciones.today}"  value="#{beanDonaciones.calendarIni}"  pattern="dd/MM/yyyy HH:mm"  required="true"  locale="es" showButtonPanel="true" /> 
+                                </p:outputLabel>
+                                <p:outputLabel value="Fecha Fin" styleClass="fontBold" style="font-weight: bold">
+                                    <p:calendar id="multi2"  placeholder="Pulse aquí para elegir fecha Fin" maxdate="#{beanDonaciones.today}"  value="#{beanDonaciones.calendarFin}" pattern="dd/MM/yyyy HH:mm" required="true" locale="es" showButtonPanel="true" /> 
+                                </p:outputLabel>
+
+                            </p:panelGrid>
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                <p:commandButton id="search" value="Buscar"  icon="fa fa-search" actionListener="#{beanDonaciones.buscarDonaciones(egt)}" update="donacionesTable message2"  />
+                            </p:panelGrid>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

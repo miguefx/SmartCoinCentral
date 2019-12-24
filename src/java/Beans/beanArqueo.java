@@ -460,52 +460,53 @@ public class beanArqueo implements Serializable {
         }
 
     }
-    
-        public void limpiar() {
-            try {
-                if (!listArqueosFiltrado.isEmpty()) {
-                    listArqueosFiltrado.clear();
-                    totalValorP=0.0;
-                    totalValorT=0.0;
-                }
-            } catch (Exception e) {
-            }
-        }
-        public void limpiartransaccion() {
-            try {
-                if (!listTransaccionesDeArqueos.isEmpty()) {
-                   listTransaccionesDeArqueos.clear();
-                   totalauxRecibidoFoot="";
-                   totalauxSubFoot="";
-                   totalauxcomisionFoot="";
-                   totalauxRedondeoFoot="";
-                   totalauxivaFoot="";
-                   totalMonedas=new Long("0");
-                }
-            } catch (Exception e) {
-            }
-        }
-        public void limpiar2() {
-            try {
-                if (!listMovimientosFiltrer.isEmpty()) {
-                    listMovimientosFiltrer.clear();
-                    totalValorP=0.0;
-                    totalValorT=0.0;
-                }
-            } catch (Exception e) {
-            }
-        }
 
+    public void limpiar() {
+        try {
+            if (!listArqueosFiltrado.isEmpty()) {
+                listArqueosFiltrado.clear();
+                totalValorP = 0.0;
+                totalValorT = 0.0;
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    public void limpiartransaccion() {
+        try {
+            if (!listTransaccionesDeArqueos.isEmpty()) {
+                listTransaccionesDeArqueos.clear();
+                totalauxRecibidoFoot = "";
+                totalauxSubFoot = "";
+                totalauxcomisionFoot = "";
+                totalauxRedondeoFoot = "";
+                totalauxivaFoot = "";
+                totalMonedas = new Long("0");
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    public void limpiar2() {
+        try {
+            if (!listMovimientosFiltrer.isEmpty()) {
+                listMovimientosFiltrer.clear();
+                totalValorP = 0.0;
+                totalValorT = 0.0;
+            }
+        } catch (Exception e) {
+        }
+    }
 
     public void generarTablaTransacciones(ActionEvent event) {
         try {
-           limpiartransaccion();
-           totalSubFoot=0.0;
-           totalivaFoot=0.0;
-           totalcomisionFoot=0.0;
-           totalRedondeoFoot=0.0;
-           totalRecibidoFoot=0.0;
-           totalMonedas=new Long("0");
+            limpiartransaccion();
+            totalSubFoot = 0.0;
+            totalivaFoot = 0.0;
+            totalcomisionFoot = 0.0;
+            totalRedondeoFoot = 0.0;
+            totalRecibidoFoot = 0.0;
+            totalMonedas = new Long("0");
             listTransaccionesDeArqueos = objDaoTransacciones.listArqueosFinal(seleccionArqueos.getIdModulo().getIdModulo(), seleccionArqueos.getIdSede().getIdSede(), seleccionArqueos.getFechaInicio(), seleccionArqueos.getFechaFinAnterior());
             for (int i = 0; i < listTransaccionesDeArqueos.size(); i++) {
 
@@ -523,20 +524,20 @@ public class beanArqueo implements Serializable {
                 }
                 totalRecibidoFoot = totalRecibidoFoot + listTransaccionesDeArqueos.get(i).getValorRecibido();
 
-                DecimalFormat formatea = new DecimalFormat("###,###");
-                totalauxRecibidoFoot = formatea.format(totalRecibidoFoot);
-                totalauxcomisionFoot = formatea.format(totalcomisionFoot);
-                totalauxRedondeoFoot = formatea.format(totalRedondeoFoot);
-                totalauxRecibidoFoot = formatea.format(totalRecibidoFoot);
-                totalauxivaFoot = formatea.format(totalivaFoot);
-                totalauxSubFoot = formatea.format(totalSubFoot);
-                Long suma = new Long("0");
-                for (int j = 0; j < listTransaccionesDeArqueos.size(); j++) {
-                    suma = suma + objDaoMovimientos.retornarTotalMonedasByIdTransaccion(listTransaccionesDeArqueos.get(j).getIdTransaccion());
-                }
-                totalMonedas = suma;
-
             }
+            
+            DecimalFormat formatea = new DecimalFormat("###,###");
+            totalauxRecibidoFoot = formatea.format(totalRecibidoFoot);
+            totalauxcomisionFoot = formatea.format(totalcomisionFoot);
+            totalauxRedondeoFoot = formatea.format(totalRedondeoFoot);
+            totalauxRecibidoFoot = formatea.format(totalRecibidoFoot);
+            totalauxivaFoot = formatea.format(totalivaFoot);
+            totalauxSubFoot = formatea.format(totalSubFoot);
+            Long suma = new Long("0");
+            for (int j = 0; j < listTransaccionesDeArqueos.size(); j++) {
+                suma = suma + objDaoMovimientos.retornarTotalMonedasByIdTransaccion(listTransaccionesDeArqueos.get(j).getIdTransaccion());
+            }
+            totalMonedas = suma;
 
         } catch (Exception e) {
         }
@@ -546,11 +547,11 @@ public class beanArqueo implements Serializable {
         try {
             if (!listPartes.isEmpty()) {
                 listPartes.clear();
-                totalDineroActualCajones=0.0;
-                totalCantidadActualCajones=0;
-                totalDineroActualModulo=0.0;
-                totalDineroActualPurga=0.0;
-                
+                totalDineroActualCajones = 0.0;
+                totalCantidadActualCajones = 0;
+                totalDineroActualModulo = 0.0;
+                totalDineroActualPurga = 0.0;
+
             }
         } catch (Exception e) {
         }
@@ -580,11 +581,10 @@ public class beanArqueo implements Serializable {
     public void limpiarTablaMovimientos() {
         try {
             if (!listMovimientosFiltrer.isEmpty()) {
-                            listMovimientosFiltrer.clear();
-                            totalesCantidad=null;
-                            totalesValor=0.0;
+                listMovimientosFiltrer.clear();
+                totalesCantidad = null;
+                totalesValor = 0.0;
             }
-
 
         } catch (Exception e) {
         }
@@ -611,13 +611,11 @@ public class beanArqueo implements Serializable {
 
     public void generarListaMovimientoArqueo(ActionEvent egt) {
         try {
-            listMovimientosFiltrer = objDaoMovimientos.retornarListaMovimientos(seleccionArqueos.getIdModulo().getIdModulo(),seleccionArqueos.getIdLocal());
+            listMovimientosFiltrer = objDaoMovimientos.retornarListaMovimientos(seleccionArqueos.getIdModulo().getIdModulo(), seleccionArqueos.getIdLocal());
 
             for (int i = 0; i < listMovimientosFiltrer.size(); i++) {
-                if (listMovimientosFiltrer.get(i).getAccion().equals("Entrada")) {
-                    totalesCantidad = totalesCantidad + listMovimientosFiltrer.get(i).getCantidad();
-                    totalesValor = totalesValor + listMovimientosFiltrer.get(i).getValor();
-                }
+                totalesCantidad = totalesCantidad + listMovimientosFiltrer.get(i).getCantidad();
+                totalesValor = totalesValor + listMovimientosFiltrer.get(i).getValor();
             }
         } catch (Exception e) {
         }

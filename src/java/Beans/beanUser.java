@@ -17,6 +17,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import lombok.Getter;
+import lombok.Setter;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
@@ -302,6 +304,18 @@ public class beanUser implements Serializable {
     private Boolean drivers = false;
     private Boolean monitoreo = false;
 
+    @Getter
+    @Setter
+    private Boolean recargas = false;
+
+    @Getter
+    @Setter
+    private Boolean cambios = false;
+
+    @Getter
+    @Setter
+    private Boolean donaciones = false;
+
     public Boolean getReportesHistoricoSaldos() {
         return reportesHistoricoSaldos;
     }
@@ -576,8 +590,19 @@ public class beanUser implements Serializable {
                 if (!reportesGerencial) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
                 }
+            } else if (url.equals("http://107.180.70.70:9090/SmartCoin/recargas.xhtml")) {
+                if (!recargas) {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
+                }
+            } else if (url.equals("http://107.180.70.70:9090/SmartCoin/donaciones.xhtml")) {
+                if (!donaciones) {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
+                }
+            } else if (url.equals("http://107.180.70.70:9090/SmartCoin/cambios.xhtml")) {
+                if (!cambios) {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/access.xhtml");
+                }
             }
-
         } catch (Exception e) {
         }
     }
@@ -687,6 +712,9 @@ public class beanUser implements Serializable {
                 listaDePermisos.add(new Permisos("Reporte Historico Saldos", false));
                 listaDePermisos.add(new Permisos("Reporte Gerencial", false));
                 listaDePermisos.add(new Permisos("Monitoreo", false));
+                listaDePermisos.add(new Permisos("Donaciones", false));
+                listaDePermisos.add(new Permisos("Recargas", false));
+                listaDePermisos.add(new Permisos("Cambios", false));
                 if (listPermisosSession != null) {
 
                     for (int i = 0; i < listPermisosSession.size(); i++) {
@@ -725,40 +753,52 @@ public class beanUser implements Serializable {
                             reportesHistoricoSaldos = listaDePermisos.get(i).getEstado();
                         } else if (listaDePermisos.get(i).getNombrePermiso().equals("Monitoreo")) {
                             monitoreo = listaDePermisos.get(i).getEstado();
-                        } else if (listaDePermisos.get(i).getNombrePermiso().equals("Reporte Gerencial")) {
-                            reportesGerencial = listaDePermisos.get(i).getEstado();
+                        } else if (listaDePermisos.get(i).getNombrePermiso().equals("Recargas")) {
+                            recargas = listaDePermisos.get(i).getEstado();
+                        } else if (listaDePermisos.get(i).getNombrePermiso().equals("Donaciones")) {
+                            donaciones = listaDePermisos.get(i).getEstado();
+                        } else if (listaDePermisos.get(i).getNombrePermiso().equals("Cambios")) {
+                            cambios = listaDePermisos.get(i).getEstado();
                         }
                     }
+                }
 
-                    if (arqueos || transacciones || saldoEnLinea || cargas || monitoreo) {
-                        btnConsultas = true;
-                    }
-                    if (registro || gestionDeUsuarios) {
-                        btnUsers = true;
-                    }
-                    if (reportesConsolidados || reportesTransportadora || reportesHistoricoSaldos || reportesGerencial) {
-                        btnReporte = true;
-                    }
-                    if (reportesHistoricoSaldos || reportesTransportadora || reportesGerencial) {
-                        drivers = true;
-                    }
+                if (arqueos || transacciones || saldoEnLinea || cargas || monitoreo || donaciones || recargas || cambios) {
+                    btnConsultas = true;
+                }
+                if (registro || gestionDeUsuarios) {
+                    btnUsers = true;
+                }
+                if (reportesConsolidados || reportesTransportadora || reportesHistoricoSaldos || reportesGerencial) {
+                    btnReporte = true;
+                }
+                if (reportesHistoricoSaldos || reportesTransportadora || reportesGerencial) {
+                    drivers = true;
                 }
 
                 nombresParMostrar = objVoUsuarios.getNombres() + " " + objVoUsuarios.getApellidos();
                 HttpSession hs = sesion.getSession();
-                hs.setAttribute("usr", nombresParMostrar);
-                hs.setAttribute("cedula", cedulaEnSession);
 
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Perfecto", ""));
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/SmartCoin/dashboard.xhtml");
+                hs.setAttribute(
+                        "usr", nombresParMostrar);
+                hs.setAttribute(
+                        "cedula", cedulaEnSession);
+
+                FacesContext.getCurrentInstance()
+                        .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Perfecto", ""));
+                FacesContext.getCurrentInstance()
+                        .getExternalContext().redirect("/SmartCoin/dashboard.xhtml");
                 FacesContext context = FacesContext.getCurrentInstance();
-            } else if (resultado.equals("LOGINOFF")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Hubo un error", "El usuario o la contraseña son incorrectos."));
-            } else if (resultado.equals("ESTADOOFF")) {
+
+            } else if (resultado.equals(
+                    "ESTADOOFF")) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Hubo un error", "El usuario al que intenta ingresar esta desactivado."));
-            } 
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Hubo un error", "El usuario o la contraseña son incorrectos."));
+            }
 
         } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Hubo un error", "El usuario o la contraseña son incorrectos."));
         }
     }
 
@@ -983,7 +1023,7 @@ public class beanUser implements Serializable {
                 objVoPermisos.setSincronizacion(false);
                 objVoPermisos.setNombreControl(nombreBoton.getTarget().get(i));
                 objVoPermisos.setIdModulo(valorModulo);
-                objVoPermisos.setIdCiudad(BigInteger.valueOf(valorSedeIgual));
+                objVoPermisos.setIdCiudad(valorSedeIgual);
                 objVoPermisos.setIdSede(BigInteger.valueOf(numeroSede));
                 objDaoPermisos.create(objVoPermisos);
             }
@@ -1037,7 +1077,7 @@ public class beanUser implements Serializable {
                 objVoPermisos.setSincronizacion(false);
                 objVoPermisos.setNombreControl(nombreBoton2.getTarget().get(i));
                 objVoPermisos.setIdModulo("DashBoard");
-                objVoPermisos.setIdCiudad(new BigInteger("0"));
+                objVoPermisos.setIdCiudad(new Long("0"));
                 objVoPermisos.setIdSede(new BigInteger("0"));
                 objDaoPermisos.create(objVoPermisos);
             }
@@ -1086,6 +1126,9 @@ public class beanUser implements Serializable {
             listNombreControlSource.add("Alarmas");
             listNombreControlSource.add("Arqueos");
             listNombreControlSource.add("Transacciones");
+            listNombreControlSource.add("Recargas");
+            listNombreControlSource.add("Donaciones");
+            listNombreControlSource.add("Cambios");
             listNombreControlSource.add("Cargas");
             listNombreControlSource.add("Saldos en linea");
             listNombreControlSource2.add("Clave Dinamica");

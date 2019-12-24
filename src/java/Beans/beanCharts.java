@@ -43,71 +43,71 @@ import org.primefaces.model.chart.LineChartSeries;
 @ManagedBean
 @SessionScoped
 public class beanCharts {
-
+    
     @EJB
     TArqueosFacade objDaoArqueos;
-
+    
     @EJB
     TTransaccionesFacade objDaoTransacciones;
-
+    
     @EJB
     TConfiguracionFacade objDaoConfiguracion;
-
+    
     @EJB
     TMovimientosFacade objDaoMovimientos;
-
+    
     @EJB
-
+    
     TPartesFacade objDaoPartes;
-
+    
     @PostConstruct
     public void init() {
         createBarModel2();
         createBarModel3();
-
+        
     }
-
+    
     private BarChartModel barModel;
     private BarChartModel barModel2;
     private BarChartModel barModel3;
-
+    
     private DonutChartModel donutModel1;
     private LineChartModel lineModel1;
     private static List<String> listFechasEscritas = new ArrayList();
     private static String titulo = " ";
-
+    
     public BarChartModel getBarModel3() {
         return barModel3;
     }
-
+    
     public void setBarModel3(BarChartModel barModel3) {
         this.barModel3 = barModel3;
     }
-
+    
     public BarChartModel getBarModel2() {
         return barModel2;
     }
-
+    
     public void setBarModel2(BarChartModel barModel2) {
         this.barModel2 = barModel2;
     }
-
+    
     public BarChartModel getBarModel() {
         return barModel;
     }
-
+    
     private void createBarModels() {
         createBarModel();
     }
-
+    
     public DonutChartModel getDonutModel1() {
         return donutModel1;
     }
-
+    
     public LineChartModel getLineModel1() {
         return lineModel1;
     }
-
+    
     private void createBarModel3() {
         barModel3 = initBarModel3();
         barModel3.setAnimate(true);
@@ -119,17 +119,17 @@ public class beanCharts {
         barModel3.setDatatipFormat("%d - $ %i");
         List<TConfiguracion> listModulos = objDaoConfiguracion.llenarReporteEstado();
         barModel3.setLegendCols(listModulos.size());
-
+        
         barModel3.setLegendPlacement(LegendPlacement.OUTSIDEGRID);
-
+        
         Axis yAxis = barModel3.getAxis(AxisType.Y);
         Axis xAxis = barModel3.getAxis(AxisType.X);
-
+        xAxis.setLabel("Productos");
         yAxis.setLabel("Valor");
         yAxis.setMin(0);
         yAxis.setMax(10000000);
     }
-
+    
     private BarChartModel initBarModel3() {
         BarChartModel model2 = new BarChartModel();
         try {
@@ -159,35 +159,35 @@ public class beanCharts {
                 if (i == 0) {
                     cajeros.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
                     cajeros.set("Cajeros", listTransaccionesReport.get(i).getValorTotal());
-
+                    
                 } else if (i == 1) {
                     cajeros2.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
                     cajeros2.set("Cajeros1", listTransaccionesReport.get(i).getValorTotal());
-
+                    
                 } else if (i == 2) {
                     cajeros3.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
                     cajeros3.set("Cajeros2", listTransaccionesReport.get(i).getValorTotal());
-
+                    
                 } else if (i == 3) {
                     cajeros4.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
                     cajeros4.set("Cajeros3", listTransaccionesReport.get(i).getValorTotal());
-
+                    
                 } else if (i == 4) {
                     cajeros5.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
                     cajeros5.set("Cajeros4", listTransaccionesReport.get(i).getValorTotal());
                 } else if (i == 5) {
                     cajeros6.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
                     cajeros6.set("Cajeros5", listTransaccionesReport.get(i).getValorTotal());
-
+                    
                 } else if (i == 6) {
-
+                    
                     cajeros7.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
                     cajeros7.set("Cajeros6", listTransaccionesReport.get(i).getValorTotal());
-
+                    
                 } else if (i == 7) {
                     cajeros8.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
                     cajeros8.set("Cajeros7", listTransaccionesReport.get(i).getValorTotal());
-
+                    
                 } else if (i == 8) {
                     cajeros9.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
                     cajeros9.set("Cajeros8", listTransaccionesReport.get(i).getValorTotal());
@@ -204,9 +204,9 @@ public class beanCharts {
                     cajeros13.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
                     cajeros13.set("Cajeros12", listTransaccionesReport.get(i).getValorTotal());
                 }
-
+                
             }
-
+            
             switch (listModulos.size()) {
                 case 10:
                     model2.addSeries(cajeros);
@@ -264,12 +264,12 @@ public class beanCharts {
                     model2.addSeries(cajeros13);
                     break;
             }
-
+            
         } catch (Exception e) {
         }
         return model2;
     }
-
+    
     private BarChartModel initBarModel2() {
         BarChartModel model2 = new BarChartModel();
         ChartSeries cajeros = new ChartSeries();
@@ -298,35 +298,35 @@ public class beanCharts {
             if (i == 0) {
                 cajeros.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
                 cajeros.set("Cajeros", listTransaccionesReport.get(i).getValorTotal());
-
+                
             } else if (i == 1) {
                 cajeros2.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
                 cajeros2.set("Cajeros1", listTransaccionesReport.get(i).getValorTotal());
-
+                
             } else if (i == 2) {
                 cajeros3.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
                 cajeros3.set("Cajeros2", listTransaccionesReport.get(i).getValorTotal());
-
+                
             } else if (i == 3) {
                 cajeros4.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
                 cajeros4.set("Cajeros3", listTransaccionesReport.get(i).getValorTotal());
-
+                
             } else if (i == 4) {
                 cajeros5.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
                 cajeros5.set("Cajeros4", listTransaccionesReport.get(i).getValorTotal());
             } else if (i == 5) {
                 cajeros6.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
                 cajeros6.set("Cajeros5", listTransaccionesReport.get(i).getValorTotal());
-
+                
             } else if (i == 6) {
-
+                
                 cajeros7.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
                 cajeros7.set("Cajeros6", listTransaccionesReport.get(i).getValorTotal());
-
+                
             } else if (i == 7) {
                 cajeros8.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
                 cajeros8.set("Cajeros7", listTransaccionesReport.get(i).getValorTotal());
-
+                
             } else if (i == 8) {
                 cajeros9.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
                 cajeros9.set("Cajeros8", listTransaccionesReport.get(i).getValorTotal());
@@ -343,9 +343,9 @@ public class beanCharts {
                 cajeros13.setLabel(listTransaccionesReport.get(i).getIdModulo().substring(9));
                 cajeros13.set("Cajeros12", listTransaccionesReport.get(i).getValorTotal());
             }
-
+            
         }
-
+        
         switch (listModulos.size()) {
             case 8:
                 model2.addSeries(cajeros);
@@ -368,7 +368,7 @@ public class beanCharts {
                 model2.addSeries(cajeros7);
                 model2.addSeries(cajeros8);
                 model2.addSeries(cajeros9);
-
+                
                 break;
             case 10:
                 model2.addSeries(cajeros);
@@ -425,18 +425,18 @@ public class beanCharts {
                 model2.addSeries(cajeros12);
                 model2.addSeries(cajeros13);
                 break;
-
+            
         }
-
+        
         return model2;
     }
-
+    
     private void createBarModel2() {
         Date hoy = new Date();
         SimpleDateFormat data = new SimpleDateFormat("dd/MM/yyyy");
-
+        
         barModel2 = initBarModel2();
-
+        
         barModel2.setTitle("Transacciones  " + data.format(hoy) + " SmartCoin");
         barModel2.setLegendPosition("s");
         barModel2.setShowDatatip(true);
@@ -445,24 +445,24 @@ public class beanCharts {
         barModel2.setDatatipFormat("%d - $ %i");
         List<TConfiguracion> listModulos = objDaoConfiguracion.llenarReporteEstado();
         barModel2.setLegendCols(listModulos.size());
-
+        
         barModel2.setLegendPlacement(LegendPlacement.OUTSIDEGRID);
-
+        
         Axis yAxis = barModel2.getAxis(AxisType.Y);
         Axis xAxis = barModel2.getAxis(AxisType.X);
-
+        
         yAxis.setLabel("Valor");
         yAxis.setMin(0);
         yAxis.setMax(10000000);
     }
-
+    
     private BarChartModel initBarModel() {
         donutModel1 = initDonutModel();
         donutModel1.setTitle("Arqueos realizados en " + titulo);
         donutModel1.setLegendPosition("w");
-
+        
         BarChartModel model = new BarChartModel();
-
+        
         Date hoy = new Date();
         Date haceUnMes = quitarUnMes(hoy);
         Date haceDosMeses = quitarUnMes(haceUnMes);
@@ -489,7 +489,7 @@ public class beanCharts {
         List<TreporteTransacciones> listReporAux = new ArrayList();
         List<TreporteTransacciones> listReporAux2 = new ArrayList();
         List<TConfiguracion> list = objDaoConfiguracion.llenarReporteEstado();
-
+        
         for (int i = 0; i < listFechas.size(); i++) {
             List<TreporteTransacciones> listReport = objDaoTransacciones.listReporteTransacciones(listFechas.get(i));
             if (c != listReport.size()) {
@@ -522,7 +522,7 @@ public class beanCharts {
                         uno.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                     }
                     break;
-
+                
                 case 2:
                     while (list.size() - 1 > k) {
                         uno.setLabel(list.get(k).getIdModulo());
@@ -550,10 +550,10 @@ public class beanCharts {
                             uno.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         } else if (dos.getLabel().equals(listReport.get(j).getIdModulo())) {
                             dos.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
-
+                            
                         } else {
                             tres.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
-
+                            
                         }
                     }
                     break;
@@ -574,12 +574,12 @@ public class beanCharts {
                             uno.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         } else if (dos.getLabel().equals(listReport.get(j).getIdModulo())) {
                             dos.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
-
+                            
                         } else if (tres.getLabel().equals(listReport.get(j).getIdModulo())) {
                             tres.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         } else if (cuatro.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cuatro.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
-
+                            
                         } else {
                             cinco.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         }
@@ -604,19 +604,19 @@ public class beanCharts {
                             uno.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         } else if (dos.getLabel().equals(listReport.get(j).getIdModulo())) {
                             dos.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
-
+                            
                         } else if (tres.getLabel().equals(listReport.get(j).getIdModulo())) {
                             tres.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         } else if (cuatro.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cuatro.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
-
+                            
                         } else if (cinco.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cinco.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
-
+                            
                         } else {
                             seis.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         }
-
+                        
                     }
                     break;
                 case 9:
@@ -644,15 +644,15 @@ public class beanCharts {
                             uno.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         } else if (dos.getLabel().equals(listReport.get(j).getIdModulo())) {
                             dos.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
-
+                            
                         } else if (tres.getLabel().equals(listReport.get(j).getIdModulo())) {
                             tres.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         } else if (cuatro.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cuatro.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
-
+                            
                         } else if (cinco.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cinco.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
-
+                            
                         } else if (seis.getLabel().equals(listReport.get(j).getIdModulo())) {
                             seis.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         } else if (siete.getLabel().equals(listReport.get(j).getIdModulo())) {
@@ -662,7 +662,7 @@ public class beanCharts {
                         } else if (nueve.getLabel().equals(listReport.get(j).getIdModulo())) {
                             nueve.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         }
-
+                        
                     }
                     break;
                 case 10:
@@ -692,15 +692,15 @@ public class beanCharts {
                             uno.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         } else if (dos.getLabel().equals(listReport.get(j).getIdModulo())) {
                             dos.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
-
+                            
                         } else if (tres.getLabel().equals(listReport.get(j).getIdModulo())) {
                             tres.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         } else if (cuatro.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cuatro.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
-
+                            
                         } else if (cinco.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cinco.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
-
+                            
                         } else if (seis.getLabel().equals(listReport.get(j).getIdModulo())) {
                             seis.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         } else if (siete.getLabel().equals(listReport.get(j).getIdModulo())) {
@@ -713,7 +713,7 @@ public class beanCharts {
                             diez.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         }
                     }
-
+                    
                     break;
                 case 11:
                     while (list.size() - 1 > k) {
@@ -738,22 +738,22 @@ public class beanCharts {
                         diez.setLabel(list.get(k).getIdModulo());
                         k++;
                         once.setLabel(list.get(k).getIdModulo());
-
+                        
                     }
                     for (int j = 0; j < listReport.size(); j++) {
                         if (uno.getLabel().equals(listReport.get(j).getIdModulo())) {
                             uno.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         } else if (dos.getLabel().equals(listReport.get(j).getIdModulo())) {
                             dos.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
-
+                            
                         } else if (tres.getLabel().equals(listReport.get(j).getIdModulo())) {
                             tres.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         } else if (cuatro.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cuatro.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
-
+                            
                         } else if (cinco.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cinco.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
-
+                            
                         } else if (seis.getLabel().equals(listReport.get(j).getIdModulo())) {
                             seis.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         } else if (siete.getLabel().equals(listReport.get(j).getIdModulo())) {
@@ -767,7 +767,7 @@ public class beanCharts {
                         } else if (once.getLabel().equals(listReport.get(j).getIdModulo())) {
                             once.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         }
-
+                        
                     }
                     break;
                 case 12:
@@ -795,22 +795,22 @@ public class beanCharts {
                         once.setLabel(list.get(k).getIdModulo());
                         k++;
                         doce.setLabel(list.get(k).getIdModulo());
-
+                        
                     }
                     for (int j = 0; j < listReport.size(); j++) {
                         if (uno.getLabel().equals(listReport.get(j).getIdModulo())) {
                             uno.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         } else if (dos.getLabel().equals(listReport.get(j).getIdModulo())) {
                             dos.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
-
+                            
                         } else if (tres.getLabel().equals(listReport.get(j).getIdModulo())) {
                             tres.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         } else if (cuatro.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cuatro.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
-
+                            
                         } else if (cinco.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cinco.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
-
+                            
                         } else if (seis.getLabel().equals(listReport.get(j).getIdModulo())) {
                             seis.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         } else if (siete.getLabel().equals(listReport.get(j).getIdModulo())) {
@@ -826,11 +826,11 @@ public class beanCharts {
                         } else if (doce.getLabel().equals(listReport.get(j).getIdModulo())) {
                             doce.set(listFechasEscritas.get(i), listReport.get(j).getConteo());
                         }
-
+                        
                     }
                     break;
             }
-
+            
         }
         switch (c) {
             case 1:
@@ -910,13 +910,13 @@ public class beanCharts {
                 model.addSeries(once);
                 model.addSeries(doce);
                 break;
-
+            
         }
         return model;
     }
-
+    
     private Date quitarUnMes(Date fecha) {
-
+        
         try {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(fecha);
@@ -926,10 +926,10 @@ public class beanCharts {
         }
         return fecha;
     }
-
+    
     private void tituloCompuesto(List<Date> listFechas) {
         try {
-
+            
             for (int i = 0; i < listFechas.size(); i++) {
                 switch (listFechas.get(i).getMonth()) {
                     case 0:
@@ -985,7 +985,7 @@ public class beanCharts {
         } catch (Exception e) {
         }
     }
-
+    
     private DonutChartModel initDonutModel() {
         DonutChartModel model = new DonutChartModel();
         Map<String, Number> circle1 = new LinkedHashMap<String, Number>();
@@ -993,7 +993,7 @@ public class beanCharts {
         Map<String, Number> circle3 = new LinkedHashMap<String, Number>();
         Map<String, Number> circle4 = new LinkedHashMap<String, Number>();
         Map<String, Number> circle5 = new LinkedHashMap<String, Number>();
-
+        
         Date hoy = new Date();
         Date haceUnMes = quitarUnMes(hoy);
         Date haceDosMeses = quitarUnMes(haceUnMes);
@@ -1008,15 +1008,15 @@ public class beanCharts {
         List<TreporteArqueos> listReporAux = new ArrayList();
         List<TreporteArqueos> listReporAux2 = new ArrayList();
         List<TreporteArqueos> listReporAux3 = new ArrayList();
-
+        
         List<TConfiguracion> list = objDaoConfiguracion.llenarReporteEstado();
-
+        
         if (titulo.equals(" ") && listFechasEscritas.isEmpty()) {
             tituloCompuesto(listFechas);
         }
-
+        
         boolean bandera = false;
-
+        
         for (int i = 0; i < listFechas.size(); i++) {
             List<TreporteArqueos> listReport = objDaoArqueos.listReporte1(listFechas.get(i));
             if (c != listReport.size()) {
@@ -1027,7 +1027,7 @@ public class beanCharts {
                     if (listReporAux3.size() < yu) {
                         listReporAux3.add(objVo);
                     }
-
+                    
                 }
                 for (int u = 0; u < listReport.size(); u++) {
                     for (int a = 0; a < listReporAux.size(); a++) {
@@ -1042,18 +1042,18 @@ public class beanCharts {
                     TreporteArqueos objVo2 = new TreporteArqueos(listReporAux2.get(yu).getIdModulo(), listReporAux2.get(yu).getValor());
                     listReport.add(objVo2);
                     bandera = true;
-
+                    
                 }
-
+                
                 if (bandera) {
                     for (int masacre = 0; masacre < listReport.size(); masacre++) {
                         for (int kraken = 0; kraken < listReporAux3.size(); kraken++) {
                             if (listReporAux3.get(kraken).getIdModulo().equals(listReport.get(masacre).getIdModulo())) {
                                 listReporAux3.get(kraken).setValor(listReport.get(masacre).getValor());
                             }
-
+                            
                         }
-
+                        
                     }
                     listReport = listReporAux3;
                 }
@@ -1074,26 +1074,26 @@ public class beanCharts {
                         circle3.put(listReport.get(j).getIdModulo(), listReport.get(j).getValor());
                     }
                     break;
-
+                
             }
         }
         model.addCircle(circle1);
         model.addCircle(circle2);
         model.addCircle(circle3);
-
+        
         return model;
-
+        
     }
     private Long yu;
-
+    
     public Long getYu() {
         return yu;
     }
-
+    
     public void setYu(Long yu) {
         this.yu = yu;
     }
-
+    
     private LineChartModel initLinearModel() {
         LineChartModel model = new LineChartModel();
         LineChartSeries uno = new LineChartSeries();
@@ -1108,7 +1108,7 @@ public class beanCharts {
         LineChartSeries diez = new LineChartSeries();
         LineChartSeries once = new LineChartSeries();
         LineChartSeries doce = new LineChartSeries();
-
+        
         Date hoy = new Date();
         hoy.setHours(0);
         hoy.setMinutes(0);
@@ -1202,7 +1202,7 @@ public class beanCharts {
                         uno.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                     }
                     break;
-
+                
                 case 2:
                     while (list.size() - 1 > k) {
                         uno.setLabel(list.get(k).getIdModulo());
@@ -1230,10 +1230,10 @@ public class beanCharts {
                             uno.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         } else if (dos.getLabel().equals(listReport.get(j).getIdModulo())) {
                             dos.set(listFechasEscritas.get(i), listReport.get(j).getValor());
-
+                            
                         } else {
                             tres.set(listFechasEscritas.get(i), listReport.get(j).getValor());
-
+                            
                         }
                     }
                     break;
@@ -1254,12 +1254,12 @@ public class beanCharts {
                             uno.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         } else if (dos.getLabel().equals(listReport.get(j).getIdModulo())) {
                             dos.set(listFechasEscritas.get(i), listReport.get(j).getValor());
-
+                            
                         } else if (tres.getLabel().equals(listReport.get(j).getIdModulo())) {
                             tres.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         } else if (cuatro.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cuatro.set(listFechasEscritas.get(i), listReport.get(j).getValor());
-
+                            
                         } else {
                             cinco.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         }
@@ -1284,17 +1284,17 @@ public class beanCharts {
                             uno.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         } else if (dos.getLabel().equals(listReport.get(j).getIdModulo())) {
                             dos.set(listFechasEscritas.get(i), listReport.get(j).getValor());
-
+                            
                         } else if (tres.getLabel().equals(listReport.get(j).getIdModulo())) {
                             tres.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         } else if (cuatro.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cuatro.set(listFechasEscritas.get(i), listReport.get(j).getValor());
-
+                            
                         } else if (cuatro.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cinco.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         } else {
                             seis.set(listFechasEscritas.get(i), listReport.get(j).getValor());
-
+                            
                         }
                     }
                     break;
@@ -1323,12 +1323,12 @@ public class beanCharts {
                             uno.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         } else if (dos.getLabel().equals(listReport.get(j).getIdModulo())) {
                             dos.set(listFechasEscritas.get(i), listReport.get(j).getValor());
-
+                            
                         } else if (tres.getLabel().equals(listReport.get(j).getIdModulo())) {
                             tres.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         } else if (cuatro.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cuatro.set(listFechasEscritas.get(i), listReport.get(j).getValor());
-
+                            
                         } else if (cinco.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cinco.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         } else if (seis.getLabel().equals(listReport.get(j).getIdModulo())) {
@@ -1369,12 +1369,12 @@ public class beanCharts {
                             uno.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         } else if (dos.getLabel().equals(listReport.get(j).getIdModulo())) {
                             dos.set(listFechasEscritas.get(i), listReport.get(j).getValor());
-
+                            
                         } else if (tres.getLabel().equals(listReport.get(j).getIdModulo())) {
                             tres.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         } else if (cuatro.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cuatro.set(listFechasEscritas.get(i), listReport.get(j).getValor());
-
+                            
                         } else if (cinco.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cinco.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         } else if (seis.getLabel().equals(listReport.get(j).getIdModulo())) {
@@ -1389,7 +1389,7 @@ public class beanCharts {
                             diez.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         }
                     }
-
+                    
                     break;
                 case 11:
                     while (list.size() - 1 > k) {
@@ -1420,12 +1420,12 @@ public class beanCharts {
                             uno.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         } else if (dos.getLabel().equals(listReport.get(j).getIdModulo())) {
                             dos.set(listFechasEscritas.get(i), listReport.get(j).getValor());
-
+                            
                         } else if (tres.getLabel().equals(listReport.get(j).getIdModulo())) {
                             tres.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         } else if (cuatro.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cuatro.set(listFechasEscritas.get(i), listReport.get(j).getValor());
-
+                            
                         } else if (cinco.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cinco.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         } else if (seis.getLabel().equals(listReport.get(j).getIdModulo())) {
@@ -1474,12 +1474,12 @@ public class beanCharts {
                             uno.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         } else if (dos.getLabel().equals(listReport.get(j).getIdModulo())) {
                             dos.set(listFechasEscritas.get(i), listReport.get(j).getValor());
-
+                            
                         } else if (tres.getLabel().equals(listReport.get(j).getIdModulo())) {
                             tres.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         } else if (cuatro.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cuatro.set(listFechasEscritas.get(i), listReport.get(j).getValor());
-
+                            
                         } else if (cinco.getLabel().equals(listReport.get(j).getIdModulo())) {
                             cinco.set(listFechasEscritas.get(i), listReport.get(j).getValor());
                         } else if (seis.getLabel().equals(listReport.get(j).getIdModulo())) {
@@ -1499,9 +1499,9 @@ public class beanCharts {
                         }
                     }
                     break;
-
+                
             }
-
+            
         }
         switch (c) {
             case 1:
@@ -1582,10 +1582,10 @@ public class beanCharts {
                 model.addSeries(doce);
                 break;
         }
-
+        
         return model;
     }
-
+    
     private void createBarModel() {
         barModel = initBarModel();
         barModel.setTitle("Cantidad de transacciones en " + titulo);
@@ -1597,10 +1597,10 @@ public class beanCharts {
         barModel2.setTitle("Transacciones  " + new Date().getDay() + " / " + new Date().getMonth() + " / " + new Date().getYear());
         barModel2.setLegendPosition("e");
         barModel2.setAnimate(true);
-
+        
         lineModel1 = initLinearModel();
         Axis yAxis = lineModel1.getAxis(AxisType.Y);
-
+        
         lineModel1.setTitle("Comisiones cobradas");
         lineModel1.setLegendPosition("e");
         lineModel1.setShowPointLabels(true);
@@ -1613,8 +1613,8 @@ public class beanCharts {
         yAxis.setMin(0);
         yAxis.setMax(1000000);
     }
-
+    
     public beanCharts() {
     }
-
+    
 }
